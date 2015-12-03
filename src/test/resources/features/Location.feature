@@ -15,9 +15,7 @@ Feature: Location of the rooms
     Given I open the Location details for Location "name"
     When I associate the Room "Room Name" with the Location "Location Name"
     Then the Room "Room Name" is associated to the Location "Location Name" in the Location page
-      And the Room "Room Name" is associated to the Location "Location Name" in the Room info
       And the Location "Custom Name" should be obtained by API request for the Room "Room Name"
-
 
   Scenario: User should be able to remove the room associated to location
     Given I go to the "location" page
