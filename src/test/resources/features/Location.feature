@@ -19,14 +19,9 @@ Feature: Location of the rooms
       And the Location "Custom Name" should be obtained by API request for the Room "Room Name"
 
 
-  Scenario: User should be able to remove the room associated to location
-    Given I go to the "location" page
-    And  I have a location "Custom Name" with display name " display name" created
-    And  I open the location "Custom Name"
-    And I select the "Locations Associations" tab
-    When I dis-associate the room "Room Name" of the location "Custom Name"
-    Then The room "Room Name" should be displayed in the column of "Available"
-
-
-
-
+  Scenario: User should be able to dis-associate room from a Location
+    Given I have a Location "Custom Name" with display name "display name"
+        And I open the Location "Custom Name" and I select the "Locations Associations" tab
+    When I dis-associate the Room "Room Name" of the Location "Custom Name"
+    Then The Room "Room Name" should be displayed in the column of "Available"
+        And the Location "Custom Name" should be obtained by API request should not contains at Room "Room Name"
