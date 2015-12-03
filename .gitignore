@@ -1,0 +1,7 @@
+.idea
+report
+test.iml
+test.ipr
+test.iws
+target/
+log4j-application.log
