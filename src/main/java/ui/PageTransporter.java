@@ -3,8 +3,6 @@ package ui;
 import framework.DriverManager;
 import org.openqa.selenium.WebDriver;
 import ui.pages.LoginPage;
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
 import utils.ConfigFileReader;
 
 /**

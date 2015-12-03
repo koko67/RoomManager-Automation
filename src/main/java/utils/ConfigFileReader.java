@@ -1,7 +1,6 @@
 package utils;
 
 import org.apache.log4j.Logger;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +14,7 @@ public class ConfigFileReader {
 
     private String  returnValue = null;
     Logger log = Logger.getLogger("ConfigFileReader");
+
     public ConfigFileReader(){
 
     }
@@ -34,7 +34,6 @@ public class ConfigFileReader {
             input = new FileInputStream("src/main/resources/config.properties");
             prop.load(input);
             returnValue = prop.getProperty(value);
-
         } catch (IOException ex) {
             log.error("Error to open file" + ex);
             ex.printStackTrace();
@@ -42,9 +41,7 @@ public class ConfigFileReader {
             if (input != null) {
                 try {
                     input.close();
-
                 } catch (IOException e) {
-
                     log.error("Not able to close read file" + e);
                 }
             }

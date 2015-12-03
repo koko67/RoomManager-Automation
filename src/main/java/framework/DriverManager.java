@@ -4,7 +4,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebDriver;
 import utils.ConfigFileReader;
-
 import java.util.concurrent.TimeUnit;
 
 /**
