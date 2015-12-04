@@ -1,7 +1,8 @@
 package steps;
 
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
+import ui.pages.LoginPage;
+
 
 /**
  * User: RonaldButron
@@ -9,10 +10,12 @@ import cucumber.api.java.en.Then;
  */
 public class Login {
 
+    private LoginPage login = new LoginPage();
+
     @Given("^I log in successfully as \"(.*?)\" with password \"(.*?)\"$")
     public void loginSuccessfully(String userName, String userPassword){
 
+        login.loginPageSuccessfully(userName, userPassword);
     }
-    @Then("^I should log in successfully$")
-    public void loginSuccessfully(){}
+
 }
