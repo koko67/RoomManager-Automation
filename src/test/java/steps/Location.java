@@ -21,12 +21,12 @@ public class Location {
 
     }
 
-    @Then("^the location \"(.*?)\" should be displayed in the Location page$")
+    @Then("^the Location \"(.*?)\" should be displayed in the Location page$")
     public void isTheLocationDisplayedInTheLocationPage(String locationName){
 
     }
 
-    @And("^the location \"(.*?)\" should be obtained by API request$")
+    @And("^the Location \"(.*?)\" should be obtained by API request$")
     public void isTheLocationObtainedByAPI(String locationName){
 
     }
@@ -50,4 +50,18 @@ public class Location {
     public void isTheRoomAObtainedByAPI(String locationName, String roomName){
 
     }
+    @Given("^I have a Location \"(.*?)\" with display name \"(.*?)\" associate to Room with name \"(.*?)\"$")
+    public void haveToLocation(String customName, String displayName, String roomName){
+
+    }
+    @And("^I open the Location \"(.*?)\" and I select the \"(.*?)\" tab$")
+    public void openLocation(String customName, String tablocations){
+
+    }
+    @When("^I dis-associate the Room \"(.*?)\" of the Location \"(.*?)\"$")
+    public void disAssociateRoomToLocation(String roomName, String customName){}
+    @Then("^The Room \"(.*?)\" should be displayed in the column of \"(.*?)\"$")
+    public void isRoomDisplayedAssocite(String roomName){}
+    @And("^the Location \"(.*?)\" obtained by API request should not contains the Room \"(.*?)\"$")
+    public void isContainsRoomInLocation(String customName, String roomName){}
 }
