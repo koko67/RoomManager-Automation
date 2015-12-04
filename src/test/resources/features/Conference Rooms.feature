@@ -22,7 +22,7 @@ Feature: Conference Rooms
       And I select the "Out Of Order Planning" Tab
     When I set a date "12/12/12" from today in the "From" field
       And I set a date "12/12/12" from today in the "To" field
-    Then an error message should be displayed in the form
+    Then an error message "To field must be greater than From field Cannot establish out of order as an past event" should be displayed in the form
       And the room reserve should not be stored
 
   Scenario: Schedule icon is added in the conference room
