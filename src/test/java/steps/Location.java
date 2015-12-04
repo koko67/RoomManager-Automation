@@ -50,7 +50,7 @@ public class Location {
     public void isTheRoomAObtainedByAPI(String locationName, String roomName){
 
     }
-    @Given("^I have a Location \"(.*?)\" with display name \"(.*?)\" associate at Room with name \"(.*?)\"$")
+    @Given("^I have a Location \"(.*?)\" with display name \"(.*?)\" associate to Room with name \"(.*?)\"$")
     public void haveToLocation(String customName, String displayName, String roomName){
 
     }
