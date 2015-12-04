@@ -50,8 +50,8 @@ public class Location {
     public void isTheRoomAObtainedByAPI(String locationName, String roomName){
 
     }
-    @Given("^I have a Location \"(.*?)\" with display name \"(.*?)\"$")
-    public void haveToLocation(String customName, String displayName){
+    @Given("^I have a Location \"(.*?)\" with display name \"(.*?)\" associate at Room with name \"(.*?)\"$")
+    public void haveToLocation(String customName, String displayName, String roomName){
 
     }
     @And("^I open the Location \"(.*?)\" and I select the \"(.*?)\" tab$")
@@ -62,6 +62,6 @@ public class Location {
     public void disAssociateRoomToLocation(String roomName, String customName){}
     @Then("^The Room \"(.*?)\" should be displayed in the column of \"(.*?)\"$")
     public void isRoomDisplayedAssocite(String roomName){}
-    @And("^the Location \"(.*?)\" should be obtained by API request should not contains at Room \"(.*?)\"$")
+    @And("^the Location \"(.*?)\" obtained by API request should not contains the Room \"(.*?)\"$")
     public void isContainsRoomInLocation(String customName, String roomName){}
 }

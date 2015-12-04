@@ -18,8 +18,8 @@ Feature: Location of the rooms
       And the Location "Custom Name" should be obtained by API request for the Room "Room Name"
 
   Scenario: User should be able to dis-associate room from a Location
-    Given I have a Location "Custom Name" with display name "display name"
+    Given I have a Location "Custom Name" with display name "display name" associate at Room with name "Room name"
       And I open the Location "Custom Name" and I select the "Locations Associations" tab
     When I dis-associate the Room "Room Name" of the Location "Custom Name"
     Then The Room "Room Name" should be displayed in the column of "Available"
-      And the Location "Custom Name" should be obtained by API request should not contains at Room "Room Name"
+      And the Location "Custom Name" obtained by API request should not contains the Room "Room Name"
