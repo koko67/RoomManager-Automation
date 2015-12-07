@@ -5,6 +5,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ui.PageTransporter;
+import ui.pages.Header;
+import ui.pages.HomePage;
 import utils.ConfigFileReader;
 
 /**
@@ -21,6 +23,8 @@ public class CommonMethods {
     public static void logOut(){
 
         if (!isItInTheLoginPage()){
+            HomePage homePage = new HomePage();
+            homePage.getHeader().logOut();
         }
 
     }
@@ -50,7 +54,6 @@ public class CommonMethods {
      */
     public static void elementHighlight(WebElement element) {
 
-        WebDriver driver = DriverManager.getInstance().getWebDriver();
         for (int i = 0; i < 3; i++) {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript(
