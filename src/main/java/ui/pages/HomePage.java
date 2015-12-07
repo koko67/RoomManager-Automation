@@ -14,6 +14,7 @@ public class HomePage extends BasePageObject {
 
     @FindBy(xpath = "//a[@class='navbar-brand' and contains(text(), 'Room Manager')]")
     WebElement nameWebPage;
+    private LeftMenuPanel leftMenuPanel;
 
     @Override
     public void waitUntilPageObjectIsLoaded() {
@@ -22,6 +23,7 @@ public class HomePage extends BasePageObject {
     }
 
     public HomePage(){
+        leftMenuPanel = new LeftMenuPanel();
         PageFactory.initElements(driver, this);
         waitUntilPageObjectIsLoaded();
     }
@@ -36,5 +38,8 @@ public class HomePage extends BasePageObject {
         return new LeftMenuPanel();
     }
 
-
+    public EmailServerPage goToEmailServer(String s) {
+        leftMenuPanel.clickOnEmailServerPage(s);
+        return new EmailServerPage();
+    }
 }
