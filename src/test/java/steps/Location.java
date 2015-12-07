@@ -14,6 +14,8 @@ public class Location {
     @Given("^I go to the \"(.*?)\" page$")
     public void goToAPage(String namePage){
 
+
+
     }
 
     @When("^I create a Location with Name \"(.*?)\" and Display Name \"(.*?)\"$")
