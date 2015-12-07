@@ -26,6 +26,15 @@ public class RunCukesTest extends AbstractTestNGCucumberTests {
 
     private static Logger log = Logger.getLogger("RunCukesTest");
 
+    @BeforeTest
+    public void beforeExecution(){
+        try{
+            CommonMethods.navigateLogIn();
+        }catch (Exception e){
+            log.error("Unable to navigate to the Login Page" + e);
+        }
+    }
+
     @AfterTest
     public void afterExecution() {
         try {
@@ -37,14 +46,7 @@ public class RunCukesTest extends AbstractTestNGCucumberTests {
         }
     }
 
-    @BeforeTest
-    public void beforeExecution(){
-        try{
-            CommonMethods.navigateLogIn();
-        }catch (Exception e){
-            log.error("Unable to navigate to the Login Page" + e);
-        }
-    }
+
 
 
 
