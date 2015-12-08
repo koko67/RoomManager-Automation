@@ -40,4 +40,4 @@ Feature: Conference Rooms
     When I open the Room "Room Name" from the Conference Room
       And I select the "Resource Association" Tab
       And I add "1" Resource "Computer" to the Room
-    Then the resource and quantity should be displayed for tghe room in the list
+    Then the resource and quantity should be displayed for the room in the list

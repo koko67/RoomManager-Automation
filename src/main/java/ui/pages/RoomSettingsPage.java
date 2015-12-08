@@ -51,6 +51,13 @@ public class RoomSettingsPage extends BasePageObject {
         return new ConferenceRoomsPage();
     }
 
+    public ConferenceRoomsPage fillForm(String displayName, String code, String capacity){
+        typeDisplayNameInput(displayName);
+        typeCodeInput(code);
+        typeCapacityInput(capacity);
+        return clickOnSaveButton();
+    }
+
     @Override
     public void waitUntilPageObjectIsLoaded() {
         driverWait.until(ExpectedConditions.visibilityOf(saveButton));

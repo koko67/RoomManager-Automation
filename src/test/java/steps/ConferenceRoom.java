@@ -41,10 +41,7 @@ public class ConferenceRoom {
 
     @When("^I edit the following info: Display Name \"(.*?)\", code \"(.*?)\" and capacity \"(.*?)\"$")
     public void editInfoConferenceRoom(String displayName, String roomCode, String roomCapacity){
-        roomSettingsPage.typeDisplayNameInput(displayName)
-                .typeCodeInput(roomCode)
-                .typeCapacityInput(roomCapacity)
-                .clickOnSaveButton();
+        roomSettingsPage.fillForm(displayName, roomCode, roomCapacity);
     }
 
     @Then("^the info edited should be obtained by API request for the Room \"(.*?)\"$")
