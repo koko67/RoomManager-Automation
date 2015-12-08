@@ -3,16 +3,30 @@ package steps;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import ui.pages.ConferenceRoomsPage;
+import ui.pages.HomePage;
+import ui.pages.RoomSettingsPage;
 
 /**
- * User: RonaldButron
+ * Author: JorgeAvila
  * Date: 12/3/15
  */
 public class ConferenceRoom {
 
-    @Given("^I open the Room \"(.*?)\" from the Conference Room$")
-    public void openRoomFromConferenceRoom(String roomName){
+    private HomePage homePage;
+    private ConferenceRoomsPage conferenceRoomsPage;
+    private RoomSettingsPage roomSettingsPage;
 
+    public ConferenceRoom(){
+        homePage = new HomePage();
+    }
+
+    @Given("^I open the Room \"(.*?)\" from the Conference Room$")
+    public void openRoomFromConferenceRoom(String roomName) {
+        conferenceRoomsPage = homePage.getLeftMenuPanel()
+                .clickOnConferenceRooms("Conference Rooms");
+
+        roomSettingsPage = conferenceRoomsPage.openConferenceRoomSettings(roomName);
     }
 
     @When("^I assign the Room \"(.*?)\" to the Location \"(.*?)\"$")
@@ -27,7 +41,10 @@ public class ConferenceRoom {
 
     @When("^I edit the following info: Display Name \"(.*?)\", code \"(.*?)\" and capacity \"(.*?)\"$")
     public void editInfoConferenceRoom(String displayName, String roomCode, String roomCapacity){
-
+        roomSettingsPage.typeDisplayNameInput(displayName)
+                .typeCodeInput(roomCode)
+                .typeCapacityInput(roomCapacity)
+                .clickOnSaveButton();
     }
 
     @Then("^the info edited should be obtained by API request for the Room \"(.*?)\"$")

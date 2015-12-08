@@ -13,8 +13,8 @@ Feature: Conference Rooms
       And the Location "Custom Name" should be obtained by API request for the Room "Room Name"
 
   Scenario: edit room info
-    Given I open the Room "Room Name" from the Conference Room
-    When I edit the following info: Display Name "Display Name", code "Code" and capacity "Capacity"
+    Given I open the Room "Floor1-Room10" from the Conference Room
+    When I edit the following info: Display Name "Room001", code "MyCode" and capacity "50"
     Then the info edited should be obtained by API request for the Room "Room Name"
 
   Scenario: Out of order wrong in a Conference Room
@@ -35,7 +35,9 @@ Feature: Conference Rooms
 
   Scenario: Associate a resource to a conference room
     Given I have created a resource with name "Computer"
+      And I go to the "Conference Room" page
+      And I select the resource "Computer" button in the header page
     When I open the Room "Room Name" from the Conference Room
       And I select the "Resource Association" Tab
       And I add "1" Resource "Computer" to the Room
-    Then the Resource amount should be "1" added in the Room row table
+    Then the resource and quantity should be displayed for tghe room in the list

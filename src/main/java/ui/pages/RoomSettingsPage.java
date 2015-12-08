@@ -2,6 +2,8 @@ package ui.pages;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import ui.BasePageObject;
 
 /**
@@ -20,6 +22,11 @@ public class RoomSettingsPage extends BasePageObject {
 
     @FindBy(xpath = "//button[.//span[contains(.,'Save')]]")
     WebElement saveButton;
+
+    public RoomSettingsPage(){
+        PageFactory.initElements(driver, this);
+        waitUntilPageObjectIsLoaded();
+    }
 
     public RoomSettingsPage typeDisplayNameInput(String displayName){
         displayNameInput.clear();
@@ -46,6 +53,6 @@ public class RoomSettingsPage extends BasePageObject {
 
     @Override
     public void waitUntilPageObjectIsLoaded() {
-
+        driverWait.until(ExpectedConditions.visibilityOf(saveButton));
     }
 }
