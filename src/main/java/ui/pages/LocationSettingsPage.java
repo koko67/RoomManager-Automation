@@ -1,5 +1,6 @@
 package ui.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -46,8 +47,15 @@ public class LocationSettingsPage extends BasePageObject{
      * press button for save the changes of location
      * @return the new location page.
      */
-    public LocationPage saveLocation() {
+    public void saveLocation() {
         saveButton.click();
+    }
+    public LocationPage fillFormSuccessfully(String locationName, String displayName){
+        By messageLocationAddedLocator = By.xpath("//div[@class='ng-binding ng-scope' and contains(text(),'Location successfully added')]");
+        writeInformationLocation(locationName, displayName);
+        saveLocation();
+        WebElement messageLocationAdded = driver.findElement(messageLocationAddedLocator);
+        driverWait.until(ExpectedConditions.visibilityOf(messageLocationAdded));
         return new LocationPage();
     }
 }

@@ -51,8 +51,9 @@ public class UIMethods {
         while (!result && count <= MaxCount){
             result = isElementPresent(element);
             count++;
+            System.out.println("inside while: " + result);
         }
-
+        System.out.println("outside=====" + result);
         return result;
     }
 }

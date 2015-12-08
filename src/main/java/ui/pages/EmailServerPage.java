@@ -13,14 +13,9 @@ public class EmailServerPage extends BasePageObject{
     @FindBy(xpath = "//a[contains(@class,'list-group-item')]")
     WebElement mailServer;
 
-    private LeftMenuPanel leftMenuBar = new LeftMenuPanel();
-
     @Override
     public void waitUntilPageObjectIsLoaded() {
         driverWait.until(ExpectedConditions.visibilityOf(mailServer));
     }
-    public LocationPage goToLocationPage(String namePage) {
-        leftMenuBar.clickOnLocationPage(namePage);
-        return new LocationPage();
-    }
+
 }

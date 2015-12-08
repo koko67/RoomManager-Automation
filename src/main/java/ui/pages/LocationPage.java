@@ -43,7 +43,7 @@ public class LocationPage extends BasePageObject{
      */
 
     public boolean isLocationNameExists(String locationName) {
-        By locationNameLocator = By.xpath("//div[@class='ngCanvas']//div[contains(text()," + locationName + ")]");
-        return UIMethods.waitElementIsPresent(5,locationNameLocator);
+        By locationNameLocator = By.xpath("//div[contains(text(),'" + locationName + "')]");
+        return UIMethods.waitElementIsPresent(2, locationNameLocator);
     }
 }
