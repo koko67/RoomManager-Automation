@@ -23,7 +23,6 @@ public class HomePage extends BasePageObject {
     }
 
     public HomePage(){
-        leftMenuPanel = new LeftMenuPanel();
         PageFactory.initElements(driver, this);
         waitUntilPageObjectIsLoaded();
     }
@@ -36,10 +35,5 @@ public class HomePage extends BasePageObject {
     public LeftMenuPanel getLeftMenuPanel(){
 
         return new LeftMenuPanel();
-    }
-
-    public EmailServerPage goToEmailServer(String s) {
-        leftMenuPanel.clickOnEmailServerPage(s);
-        return new EmailServerPage();
     }
 }
