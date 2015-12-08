@@ -32,7 +32,11 @@ public class Location {
         locationSettingPage.fillFormSuccessfully(locationName, displayName);
     }
     @And("^I refresh the page and come back \"(.*?)\"$")
-    public void workArround(String namePage){
+    public void workAround(String namePage){
+        /***
+         * the method is for workaround for the missing the update feature
+         * this step should be removed when the update feature were implement
+         */
         homePage.getLeftMenuPanel().clickOnEmailServerPage("Email Servers");
         homePage.getLeftMenuPanel().clickOnLocationPage(namePage);
     }
