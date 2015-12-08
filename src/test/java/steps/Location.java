@@ -5,12 +5,10 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
-import ui.pages.EmailServerPage;
 import ui.pages.HomePage;
 import ui.pages.LocationPage;
 import ui.pages.LocationSettingsPage;
 
-import static junit.framework.Assert.assertTrue;
 
 
 /**
@@ -25,18 +23,25 @@ public class Location {
 
     @Given("^I go to the \"(.*?)\" page$")
     public void goToAPage(String namePage){
-
-
         locationPage = homePage.getLeftMenuPanel().clickOnLocationPage(namePage);
-
     }
 
     @When("^I create a Location with Name \"(.*?)\" and Display Name \"(.*?)\"$")
     public void createLocation(String locationName, String displayName){
         locationSettingPage = locationPage.clickAddLocation();
         locationSettingPage.fillFormSuccessfully(locationName, displayName);
-    }
 
+    }
+    @And("^I refresh the page and come back \"(.*?)\"$")
+    public void workAround(String namePage){
+        /***
+         * the method is for workaround for the missing the update feature
+         * this step should be removed when the update feature were implement
+         */
+        homePage.getLeftMenuPanel().clickOnEmailServerPage("Email Servers");
+        homePage.getLeftMenuPanel().clickOnLocationPage(namePage);
+
+    }
     @Then("^the Location \"(.*?)\" should be displayed in the Location page$")
     public void isTheLocationDisplayedInTheLocationPage(String locationName){
         Assert.assertTrue("this location was created successfully", locationPage.isLocationNameExists(locationName));
