@@ -23,6 +23,7 @@ public class Location {
 
     @Given("^I go to the \"(.*?)\" page$")
     public void goToAPage(String namePage){
+
         locationPage = homePage.getLeftMenuPanel().clickOnLocationPage(namePage);
     }
 
