@@ -8,6 +8,7 @@ Feature: Location of the rooms
   Scenario: User should be able to create the Location
     Given I go to the "Location" page
     When I create a Location with Name "Custom Name" and Display Name "display name"
+      And I refresh the page and come back "Location"
     Then the Location "Custom Name" should be displayed in the Location page
       And the Location "Custom Name" should be obtained by API request
 
