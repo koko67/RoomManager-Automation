@@ -4,12 +4,11 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import ui.pages.EmailServerPage;
+import org.junit.Assert;
 import ui.pages.HomePage;
 import ui.pages.LocationPage;
 import ui.pages.LocationSettingsPage;
 
-import static junit.framework.Assert.assertTrue;
 
 
 /**
@@ -18,27 +17,28 @@ import static junit.framework.Assert.assertTrue;
  */
 public class Location {
 
-    private EmailServerPage emailServerPage;
     private LocationPage locationPage;
     private LocationSettingsPage locationSettingPage;
     private HomePage homePage = new HomePage();
 
     @Given("^I go to the \"(.*?)\" page$")
     public void goToAPage(String namePage){
-        emailServerPage = homePage.getLeftMenuPanel().clickOnEmailServerPage("Email Servers");
-        locationPage = emailServerPage.goToLocationPage(namePage);
+        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage(namePage);
     }
 
     @When("^I create a Location with Name \"(.*?)\" and Display Name \"(.*?)\"$")
     public void createLocation(String locationName, String displayName){
         locationSettingPage = locationPage.clickAddLocation();
-        locationSettingPage.writeInformationLocation(locationName,displayName);
-        locationSettingPage.saveLocation();
+        locationSettingPage.fillFormSuccessfully(locationName, displayName);
     }
-
+    @And("^I refresh the page and come back \"(.*?)\"$")
+    public void workArround(String namePage){
+        homePage.getLeftMenuPanel().clickOnEmailServerPage("Email Servers");
+        homePage.getLeftMenuPanel().clickOnLocationPage(namePage);
+    }
     @Then("^the Location \"(.*?)\" should be displayed in the Location page$")
     public void isTheLocationDisplayedInTheLocationPage(String locationName){
-        assertTrue("this location was created successfully", locationPage.isLocationNameExists(locationName));
+        Assert.assertTrue("this location was created successfully", locationPage.isLocationNameExists(locationName));
     }
 
     @And("^the Location \"(.*?)\" should be obtained by API request$")
