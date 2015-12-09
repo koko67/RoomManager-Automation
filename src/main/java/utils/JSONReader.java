@@ -1,76 +1,112 @@
 package utils;
 
-import java.io.FileReader;
-import org.json.simple.JSONObject;
+
+import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
+import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+
 
 /**
  * User: RonaldButron
- * Date: 12/7/15
+ * Date: 12/8/15
  */
 public class JSONReader {
 
-    public String filePath = "C:\\RoomManager-Automation\\src\\main\\resources\\config.json";
-    private static JSONReader instance = null;
-    private String id = null;
-    private String adminURL = null;
-    private String tabletURL = null;
-
-    protected  JSONReader(){
-        init();
+    private JSONObject jsonObjectMain;
+    private Logger log = Logger.getLogger("JSONReaderr");
+    public JSONReader(String filePath) {
+        parseJSON(filePath);
     }
 
-    public static JSONReader getInstance(){
-        if (instance == null){
-            instance = new JSONReader();
+    private void parseJSON(String filePath) {
+        try{
+            FileReader reader = new FileReader(filePath);
+            JSONParser jsonParser = new JSONParser();
+            jsonObjectMain = (JSONObject) jsonParser.parse(reader);
+        } catch (FileNotFoundException e){
+            log.error("File Not Found Exception when reading the configuration file " + e);
+        } catch (ParseException ex){
+            log.error("Parse Exception Error when reading the configuration file");
+        } catch (IOException ex){
+            log.error("IO Exception Error when reading the configuration file");
+        } catch (NullPointerException e){
+            log.error("Null Point Exception Error when reading the configuration file");
         }
-
-        return instance;
     }
 
-    private void init() {
+    /**
+     * This method get the value of a Key from a Json file
+     * @param objectName name of the environment
+     * @param idKey id key of the environment
+     * @param idValue id value of the environment
+     * @param key reference of the value searched inside a Json file
+     * @return the value of the key searched
+     */
+    public String getKeyValue(String objectName, String idKey, String idValue, String key) {
+        JSONObject jsonObject = getJSONObjectFromArrayById(objectName, idKey, idValue);
+        return getKeyValueFromJSONObject(jsonObject, key);
+    }
 
-        JSONParser parser = new JSONParser();
-        JSONObject node;
+    /**
+     * This method obtain the value of a node inside a Json File
+     * @param objectName name of the environment
+     * @param idKey id key of the environment
+     * @param idValue id value of the environment
+     * @param keyNode JSON object searched inside a Json file
+     * @param key reference of the value searched inside a Json file
+     * @return the
+     */
+    public String getKeyValue(String objectName, String idKey, String idValue, String keyNode, String key){
+        JSONObject jsonObject = getJSONObjectFromArrayById(objectName, idKey, idValue);
+        JSONObject jsonObject1 = getJSONObjectFromAJSONObject(jsonObject, keyNode);
+        return getKeyValueFromJSONObject(jsonObject1, key);
+    }
 
-        try {
-            Object obj = parser.parse(new FileReader(filePath));
-            JSONObject jsonObject = (JSONObject) obj;
-            node = (JSONObject) jsonObject.get("Environment");
-            id = (String) node.get("id");
-            adminURL = (String) node.get("adminURL");
-            tabletURL = (String) node.get("tabletURL");
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * This method obtain a JSon from another JSon object
+     * @param jsonObject reference to search the Json object
+     * @param idKey reference of the node searched
+     * @return the Json object searched
+     */
+    private JSONObject getJSONObjectFromAJSONObject(JSONObject jsonObject, String idKey ){
+
+      return  (JSONObject) jsonObject.get(idKey) ;
+    }
+
+    /**
+     * This method obtain the key value from a Json object
+     * @param jsonObject to search the key value
+     * @param key searched
+     * @return return the value of the key
+     */
+    private String getKeyValueFromJSONObject(JSONObject jsonObject, String key) {
+
+        return (String) jsonObject.get(key);
+    }
+
+    /**
+     * This method obtain a specific Json object from array of Json
+     * @param objectName name of the object
+     * @param idKey id key searched
+     * @param idValue value of the id key searched
+     * @return a specific Json object
+     */
+    private JSONObject getJSONObjectFromArrayById(String objectName, String idKey, String idValue) {
+        JSONObject jsonObject = null;
+        JSONArray array = (JSONArray) jsonObjectMain.get(objectName);
+        for (Object arr : array){
+            jsonObject = (JSONObject) arr;
+            if (jsonObject.get(idKey).equals(idValue)){
+                break;
+            }
         }
-
-    }
-
-    /**
-     * This method obtain the Id of the environment
-     * @return
-     */
-    public String getId(){
-
-        return id;
-    }
-
-    /**
-     * This method obtain the admin URL
-     * @return admin the URL
-     */
-    public String getAdminURL(){
-
-        return adminURL;
-    }
-
-    /**
-     * This method obtain the tablet URL
-     * @return tablet URL
-     */
-    public String getTabletURL(){
-
-        return tabletURL;
+        return jsonObject;
     }
 
 }

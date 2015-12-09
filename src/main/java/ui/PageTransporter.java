@@ -3,8 +3,7 @@ package ui;
 import framework.DriverManager;
 import org.openqa.selenium.WebDriver;
 import ui.pages.LoginPage;
-import utils.ConfigFileReader;
-import utils.JSONReader;
+import utils.CredentialManager;
 
 /**
   * User: RonaldButron
@@ -13,8 +12,7 @@ import utils.JSONReader;
 public class PageTransporter {
 
     private WebDriver driver = DriverManager.getInstance().getWebDriver();
-    private JSONReader jsonReader = JSONReader.getInstance();
-    private  String URLLogin = jsonReader.getAdminURL();
+    private String URLLogin = CredentialManager.getInstance().getAdminURL();
     private static PageTransporter instance;
 
     protected PageTransporter(){
