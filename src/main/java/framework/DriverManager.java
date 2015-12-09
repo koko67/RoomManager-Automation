@@ -36,17 +36,13 @@ public class DriverManager {
 
     private void init(){
         browserName = System.getProperty("browserName");
-        switch (browserName){
-            case "chrome":
-                System.setProperty("webdriver.chrome.driver", chromedriverPath);
-                driver = new ChromeDriver();
-                break;
-            case "firefox":
-                driver = new FirefoxDriver();
-                break;
-            default:
-                driver = new FirefoxDriver();
-                break;
+        if(browserName.equals("chrome")){
+            System.setProperty("webdriver.chrome.driver", chromedriverPath);
+            driver = new ChromeDriver();
+        } else if(browserName.equals("firefox")){
+            driver = new FirefoxDriver();
+        } else {
+            driver = new FirefoxDriver();
         }
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Long.parseLong(timeOutImplicitWait), TimeUnit.SECONDS);
