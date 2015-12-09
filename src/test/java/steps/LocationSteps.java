@@ -15,11 +15,15 @@ import ui.pages.LocationSettingsPage;
  * User: RonaldButron
  * Date: 12/3/15
  */
-public class Location {
+public class LocationSteps {
 
     private LocationPage locationPage;
     private LocationSettingsPage locationSettingPage;
-    private HomePage homePage = new HomePage();
+    private HomePage homePage;
+
+    public LocationSteps(){
+        homePage = new HomePage();
+    }
 
     @Given("^I go to the \"(.*?)\" page$")
     public void goToAPage(String namePage){

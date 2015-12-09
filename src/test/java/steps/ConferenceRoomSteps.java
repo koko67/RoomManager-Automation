@@ -3,6 +3,7 @@ package steps;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import entities.ConferenceRoom;
 import ui.pages.ConferenceRoomsPage;
 import ui.pages.HomePage;
 import ui.pages.RoomSettingsPage;
@@ -11,13 +12,15 @@ import ui.pages.RoomSettingsPage;
  * Author: JorgeAvila
  * Date: 12/3/15
  */
-public class ConferenceRoom {
+public class ConferenceRoomSteps {
 
     private HomePage homePage;
     private ConferenceRoomsPage conferenceRoomsPage;
     private RoomSettingsPage roomSettingsPage;
 
-    public ConferenceRoom(){
+    private ConferenceRoom conferenceRoom;
+
+    public ConferenceRoomSteps(){
         homePage = new HomePage();
     }
 
