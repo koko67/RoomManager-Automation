@@ -3,7 +3,7 @@ package ui;
 import framework.DriverManager;
 import org.openqa.selenium.WebDriver;
 import ui.pages.LoginPage;
-import utils.ConfigFileReader;
+import utils.CredentialManager;
 
 /**
   * User: RonaldButron
@@ -12,8 +12,7 @@ import utils.ConfigFileReader;
 public class PageTransporter {
 
     private WebDriver driver = DriverManager.getInstance().getWebDriver();
-    private ConfigFileReader reader = new ConfigFileReader();
-    private  String URLLogin = reader.getPropertiesValues("URLLogin");
+    private String URLLogin = CredentialManager.getInstance().getAdminURL();
     private static PageTransporter instance;
 
     protected PageTransporter(){
@@ -35,7 +34,7 @@ public class PageTransporter {
      * This method navigate to the Login URL
      * @param URL
      */
-    private void goToURL(String URL){
+    public void goToURL(String URL){
         driver.navigate().to(URL);
     }
 

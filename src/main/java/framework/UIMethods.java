@@ -31,6 +31,7 @@ public class UIMethods {
         int count = 1;
         try {
             while (result && count <= MaxCount){
+
                 Thread.sleep(200);
                 result = isElementPresent(element);
                 count++;
@@ -53,7 +54,9 @@ public class UIMethods {
             count++;
             System.out.println("inside while: " + result);
         }
+
         System.out.println("outside=====" + result);
+
         return result;
     }
 }

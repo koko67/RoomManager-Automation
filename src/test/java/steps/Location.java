@@ -23,6 +23,7 @@ public class Location {
 
     @Given("^I go to the \"(.*?)\" page$")
     public void goToAPage(String namePage){
+
         locationPage = homePage.getLeftMenuPanel().clickOnLocationPage(namePage);
     }
 
@@ -30,6 +31,7 @@ public class Location {
     public void createLocation(String locationName, String displayName){
         locationSettingPage = locationPage.clickAddLocation();
         locationSettingPage.fillFormSuccessfully(locationName, displayName);
+
     }
     @And("^I refresh the page and come back \"(.*?)\"$")
     public void workAround(String namePage){
@@ -39,6 +41,7 @@ public class Location {
          */
         homePage.getLeftMenuPanel().clickOnEmailServerPage("Email Servers");
         homePage.getLeftMenuPanel().clickOnLocationPage(namePage);
+
     }
     @Then("^the Location \"(.*?)\" should be displayed in the Location page$")
     public void isTheLocationDisplayedInTheLocationPage(String locationName){

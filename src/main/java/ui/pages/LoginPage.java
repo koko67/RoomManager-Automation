@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import ui.BasePageObject;
 
 /**
- * User: RonaldButron
+ * User: Ronald Butron
  * Date: 12/3/15
  */
 public class LoginPage extends BasePageObject {
@@ -59,6 +59,13 @@ public class LoginPage extends BasePageObject {
         passwordInput.sendKeys(userPassword);
         return  this;
     }
+
+    /**
+     * This method login to the page successfully
+     * @param userName name of the user
+     * @param userPassword  credentials of the end user
+     * @return a new Home Page
+     */
 
     public HomePage loginPageSuccessfully(String userName, String userPassword){
 
