@@ -1,5 +1,6 @@
 package framework;
 
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.WebDriver;
@@ -18,6 +19,8 @@ public class DriverManager {
     private String timeOutImplicitWait = reader.getPropertiesValues("timeOutImplicitWait");
     private String waitTimeOut = reader.getPropertiesValues("waitTimeOut");
     private String waitTimeOutSleep = reader.getPropertiesValues("waitTimeOutSleep");
+    private String browserName;
+    private String chromedriverPath = reader.getPropertiesValues("driver.chrome");
 
     protected DriverManager(){
         init();
@@ -32,7 +35,19 @@ public class DriverManager {
     }
 
     private void init(){
-        driver = new FirefoxDriver();
+        browserName = System.getProperty("browserName");
+        switch (browserName){
+            case "chrome":
+                System.setProperty("webdriver.chrome.driver", chromedriverPath);
+                driver = new ChromeDriver();
+                break;
+            case "firefox":
+                driver = new FirefoxDriver();
+                break;
+            default:
+                driver = new FirefoxDriver();
+                break;
+        }
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Long.parseLong(timeOutImplicitWait), TimeUnit.SECONDS);
         wait = new WebDriverWait(driver, Long.parseLong(waitTimeOut), Long.parseLong(waitTimeOutSleep));
