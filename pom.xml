@@ -110,6 +110,7 @@
                     <testFailureIgnore>true</testFailureIgnore>
                     <systemPropertyVariables>
                         <browserName>${browserName}</browserName>
+                        <environmentId>${envId}</environmentId>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
