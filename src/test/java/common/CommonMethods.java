@@ -5,8 +5,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ui.PageTransporter;
-import ui.pages.Header;
-import ui.pages.HomePage;
+import ui.pages.admin.Header;
+import ui.pages.admin.HomePage;
 import utils.ConfigFileReader;
 
 /**
