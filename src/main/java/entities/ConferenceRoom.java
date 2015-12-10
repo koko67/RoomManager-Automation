@@ -15,6 +15,7 @@ public class ConferenceRoom {
     private String locationId;
     private String customDisplayName;
     private String code;
+    private String capacity;
 
     public ConferenceRoom() {
         resources = new ArrayList<>();
@@ -90,5 +91,13 @@ public class ConferenceRoom {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(String capacity) {
+        this.capacity = capacity;
     }
 }
