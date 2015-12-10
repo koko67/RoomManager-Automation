@@ -1,4 +1,4 @@
-package ui.pages;
+package ui.pages.admin;
 
 import framework.UIMethods;
 import org.openqa.selenium.By;

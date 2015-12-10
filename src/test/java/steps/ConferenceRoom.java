@@ -3,9 +3,9 @@ package steps;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import ui.pages.ConferenceRoomsPage;
-import ui.pages.HomePage;
-import ui.pages.RoomSettingsPage;
+import ui.pages.admin.ConferenceRoomsPage;
+import ui.pages.admin.HomePage;
+import ui.pages.admin.RoomSettingsPage;
 
 /**
  * Author: JorgeAvila
@@ -24,7 +24,7 @@ public class ConferenceRoom {
     @Given("^I open the Room \"(.*?)\" from the Conference Room$")
     public void openRoomFromConferenceRoom(String roomName) {
         conferenceRoomsPage = homePage.getLeftMenuPanel()
-                .clickOnConferenceRooms("Conference Rooms");
+                                      .clickOnConferenceRooms("Conference Rooms");
 
         roomSettingsPage = conferenceRoomsPage.openConferenceRoomSettings(roomName);
     }

@@ -5,9 +5,9 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
-import ui.pages.HomePage;
-import ui.pages.LocationPage;
-import ui.pages.LocationSettingsPage;
+import ui.pages.admin.HomePage;
+import ui.pages.admin.LocationPage;
+import ui.pages.admin.LocationSettingsPage;
 
 
 

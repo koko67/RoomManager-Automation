@@ -1,7 +1,7 @@
 package steps;
 
 import cucumber.api.java.en.Given;
-import ui.pages.LoginPage;
+import ui.pages.admin.LoginPage;
 
 
 /**

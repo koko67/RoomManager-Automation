@@ -19,7 +19,7 @@ import java.io.IOException;
 public class JSONReader {
 
     private JSONObject jsonObjectMain;
-    private Logger log = Logger.getLogger("JSONReaderr");
+    private Logger log = Logger.getLogger("JSONReader");
     public JSONReader(String filePath) {
         parseJSON(filePath);
     }

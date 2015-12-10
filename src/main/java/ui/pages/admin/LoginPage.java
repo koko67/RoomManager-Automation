@@ -1,4 +1,4 @@
-package ui.pages;
+package ui.pages.admin;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
