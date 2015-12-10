@@ -1,4 +1,4 @@
-package ui.pages;
+package ui.pages.admin;
 
 import entities.ConferenceRoom;
 import org.openqa.selenium.WebElement;
