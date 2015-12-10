@@ -1,5 +1,6 @@
 package ui.pages.admin;
 
+import entities.ConferenceRoom;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -51,10 +52,10 @@ public class RoomSettingsPage extends BasePageObject {
         return new ConferenceRoomsPage();
     }
 
-    public ConferenceRoomsPage fillForm(String displayName, String code, String capacity){
-        typeDisplayNameInput(displayName);
-        typeCodeInput(code);
-        typeCapacityInput(capacity);
+    public ConferenceRoomsPage fillForm(ConferenceRoom confRoom){
+        typeDisplayNameInput(confRoom.getCustomDisplayName());
+        typeCodeInput(confRoom.getCode());
+        typeCapacityInput(confRoom.getCapacity());
         return clickOnSaveButton();
     }
 
