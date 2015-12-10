@@ -2,7 +2,7 @@ package ui;
 
 import framework.DriverManager;
 import org.openqa.selenium.WebDriver;
-import ui.pages.LoginPage;
+import ui.pages.admin.LoginPage;
 import utils.CredentialManager;
 
 /**
