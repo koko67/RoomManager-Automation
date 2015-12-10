@@ -20,8 +20,9 @@ public class ConferenceRoomSteps {
 
     private ConferenceRoom conferenceRoom;
 
-    public ConferenceRoomSteps(){
+    public ConferenceRoomSteps(ConferenceRoom conferenceRoom){
         homePage = new HomePage();
+        this.conferenceRoom = conferenceRoom;
     }
 
     @Given("^I open the Room \"(.*?)\" from the Conference Room$")
@@ -44,7 +45,10 @@ public class ConferenceRoomSteps {
 
     @When("^I edit the following info: Display Name \"(.*?)\", code \"(.*?)\" and capacity \"(.*?)\"$")
     public void editInfoConferenceRoom(String displayName, String roomCode, String roomCapacity){
-        roomSettingsPage.fillForm(displayName, roomCode, roomCapacity);
+        conferenceRoom.setCustomDisplayName(displayName);
+        conferenceRoom.setCode(roomCode);
+        conferenceRoom.setCapacity(roomCapacity);
+        roomSettingsPage.fillForm(conferenceRoom);
     }
 
     @Then("^the info edited should be obtained by API request for the Room \"(.*?)\"$")
