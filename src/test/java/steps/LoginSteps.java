@@ -1,6 +1,8 @@
 package steps;
 
+import common.CommonMethods;
 import cucumber.api.java.en.Given;
+import ui.pages.admin.HomePage;
 import ui.pages.admin.LoginPage;
 
 
@@ -10,8 +12,8 @@ import ui.pages.admin.LoginPage;
  */
 public class LoginSteps {
 
-    private LoginPage login = new LoginPage();
-
+    private LoginPage login;
+    private HomePage homePage;
     public LoginSteps(){
         login = new LoginPage();
     }
@@ -19,6 +21,11 @@ public class LoginSteps {
     @Given("^I log in successfully as \"(.*?)\" with password \"(.*?)\"$")
     public void loginSuccessfully(String userName, String userPassword){
         login.loginPageSuccessfully(userName, userPassword);
+        if(CommonMethods.isItInTheLoginPage()){
+            homePage = login.loginPageSuccessfully(userName, userPassword);
+        } else {
+            homePage = new HomePage();
+        }
     }
 
 }
