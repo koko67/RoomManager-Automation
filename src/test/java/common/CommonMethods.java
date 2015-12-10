@@ -5,9 +5,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ui.PageTransporter;
-import ui.pages.admin.Header;
 import ui.pages.admin.HomePage;
-import utils.ConfigFileReader;
+import utils.CredentialManager;
 
 /**
  * User: RonaldButron
@@ -21,31 +20,43 @@ public class CommonMethods {
      * This method verify if is in the main page then Log out
      */
     public static void logOut(){
-
         if (!isItInTheLoginPage()){
-            HomePage homePage = new HomePage();
-            homePage.getHeader().logOut();
+            new HomePage().getHeader().logOut();
         }
-
     }
 
     /**
      * navigate to the Login Page
      */
     public static void navigateLogIn(){
-
        PageTransporter.getInstance().toLoginPage();
     }
 
     /**
-     * Verify if is in the Login Page
-     * @return true is in the Login Page
+     * Verify if the current URL is in the Login Page
+     * @return true if the current URL is in the Login Page
      */
     public static Boolean isItInTheLoginPage(){
+        String LoginURL = CredentialManager.getInstance().getAdminURL();
+        return driver.getCurrentUrl().equalsIgnoreCase(LoginURL);
+    }
 
-        ConfigFileReader reader = new ConfigFileReader();
-        String URLLogin = reader.getPropertiesValues("URLLogin");
-        return driver.getCurrentUrl().equalsIgnoreCase(URLLogin);
+    /**
+     * This method verify if the current URL is in the Login Page of the tablet version
+     * @return true if the current URL is in the Tablet login page
+     */
+    public static Boolean isItInTheLoginPageTablet(){
+        String LoginTabletURL = CredentialManager.getInstance().getTabletURL();
+        return driver.getCurrentUrl().equalsIgnoreCase(LoginTabletURL);
+    }
+
+    /**
+     * This method verify if the current URL is in the Home Page of the Tablet
+     * @return true if the current URL is in the home page of the tablet version
+     */
+    public static Boolean isItInTheHomePageTablet(){
+        String HomeTabletURL = CredentialManager.getInstance().getHometabletURL();
+        return driver.getCurrentUrl().equalsIgnoreCase(HomeTabletURL);
     }
 
     /**
@@ -53,7 +64,6 @@ public class CommonMethods {
      * @param element element to high light
      */
     public static void elementHighlight(WebElement element) {
-
         for (int i = 0; i < 3; i++) {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript(
