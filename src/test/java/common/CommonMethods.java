@@ -20,7 +20,7 @@ public class CommonMethods {
      * This method verify if is in the main page then Log out
      */
     public static void logOut(){
-        if (!isItInTheLoginPage()){
+        if (!isAccountAlreadyLogged()){
             new HomePage().getHeader().logOut();
         }
     }
@@ -33,12 +33,12 @@ public class CommonMethods {
     }
 
     /**
-     * Verify if the current URL is in the Login Page
-     * @return true if the current URL is in the Login Page
+     * Verify if the user account is already logged in the Page
+     * @return tru if the current URL is the Home Page
      */
-    public static Boolean isItInTheLoginPage(){
-        String LoginURL = CredentialManager.getInstance().getAdminURL();
-        return driver.getCurrentUrl().equalsIgnoreCase(LoginURL);
+    public static boolean isAccountAlreadyLogged(){
+        String loggedUrl = CredentialManager.getInstance().getAdminLoggedUrl();
+        return driver.getCurrentUrl().contains(loggedUrl);
     }
 
     /**
@@ -54,10 +54,10 @@ public class CommonMethods {
      * This method verify if the current URL is in the Home Page of the Tablet
      * @return true if the current URL is in the home page of the tablet version
      */
-    public static Boolean isItInTheHomePageTablet(){
-        String HomeTabletURL = CredentialManager.getInstance().getHometabletURL();
-        return driver.getCurrentUrl().equalsIgnoreCase(HomeTabletURL);
-    }
+//    public static Boolean isItInTheHomePageTablet(){
+//        String HomeTabletURL = CredentialManager.getInstance().getHometabletURL();
+//        return driver.getCurrentUrl().equalsIgnoreCase(HomeTabletURL);
+//    }
 
     /**
      * High light elements

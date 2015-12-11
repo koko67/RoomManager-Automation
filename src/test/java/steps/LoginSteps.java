@@ -20,11 +20,8 @@ public class LoginSteps {
 
     @Given("^I log in successfully as \"(.*?)\" with password \"(.*?)\"$")
     public void loginSuccessfully(String userName, String userPassword){
-        login.loginPageSuccessfully(userName, userPassword);
-        if(CommonMethods.isItInTheLoginPage()){
+        if(!CommonMethods.isAccountAlreadyLogged()){
             homePage = login.loginPageSuccessfully(userName, userPassword);
-        } else {
-            homePage = new HomePage();
         }
     }
 
