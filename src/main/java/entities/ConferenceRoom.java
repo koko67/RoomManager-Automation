@@ -18,7 +18,7 @@ public class ConferenceRoom {
     private String capacity;
 
     public ConferenceRoom() {
-        resources = new ArrayList<>();
+        resources = new ArrayList<Resource>();
     }
 
     public String getId() {
