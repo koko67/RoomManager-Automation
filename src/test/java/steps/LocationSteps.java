@@ -90,7 +90,7 @@ public class LocationSteps {
     public void isTheRoomDisplayInTheLocation(String roomName){
         conferenceRoomPage = homePage.getLeftMenuPanel().clickOnConferenceRooms("Conference Rooms");
         roomInfoPage = conferenceRoomPage.openConferenceRoomSettings(roomName);
-        Assert.assertTrue("the room has assigned to the location", roomInfoPage.isLocationExists(location));
+        Assert.assertTrue("the room has assigned to the location", roomInfoPage.isLocationPresent(location));
     }
 
     @And("^the Location \"(.*?)\" should be obtained by API request for the Room \"(.*?)\"$")
@@ -101,8 +101,8 @@ public class LocationSteps {
     public void haveToLocation(String customName, String displayName, String roomName){
 
     }
-    @And("^I open the Location \"(.*?)\" and I select the \"(.*?)\" tab$")
-    public void openLocation(String customName, String tablocations){
+    @And("^I open the Location and I select the Locations Associations tab$")
+    public void openLocation(){
 
     }
     @When("^I dis-associate the Room \"(.*?)\" of the Location \"(.*?)\"$")

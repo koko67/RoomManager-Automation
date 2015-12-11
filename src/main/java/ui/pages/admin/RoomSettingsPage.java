@@ -68,10 +68,7 @@ public class RoomSettingsPage extends BasePageObject {
         driverWait.until(ExpectedConditions.visibilityOf(saveButton));
     }
 
-    public boolean isLocationExists(Location location) {
-        if(!locationComboBox.getText().contains(location.getName())){
-            return false;
-        }
-        return true;
+    public boolean isLocationPresent(Location location) {
+        return locationComboBox.getText().contains(location.getName());
     }
 }
