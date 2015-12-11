@@ -7,7 +7,7 @@ import ui.pages.admin.LoginPage;
 
 
 /**
- * User: RonaldButron
+ * User: Ronald Butron
  * Date: 12/3/15
  */
 public class LoginSteps {
@@ -20,11 +20,9 @@ public class LoginSteps {
 
     @Given("^I log in successfully as \"(.*?)\" with password \"(.*?)\"$")
     public void loginSuccessfully(String userName, String userPassword){
-        login.loginPageSuccessfully(userName, userPassword);
+
         if(CommonMethods.isItInTheLoginPage()){
             homePage = login.loginPageSuccessfully(userName, userPassword);
-        } else {
-            homePage = new HomePage();
         }
     }
 
