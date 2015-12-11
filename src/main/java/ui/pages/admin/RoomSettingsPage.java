@@ -1,6 +1,7 @@
 package ui.pages.admin;
 
 import entities.ConferenceRoom;
+import entities.Location;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -23,6 +24,9 @@ public class RoomSettingsPage extends BasePageObject {
 
     @FindBy(xpath = "//button[.//span[contains(.,'Save')]]")
     WebElement saveButton;
+
+    @FindBy(xpath = "//label[contains(text(),'Location')]/..//div[@id='add-location']")
+    WebElement locationComboBox;
 
     public RoomSettingsPage(){
         PageFactory.initElements(driver, this);
@@ -62,5 +66,12 @@ public class RoomSettingsPage extends BasePageObject {
     @Override
     public void waitUntilPageObjectIsLoaded() {
         driverWait.until(ExpectedConditions.visibilityOf(saveButton));
+    }
+
+    public boolean isLocationExists(Location location) {
+        if(!locationComboBox.getText().contains(location.getName())){
+            return false;
+        }
+        return true;
     }
 }
