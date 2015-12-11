@@ -5,8 +5,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import entities.ConferenceRoom;
 import ui.pages.admin.ConferenceRoomsPage;
-import ui.pages.admin.HomePage;
 import ui.pages.admin.RoomSettingsPage;
+import ui.pages.admin.HomePage;
 
 /**
  * Author: JorgeAvila
@@ -16,7 +16,7 @@ public class ConferenceRoomSteps {
 
     private HomePage homePage;
     private ConferenceRoomsPage conferenceRoomsPage;
-    private RoomSettingsPage roomSettingsPage;
+    private RoomSettingsPage roomInfoPage;
 
     private ConferenceRoom conferenceRoom;
 
@@ -30,7 +30,7 @@ public class ConferenceRoomSteps {
         conferenceRoomsPage = homePage.getLeftMenuPanel()
                                       .clickOnConferenceRooms("Conference Rooms");
 
-        roomSettingsPage = conferenceRoomsPage.openConferenceRoomSettings(roomName);
+        roomInfoPage = conferenceRoomsPage.openConferenceRoomSettings(roomName);
     }
 
     @When("^I assign the Room \"(.*?)\" to the Location \"(.*?)\"$")
@@ -38,7 +38,7 @@ public class ConferenceRoomSteps {
 
     }
 
-    @Then("^the Room \"(.*?)\" is associated to the Location \"(.*?)\" in the Conference Room page$")
+    @Then("^the Room \"(.*?)\" is associated to the Location \"(.*?)\" in the Location page$")
     public void isAssociatedRoomToLocationRoomPage(String roomName, String locationName){
 
     }
@@ -48,7 +48,7 @@ public class ConferenceRoomSteps {
         conferenceRoom.setCustomDisplayName(displayName);
         conferenceRoom.setCode(roomCode);
         conferenceRoom.setCapacity(roomCapacity);
-        roomSettingsPage.fillForm(conferenceRoom);
+        roomInfoPage.fillForm(conferenceRoom);
     }
 
     @Then("^the info edited should be obtained by API request for the Room \"(.*?)\"$")

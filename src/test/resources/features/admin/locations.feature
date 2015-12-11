@@ -9,13 +9,13 @@ Feature: Location of the rooms
     Given I go to the "Location" page
     When I create a Location with Name "Custom Name" and Display Name "display name"
       And I refresh the page and come back "Location"
-    Then the Location "Custom Name" should be displayed in the Location page
+    Then the Location  should be displayed in the Location page
       And the Location "Custom Name" should be obtained by API request
 
   Scenario: Assign rooms to a Location from the Location Association tab
     Given I open the Location details for Location "name"
-    When I associate the Room "Room Name" with the Location "Location Name"
-    Then the Room "Room Name" is associated to the Location "Location Name" in the Location page
+    When I associate the Room "Floor1-Room1" with the Location
+    Then the Room "Floor1-Room1" should be associated to the Location in the Conference Rooms page
       And the Location "Custom Name" should be obtained by API request for the Room "Room Name"
 
   Scenario: User should be able to dis-associate room from a Location

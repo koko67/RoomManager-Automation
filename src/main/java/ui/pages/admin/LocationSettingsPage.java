@@ -1,11 +1,14 @@
 package ui.pages.admin;
 
+import entities.Location;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import ui.BasePageObject;
+import ui.pages.admin.LocationAssociationsPage;
+import ui.pages.admin.LocationPage;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +24,8 @@ public class LocationSettingsPage extends BasePageObject{
     WebElement locationNameTextField;
     @FindBy(id = "location-add-display-name")
     WebElement locationDisplayNameTextField;
+    @FindBy(xpath = "//a[@class='ng-binding ng-scope' and contains(text(),'Location Associations')]")
+    WebElement locationAssociateTab;
 
     public LocationSettingsPage(){
         PageFactory.initElements(driver,this);
@@ -50,12 +55,21 @@ public class LocationSettingsPage extends BasePageObject{
     public void saveLocation() {
         saveButton.click();
     }
-    public LocationPage fillFormSuccessfully(String locationName, String displayName){
+    public LocationPage fillFormSuccessfully(Location location){
         By messageLocationAddedLocator = By.xpath("//div[@class='ng-binding ng-scope' and contains(text(),'Location successfully added')]");
-        writeInformationLocation(locationName, displayName);
+        writeInformationLocation(location.getName(), location.getDisplayName());
         saveLocation();
         WebElement messageLocationAdded = driver.findElement(messageLocationAddedLocator);
         driverWait.until(ExpectedConditions.visibilityOf(messageLocationAdded));
         return new LocationPage();
+    }
+
+    /**
+     * method that doing click in the location associate tab.
+     * @return the page with list of rooms Available and non-Available
+     */
+    public LocationAssociationsPage goLocationAssociationTab() {
+        locationAssociateTab.click();
+        return new LocationAssociationsPage();
     }
 }
