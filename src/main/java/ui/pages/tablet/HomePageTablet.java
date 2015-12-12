@@ -53,6 +53,13 @@ public class HomePageTablet extends BasePageObject {
         return UIMethods.waitElementIsPresent(3, By.xpath("//span[@class='vis-item-content' and contains(text(), '" + meeting.getSubject() + "')]"));
     }
 
-
+    /**
+     * Verify that the meeting is Not displayed in the Next Meeting
+     * @param meeting name of the meeting
+     * @return true if the meeting is not displayed
+     */
+    public boolean isNotDisplayedTheNextMeeting(Meeting meeting) {
+        return UIMethods.waitElementIsNotPresent(3, By.xpath("//span[@class='vis-item-content' and contains(text(), '" + meeting.getSubject() + "')]"));
+    }
 }
 

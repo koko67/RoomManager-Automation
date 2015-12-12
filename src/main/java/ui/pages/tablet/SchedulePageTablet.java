@@ -1,6 +1,6 @@
 package ui.pages.tablet;
 
-import common.CommonMethods;
+
 import commons.DomainAppConstants;
 import entities.Meeting;
 import framework.UIMethods;
@@ -24,7 +24,7 @@ public class SchedulePageTablet extends BasePageObject {
     @FindBy(id = "txtSubject")
     WebElement subjectInput;
 
-    @FindBy(xpath = "//button[@class='clean item item-btn']")
+    @FindBy(xpath = "//span[contains(text(),'Create')]/..")
     WebElement createButton;
 
     @FindBy(xpath = "//input[@ng-change='endTimeChanged()']")
@@ -39,7 +39,7 @@ public class SchedulePageTablet extends BasePageObject {
     @FindBy(id = "txtBody")
     WebElement bodyInput;
 
-    @FindBy(xpath = "//div[contains(@class, select-row]")
+    @FindBy(xpath = "//div[contains(@class, 'select-row']")
     WebElement selectAttendees;
 
     @FindBy(id = "_dropdown")
@@ -47,6 +47,9 @@ public class SchedulePageTablet extends BasePageObject {
 
     @FindBy(id = "go-home")
     WebElement goHomeButton;
+
+    @FindBy(xpath = "//i[contains(@class, 'fa-trash-o')]")
+    WebElement removeButton;
 
     @Override
     public void waitUntilPageObjectIsLoaded() {
@@ -83,7 +86,6 @@ public class SchedulePageTablet extends BasePageObject {
     public void setAttendees(String attendees){
         attendeesInput.clear();
         attendeesInput.sendKeys(attendees);
-        //CommonMethods.elementHighlight(attendeesDropDown);
     }
 
     /**
@@ -124,8 +126,8 @@ public class SchedulePageTablet extends BasePageObject {
      * Verify if the Config Message is displayed
      * @return
      */
-    public Boolean isDisplayedTheConfigMessage(){
-        return UIMethods.waitElementIsPresent(3, By.xpath("//div[contains(@class, 'ng-binding') and contains(text(), '" + DomainAppConstants.MEETING_SUCCESSFULLY_CREATED + "')]"));
+    public Boolean isDisplayedTheConfigMessage(String configMessage){
+        return UIMethods.waitElementIsPresent(3, By.xpath("//div[contains(@class, 'ng-binding') and contains(text(), '" + configMessage + "')]"));
     }
 
     /**
@@ -150,7 +152,7 @@ public class SchedulePageTablet extends BasePageObject {
      * @return true or false
      */
     public boolean isTheMeetingDisplayedInTheScheduleBar(Meeting meeting) {
-        return UIMethods.waitElementIsPresent(5, By.xpath("//span[@class='vis-item-content' and contains(text(), '" + meeting.getSubject() + "')]"));
+        return UIMethods.waitElementIsPresent(5, By.xpath(buildPathToFindAMeeting(meeting.getSubject())));
     }
 
     /**
@@ -160,5 +162,51 @@ public class SchedulePageTablet extends BasePageObject {
     public HomePageTablet goHome(){
         goHomeButton.click();
         return new HomePageTablet();
+    }
+
+    /**
+     *
+     * @param meeting
+     * @return
+     */
+    public ExchangeCredentialsPage removeMeeting(Meeting meeting) {
+        selectMeeting(meeting.getSubject());
+        selectRemove();
+        return  new ExchangeCredentialsPage();
+
+    }
+
+    /**
+     * Select the remove button
+     */
+    private void selectRemove() {
+         removeButton.click();
+    }
+
+    /**
+     * Select a specific meeting
+     * @param subject name of the meeting
+     */
+    private void selectMeeting(String subject) {
+         WebElement selectMeeting = driver.findElement(By.xpath(buildPathToFindAMeeting(subject)));
+         selectMeeting.click();
+    }
+
+    /**
+     * This method build a path
+     * @param subject name of the subject
+     * @return a String with the path bought
+     */
+    public String buildPathToFindAMeeting(String subject){
+        return "//span[@class='vis-item-content' and contains(text(), '" + subject + "')]";
+    }
+
+    /**
+     * Verify is the meeting is not displayed in the schedule bar
+     * @param meeting
+     * @return true or false
+     */
+    public boolean isNotTheMeetingDisplayedInTheScheduleBar(Meeting meeting) {
+        return UIMethods.waitElementIsNotPresent(3, By.xpath(buildPathToFindAMeeting(meeting.getSubject())));
     }
 }

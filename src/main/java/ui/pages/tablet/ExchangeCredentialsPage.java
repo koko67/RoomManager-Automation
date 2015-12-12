@@ -66,4 +66,13 @@ public class ExchangeCredentialsPage extends BasePageObject {
         setUserPassword();
         return saveExchangeCredentials();
     }
+
+    /**
+     * This method fill the Exchange password
+     * @return a new Exchange Credentials Page
+     */
+    public SchedulePageTablet fillTheExchangePasswordToRemoveAMeeting(){
+        setUserPassword();
+        return saveExchangeCredentials();
+    }
 }

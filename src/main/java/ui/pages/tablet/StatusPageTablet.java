@@ -1,5 +1,6 @@
 package ui.pages.tablet;
 
+import framework.UIMethods;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,12 +23,12 @@ public class StatusPageTablet extends BasePageObject {
     @FindBy(xpath = "//button[@class='btn btn-primary']")
     WebElement startNowButton;
 
-    @FindBy(xpath = "//div[@class=ng-binding ng-scope and contains(., 'Connection setting was updated')]")
+    @FindBy(xpath = "//div[contains(@class,'ng-binding') and contains(., 'Connection setting was updated')]")
     WebElement connectionInfo;
 
     @Override
     public void waitUntilPageObjectIsLoaded() {
-        driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[@class=ng-binding ng-scope and contains(., 'Connection setting was updated')]")));
+        UIMethods.waitElementIsNotPresent(10, By.xpath("//div[contains(@class, 'ng-binding') and contains(., 'Connection setting was updated')]"));
     }
 
     public StatusPageTablet(){
@@ -35,6 +36,11 @@ public class StatusPageTablet extends BasePageObject {
         waitUntilPageObjectIsLoaded();
     }
 
+    /**
+     * This method select a room to reserve meetings
+     * @param roomName name of the room
+     * @return the Home Page of the tablet version
+     */
     public HomePageTablet selectRoomSuccessfully(String roomName){
         roomDropDownButton.click();
         searchRoomInput.clear();
