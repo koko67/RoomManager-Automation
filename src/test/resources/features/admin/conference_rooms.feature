@@ -34,10 +34,10 @@ Feature: Conference Rooms
     And the info edited should be obtained by API request for the Room "Room Name"
 
   Scenario: Associate a resource to a conference room
-    Given I have created a resource with name "Computer"
-    And I go to the "Conference Room" page
-    And I select the resource "Computer" button in the header page
-    When I open the Room "Room Name" from the Conference Room
-    And I select the "Resource Association" Tab
-    And I add "1" Resource "Computer" to the Room
+    Given I have created a resource with name "Computer", customName "Computer2"
+      And I go to "Conference Room" page
+      And I select the resource button in the header page
+    When I open the Room "Floor1-Room1" from the Conference Room
+      And I select the Resource Association Tab
+      And I add "2" Resource to the Room
     Then the resource and quantity should be displayed for the room in the list

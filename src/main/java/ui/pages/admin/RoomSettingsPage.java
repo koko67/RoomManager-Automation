@@ -28,6 +28,9 @@ public class RoomSettingsPage extends BasePageObject {
     @FindBy(xpath = "//label[contains(text(),'Location')]/..//div[@id='add-location']")
     WebElement locationComboBox;
 
+    @FindBy(xpath = "//a[contains(text(),'Resource Associations')]")
+    WebElement resourceAssociateTab;
+
     public RoomSettingsPage(){
         PageFactory.initElements(driver, this);
         waitUntilPageObjectIsLoaded();
@@ -70,5 +73,10 @@ public class RoomSettingsPage extends BasePageObject {
 
     public boolean isLocationPresent(Location location) {
         return locationComboBox.getText().contains(location.getName());
+    }
+
+    public ResourceAssociatePage clickOnResourceAssociateTab() {
+        resourceAssociateTab.click();
+        return new ResourceAssociatePage();
     }
 }
