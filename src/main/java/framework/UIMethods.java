@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import utils.ConfigFileReader;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -39,19 +42,22 @@ public class UIMethods {
      * @return true or false
      */
     public static boolean waitElementIsNotPresent(int maxCount, By element){
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         boolean result = true;
         int count = 1;
         try {
             while (result && count <= maxCount){
-                Thread.sleep(200);
+                Thread.sleep(50);
                 result = isElementPresent(element);
+                System.out.println("Element not present======="+ result);
                 count++;
             }
 
         } catch (InterruptedException e){
            log.error("Exception Element is not Present");
         }
-        return result;
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        return !result;
     }
 
     /**
@@ -61,15 +67,12 @@ public class UIMethods {
      * @return true or false
      */
     public static boolean waitElementIsPresent(int maxCount, By element){
-
         boolean result = false;
         int count = 1;
         while (!result && count <= maxCount){
             result = isElementPresent(element);
             count++;
-            System.out.println("inside while: " + result);
         }
-        System.out.println("outside=====" + result);
         return result;
     }
 }
