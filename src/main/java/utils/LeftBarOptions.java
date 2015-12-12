@@ -18,6 +18,10 @@ public enum LeftBarOptions {
         this.namePage = namePage;
     }
 
+    /**
+     * return the names of the pages of left menu
+     * @return
+     */
     public String getToPage(){
         return namePage;
     }
