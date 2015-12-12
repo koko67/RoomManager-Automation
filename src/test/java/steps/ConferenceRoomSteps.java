@@ -66,7 +66,7 @@ public class ConferenceRoomSteps {
     }
     @Given("^I have created a resource with name \"(.*?)\", customName \"(.*?)\"$")
     public void createResource(String resourceName, String resourceDisplayName){
-        System.out.println("the element created was: " + resourceName);
+        System.out.println("the element created was: should be create since API " + resourceName);
         resource.setName(resourceName);
         resource.setCustomName(resourceDisplayName);
         resource.setFontIcon("fa fa-desktop");
