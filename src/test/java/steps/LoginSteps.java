@@ -13,16 +13,15 @@ import ui.pages.admin.LoginPage;
 public class LoginSteps {
 
     private LoginPage login;
-    private HomePage homePage;
+
     public LoginSteps(){
         login = new LoginPage();
     }
 
     @Given("^I log in successfully as \"(.*?)\" with password \"(.*?)\"$")
     public void loginSuccessfully(String userName, String userPassword){
-
         if(CommonMethods.isItInTheLoginPage()){
-            homePage = login.loginPageSuccessfully(userName, userPassword);
+            login.loginPageSuccessfully(userName, userPassword);
         }
     }
 

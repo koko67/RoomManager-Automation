@@ -1,6 +1,7 @@
 package steps;
 
 import common.CommonMethods;
+import cucumber.api.java.After;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -47,6 +48,7 @@ public class meetingSteps {
         schedulePageTablet = homePageTablet.goToSchedulePage();
     }
 
+
     @When("^I create a meeting with the following information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
     public void createAMetting(String organizer, String subject, String from, String to, String attendees, String body){
         meeting.setAllForm(organizer, subject, from, to, attendees, body);
@@ -54,9 +56,9 @@ public class meetingSteps {
         credentialsPage.fillExchangeCredentialsForm();
     }
 
-    @Then("^an information message should be displayed$")
-    public void isInformationMessageDisplayed(){
-        Assert.assertTrue(schedulePageTablet.isDisplayedTheConfigMessage());
+    @Then("^an information message should be displayed \"(.*?)\"$")
+    public void isInformationMessageDisplayed(String configMessage){
+        Assert.assertTrue(schedulePageTablet.isDisplayedTheConfigMessage(configMessage));
     }
 
     @And("^the meeting should be displayed in the Schedule bar$")
@@ -68,5 +70,32 @@ public class meetingSteps {
     public void isTheMeetingDisplayedInTheNextSection(){
         homePageTablet = schedulePageTablet.goHome();
         Assert.assertTrue(homePageTablet.isDisplayedTheNextMeeting(meeting));
+    }
+
+    @When("^I remove the meeting$")
+    public void removeAMeeting(){
+        if(CommonMethods.isItInTheHomePageTablet()){
+            schedulePageTablet = homePageTablet.goToSchedulePage();
+        }
+        credentialsPage = schedulePageTablet.removeMeeting(meeting);
+        schedulePageTablet = credentialsPage.fillTheExchangePasswordToRemoveAMeeting();
+
+    }
+
+    @And("^the meeting should be removed from the the Schedule bar$")
+    public void isNotTheMeetingDisplayedScheduleBar(){
+        Assert.assertTrue(schedulePageTablet.isNotTheMeetingDisplayedInTheScheduleBar(meeting));
+    }
+
+    @And("^the meeting information should be removed from the Next section of Main page$")
+    public void isNotTheMeetingDisplayedInTheNextSection(){
+        homePageTablet = schedulePageTablet.goHome();
+        Assert.assertTrue(homePageTablet.isNotDisplayedTheNextMeeting(meeting));
+    }
+
+    @After(value = "@RemoveMeeting")
+    public void removeMT(){
+        removeAMeeting();
+        schedulePageTablet.goHome();
     }
 }
