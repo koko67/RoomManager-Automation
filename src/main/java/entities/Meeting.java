@@ -69,4 +69,11 @@ public class Meeting {
         this.attendees = attendees;
         this.body = body;
     }
+
+    public void setUpdateForm(String subject, String from, String to, String body) {
+        this.subject = subject;
+        this.hourFrom = from;
+        this.hourTo = to;
+        this.body = body;
+    }
 }

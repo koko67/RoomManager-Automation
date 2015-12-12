@@ -21,7 +21,6 @@ public class meetingSteps {
     HomePageTablet homePageTablet;
     StatusPageTablet statusPageTablet;
     SchedulePageTablet schedulePageTablet;
-    ExchangeCredentialsPage credentialsPage;
     Meeting meeting;
     public meetingSteps(){
          meeting = new Meeting();
@@ -49,11 +48,17 @@ public class meetingSteps {
     }
 
 
-    @When("^I create a meeting with the following information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
-    public void createAMetting(String organizer, String subject, String from, String to, String attendees, String body){
+    @When("^I create successfully a meeting with the following information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
+    public void createAMeeting(String organizer, String subject, String from, String to, String attendees, String body){
         meeting.setAllForm(organizer, subject, from, to, attendees, body);
-        credentialsPage =  schedulePageTablet.createSuccessfullyAMeeting(meeting);
-        credentialsPage.fillExchangeCredentialsForm();
+        schedulePageTablet.createSuccessfullyAMeeting(meeting);
+        schedulePageTablet.fillExchangeCredentialsForm();
+    }
+
+    @When("^I create unsuccessfully a meeting with the following information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
+    public void createUnsuccessfullyAMeeting(String organizer, String subject, String from, String to, String attendees, String body){
+        meeting.setAllForm(organizer, subject, from, to, attendees, body);
+        schedulePageTablet.createUnsuccessfullyAMeeting(meeting);
     }
 
     @Then("^an information message should be displayed \"(.*?)\"$")
@@ -77,21 +82,40 @@ public class meetingSteps {
         if(CommonMethods.isItInTheHomePageTablet()){
             schedulePageTablet = homePageTablet.goToSchedulePage();
         }
-        credentialsPage = schedulePageTablet.removeMeeting(meeting);
-        schedulePageTablet = credentialsPage.fillTheExchangePasswordToRemoveAMeeting();
+        schedulePageTablet.removeMeeting(meeting);
+        schedulePageTablet.fillTheExchangePasswordMeeting();
 
     }
 
-    @And("^the meeting should be removed from the the Schedule bar$")
+    @And("^the meeting should not be displayed in the Schedule bar$")
     public void isNotTheMeetingDisplayedScheduleBar(){
         Assert.assertTrue(schedulePageTablet.isNotTheMeetingDisplayedInTheScheduleBar(meeting));
     }
 
-    @And("^the meeting information should be removed from the Next section of Main page$")
+    @And("^the meeting information should not be displayed in the Next section of Main page$")
     public void isNotTheMeetingDisplayedInTheNextSection(){
         homePageTablet = schedulePageTablet.goHome();
         Assert.assertTrue(homePageTablet.isNotDisplayedTheNextMeeting(meeting));
     }
+
+    @Then("^an error \"(.*?)\" message should be displayed$")
+    public void isTheErrorMessageDisplayed(String errorMessage){
+        Assert.assertTrue(schedulePageTablet.isDisplayedErrorMessage(errorMessage));
+    }
+
+    @Then("^an information error message should be displayed in Credentials Page$")
+    public void isTheErrorMessageDisplayedIn(){
+        schedulePageTablet.cancelExchangeCredentials();
+        Assert.assertTrue(schedulePageTablet.isTheErrorMessageDisplayed());
+    }
+
+    @When("^I update the meeting information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
+    public void updateMeetingInformation(String subject, String from, String to, String body){
+        schedulePageTablet.selectMeeting(meeting.getSubject());
+        meeting.setUpdateForm(subject, from, to, body);
+        schedulePageTablet.updateMeeting(meeting);
+    }
+
 
     @After(value = "@RemoveMeeting")
     public void removeMT(){
