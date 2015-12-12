@@ -2,6 +2,7 @@ package ui.pages.admin;
 
 import entities.ConferenceRoom;
 import entities.Location;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -27,6 +28,9 @@ public class RoomSettingsPage extends BasePageObject {
 
     @FindBy(xpath = "//label[contains(text(),'Location')]/..//div[@id='add-location']")
     WebElement locationComboBox;
+
+    @FindBy(xpath = "//form/div//span/button/i")
+    WebElement locationsDropDownButton;
 
     public RoomSettingsPage(){
         PageFactory.initElements(driver, this);
@@ -68,7 +72,24 @@ public class RoomSettingsPage extends BasePageObject {
         driverWait.until(ExpectedConditions.visibilityOf(saveButton));
     }
 
+
+    /**
+     * verify if the location is present in the combo box
+     * @param location
+     * @return
+     */
     public boolean isLocationPresent(Location location) {
         return locationComboBox.getText().contains(location.getName());
+    }
+
+    public RoomSettingsPage expandLocations() {
+        locationsDropDownButton.click();
+        return this;
+    }
+
+    public RoomSettingsPage selectLocationByName(String locationName){
+        WebElement location = locationsDropDownButton.findElement(By.xpath("//ancestor::form//treeview//div[.//b[contains(.,'" + locationName + "')] and @class='treeview-selectable']/"));
+        location.click();
+        return this;
     }
 }
