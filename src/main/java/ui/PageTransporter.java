@@ -3,6 +3,7 @@ package ui;
 import framework.DriverManager;
 import org.openqa.selenium.WebDriver;
 import ui.pages.admin.LoginPage;
+import ui.pages.tablet.LoginPageTablet;
 import utils.CredentialManager;
 
 /**
@@ -13,6 +14,7 @@ public class PageTransporter {
 
     private WebDriver driver = DriverManager.getInstance().getWebDriver();
     private String URLLogin = CredentialManager.getInstance().getAdminURL();
+    private String URLTabletLogin = CredentialManager.getInstance().getTabletURL();
     private static PageTransporter instance;
 
     protected PageTransporter(){
@@ -56,9 +58,15 @@ public class PageTransporter {
 
         goToURL(URLLogin);
         return new LoginPage();
+    }
 
-
-
+    /**
+     * This method go to the Tablet Login Page
+     * @return a new tablet Login Page
+     */
+    public LoginPageTablet toTabletLoginPage(){
+        goToURL(URLTabletLogin);
+        return new LoginPageTablet();
     }
 
 }

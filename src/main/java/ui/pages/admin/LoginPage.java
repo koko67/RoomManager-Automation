@@ -27,7 +27,6 @@ public class LoginPage extends BasePageObject {
 
     @Override
     public void waitUntilPageObjectIsLoaded() {
-
         driverWait.until(ExpectedConditions.visibilityOf(submitButton));
     }
 

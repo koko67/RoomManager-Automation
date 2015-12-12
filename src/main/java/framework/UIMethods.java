@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import utils.ConfigFileReader;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -17,6 +20,12 @@ public class UIMethods {
     public UIMethods(){
 
     }
+
+    /**
+     * This method try to find a element
+     * @param element element to search
+     * @return true if the element is found
+     */
     public static boolean isElementPresent(By element){
           try{
               driver.findElement(element);
@@ -26,37 +35,44 @@ public class UIMethods {
           }
      }
 
-    public static boolean waitElementIsNotPresent(int MaxCount, By element){
+    /**
+     * The driver wait to a element disappear
+     * @param maxCount number of times to wait
+     * @param element to search
+     * @return true or false
+     */
+    public static boolean waitElementIsNotPresent(int maxCount, By element){
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         boolean result = true;
         int count = 1;
         try {
-            while (result && count <= MaxCount){
-
-                Thread.sleep(200);
+            while (result && count <= maxCount){
+                Thread.sleep(50);
                 result = isElementPresent(element);
+                System.out.println("Element not present======="+ result);
                 count++;
-
             }
 
         } catch (InterruptedException e){
-
            log.error("Exception Element is not Present");
         }
-        return result;
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        return !result;
     }
 
-    public static boolean waitElementIsPresent(int MaxCount, By element){
-
+    /**
+     * The driver wait to find a element
+     * @param maxCount number of times to wait
+     * @param element to search
+     * @return true or false
+     */
+    public static boolean waitElementIsPresent(int maxCount, By element){
         boolean result = false;
         int count = 1;
-        while (!result && count <= MaxCount){
+        while (!result && count <= maxCount){
             result = isElementPresent(element);
             count++;
-            System.out.println("inside while: " + result);
         }
-
-        System.out.println("outside=====" + result);
-
         return result;
     }
 }

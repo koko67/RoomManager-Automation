@@ -1,5 +1,6 @@
 package ui;
 
+import entities.Meeting;
 import framework.DriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -21,7 +22,5 @@ public abstract class BasePageObject {
     }
 
     public abstract void waitUntilPageObjectIsLoaded();
-
-
 
 }
