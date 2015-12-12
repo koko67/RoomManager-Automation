@@ -7,13 +7,13 @@ import ui.pages.admin.LoginPage;
 
 
 /**
- * User: RonaldButron
+ * User: Ronald Butron
  * Date: 12/3/15
  */
 public class LoginSteps {
 
     private LoginPage login;
-    private HomePage homePage;
+
     public LoginSteps(){
         login = new LoginPage();
     }
@@ -21,7 +21,7 @@ public class LoginSteps {
     @Given("^I log in successfully as \"(.*?)\" with password \"(.*?)\"$")
     public void loginSuccessfully(String userName, String userPassword){
         if(!CommonMethods.isAccountAlreadyLogged()){
-            homePage = login.loginPageSuccessfully(userName, userPassword);
+            login.loginPageSuccessfully(userName, userPassword);
         }
     }
 

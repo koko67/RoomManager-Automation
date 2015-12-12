@@ -1,52 +1,52 @@
 {
     "Environment":[
-    {
-        "id":"RM01",
-        "adminURL":"https://172.20.208.49:4040/admin/",
-        "tabletURL":"https://172.20.208.49:4040/tablet/",
-        "adminLoggedUrl":"https://172.20.208.241:4040/admin/#/admin/",
-        "room manager service":"https://172.20.208.49:4040/",
-        "userAdmin":{
-            "userName":"test",
-            "password":"Client123"
-        },
-        "userExchange":{
-            "userName":"ronald.salvatierra",
-            "password":"Control123"
-        }
+        {
+            "id":"RM01",
+            "adminURL":"https://172.20.208.49:4040/admin/#/login",
+            "tabletURL":"https://172.20.208.49:4040/tablet/#/register",
+            "homeTabletURL":"https://172.20.208.49:4040/tablet/#/home",
+            "room manager service":"https://172.20.208.49:4040/",
+            "userAdmin":{
+                "userName":"test",
+                "password":"Client123"
+            },
+            "userExchange":{
+                "userName":"ronald.salvatierra",
+                "password":"Control123"
+            }
 
-    },
-    {
-        "id":"RM02",
-        "adminURL":"https://172.20.208.120:4040/admin/",
-        "tabletURL":"https://172.20.208.120:4040/tablet/",
-        "adminLoggedUrl":"https://172.20.208.241:4040/admin/#/admin/",
-        "room manager service":"https://172.20.208.120:4040/",
-        "userAdmin":{
-            "userName":"test",
-            "password":"Client123"
         },
-        "userExchange":{
-            "userName":"jose.cardozo",
-            "password":"Control123"
+        {
+            "id":"RM02",
+            "adminURL":"https://172.20.208.120:4040/admin/",
+            "tabletURL":"https://172.20.208.120:4040/tablet/",
+            "adminLoggedUrl":"https://172.20.208.241:4040/admin/#/admin/",
+            "room manager service":"https://172.20.208.120:4040/",
+            "userAdmin":{
+                "userName":"test",
+                "password":"Client123"
+            },
+            "userExchange":{
+                "userName":"jose.cardozo",
+                "password":"Control123"
 
-         }
-    },
-    {
-        "id":"RM03",
-        "adminURL":"https://172.20.208.241:4040/admin/",
-        "tabletURL":"https://172.20.208.241:4040/tablet/",
-        "adminLoggedUrl":"https://172.20.208.241:4040/admin/#/admin/",
-        "room manager service":"https://172.20.208.241:4040/",
-        "userAdmin":{
-            "userName":"test",
-            "password":"Client123"
+             }
         },
-        "userExchange":{
-            "userName":"jose.cardozo",
-            "password":"Control123"
+        {
+            "id":"RM03",
+            "adminURL":"https://172.20.208.241:4040/admin/",
+            "tabletURL":"https://172.20.208.241:4040/tablet/",
+            "adminLoggedUrl":"https://172.20.208.241:4040/admin/#/admin/",
+            "room manager service":"https://172.20.208.241:4040/",
+            "userAdmin":{
+                "userName":"test",
+                "password":"Client123"
+            },
+            "userExchange":{
+                "userName":"jose.cardozo",
+                "password":"Control123"
 
-        }
+            }
         }
     ]
 }

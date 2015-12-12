@@ -1,10 +1,9 @@
 package mongodb;
 
 import com.mongodb.*;
+import commons.DomainAppConstants;
 import org.apache.log4j.Logger;
-
 import java.net.UnknownHostException;
-
 
 /**
  * User: Ronald Butron
@@ -13,10 +12,9 @@ import java.net.UnknownHostException;
 public class DataBaseDriver {
 
     private Logger log = Logger.getLogger("DataBaseDriver");
-    MongoClient mongoClient;
-    DB db;
-    DBCollection collection;
-
+    private MongoClient mongoClient;
+    private DB db;
+    private DBCollection collection;
 
     /**
      * This method connect remote to a mongo data base
@@ -26,7 +24,7 @@ public class DataBaseDriver {
        try{
           log.info("Connecting to the mongo DB");
           mongoClient = new MongoClient(IPNumber, 27017);
-          db = mongoClient.getDB("roommanager");
+          db = mongoClient.getDB(DomainAppConstants.DB_SERVER_NAME);
        } catch (UnknownHostException e){
           log.error("Unknown Host Exception" + e);
        }

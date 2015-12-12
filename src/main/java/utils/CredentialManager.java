@@ -1,5 +1,7 @@
 package utils;
 
+import commons.DomainAppConstants;
+
 /**
  * User: Ronald Butron
  * Date: 12/8/15
@@ -16,6 +18,7 @@ public class CredentialManager {
     private String userExchange;
     private String passwordExchange;
     private String adminLoggedUrl;
+    private String hometabletURL;
     private JSONReader envReader;
 
     protected CredentialManager(){
@@ -32,7 +35,7 @@ public class CredentialManager {
     private void init() {
         String environmentId = System.getProperty("envId");
         if (environmentId == null || environmentId.isEmpty()){
-            envId = "RM01";
+            envId = DomainAppConstants.DEFECT_ID;
         } else {
             envId = environmentId;
         }
@@ -42,7 +45,10 @@ public class CredentialManager {
         adminURL = envReader.getKeyValue("Environment", "id", envId, "adminURL");
         tabletURL = envReader.getKeyValue("Environment", "id", envId, "tabletURL");
         roomManagerService = envReader.getKeyValue("Environment", "id", envId, "room manager service");
+
         adminLoggedUrl = envReader.getKeyValue("Environment", "id", envId, "adminLoggedUrl");
+        hometabletURL = envReader.getKeyValue("Environment", "id", envId, "homeTabletURL");
+
         //Environment users information
         userNameAdmin = envReader.getKeyValue("Environment", "id", envId, "userAdmin", "userName");
         passwordAdmin = envReader.getKeyValue("Environment", "id", envId, "userAdmin", "password");
@@ -72,6 +78,14 @@ public class CredentialManager {
      */
     public String getRoomManagerService(){
         return roomManagerService;
+    }
+
+    /**
+     * This method return the Home tablet URL
+     * @return the home tablet URL
+     */
+    public String getHometabletURL(){
+        return  hometabletURL;
     }
 
     /**
