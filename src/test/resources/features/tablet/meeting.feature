@@ -4,11 +4,11 @@ Feature: Meetings
     Given I'm sign in with the user "test" in the login page selecting the Room "Floor1-Room11"
 
 
-
+  @RemoveMeeting
   Scenario Outline: : Create a meeting
     Given I navigate to Available section
    When I create a meeting with the following information: "<Organizer>", "<Subject>", "<From>", "<To>", "<Attendees>", "<Body>"
-    Then an information message should be displayed
+   Then an information message should be displayed "Meeting successfully created"
       And the meeting should be displayed in the Schedule bar
       And the meeting information should be displayed in the Next section of Main page
       And the meeting should be listed in the meetings of Room using the API
@@ -19,9 +19,9 @@ Feature: Meetings
 
   Scenario: Remove a meeting
     Given I navigate to Available section
-      And I create a meeting with the following information: "fblajbf", "kdf", "8:00", "9:00", "jidflg", "jdslf"
+      And I create a meeting with the following information: "Ronald", "meeting", "08:00", "09:00", "jose.cardozo", "Close the door on time"
     When I remove the meeting
-    Then an information message should be displayed
+    Then an information message should be displayed "Meeting successfully removed"
       And the meeting should be removed from the the Schedule bar
       And the meeting information should be removed from the Next section of Main page
       And the meeting should be listed in the meetings of Room using the API
