@@ -3,12 +3,16 @@ package api;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
 import org.json.JSONObject;
+import utils.CredentialManager;
+
 import static com.jayway.restassured.RestAssured.given;
 
 /**
  * Created by jorgeavila on 12/12/2015.
  */
 public class TokenAPI {
+
+    private final static String LOGIN_SERVICE = "login";
 
     /**
      * Gets the token for a user account
@@ -18,7 +22,7 @@ public class TokenAPI {
      * @return the token for the user account
      */
     public static String getToken(String userName, String password, String authentication){
-        RestAssured.baseURI = "https://172.20.208.241:4040/login";
+        RestAssured.baseURI = CredentialManager.getInstance().getRoomManagerService() + LOGIN_SERVICE;
         RestAssured.useRelaxedHTTPSValidation();
 
         JSONObject request = new JSONObject();

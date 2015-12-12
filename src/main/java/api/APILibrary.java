@@ -3,6 +3,7 @@ package api;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
 import org.json.JSONObject;
+import utils.CredentialManager;
 
 import static com.jayway.restassured.RestAssured.*;
 /**
@@ -18,7 +19,7 @@ public class APILibrary {
 
 
     public APILibrary() {
-        RestAssured.baseURI = "https://172.20.208.241:4040";
+        RestAssured.baseURI = CredentialManager.getInstance().getRoomManagerService();
         RestAssured.useRelaxedHTTPSValidation();
     }
 
