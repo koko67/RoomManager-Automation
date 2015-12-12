@@ -37,8 +37,7 @@ public class CommonMethods {
      * @return tru if the current URL is the Home Page
      */
     public static boolean isAccountAlreadyLogged(){
-        String loggedUrl = CredentialManager.getInstance().getAdminLoggedUrl();
-        return driver.getCurrentUrl().contains(loggedUrl);
+        return driver.getCurrentUrl().contains("/admin/#/admin/");
     }
 
     /**
@@ -54,10 +53,10 @@ public class CommonMethods {
      * This method verify if the current URL is in the Home Page of the Tablet
      * @return true if the current URL is in the home page of the tablet version
      */
-//    public static Boolean isItInTheHomePageTablet(){
-//        String HomeTabletURL = CredentialManager.getInstance().getHometabletURL();
-//        return driver.getCurrentUrl().equalsIgnoreCase(HomeTabletURL);
-//    }
+    public static Boolean isItInTheHomePageTablet(){
+        String HomeTabletURL = CredentialManager.getInstance().getHometabletURL();
+        return driver.getCurrentUrl().equalsIgnoreCase(HomeTabletURL);
+    }
 
     /**
      * High light elements

@@ -64,17 +64,6 @@ public class ConferenceRoomSteps {
         conferenceRoom.setCode(roomCode);
         conferenceRoom.setCapacity(roomCapacity);
         roomInfoPage.fillForm(conferenceRoom);
-
-        dataBaseDriver.createConnectionToDB("172.20.208.241:27017");
-        DBObject location = dataBaseDriver.getADBObjectFromACollection("rooms", "customDisplayName", displayName);
-
-        System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGG" + location.get("_id"));
-        String endpoint = EndPoints.LOCATION_BY_ID.replace("#id#", location.get("_id").toString());
-        JSONObject response = apiLibrary.getById(endpoint);
-
-        Assert.assertEquals(conferenceRoom.getCustomDisplayName(), response.get("customDisplayName"));
-        Assert.assertEquals(conferenceRoom.getCode(), response.get("code"));
-        Assert.assertEquals(conferenceRoom.getCapacity(), response.get("capacity"));
     }
 
     @Then("^the info edited should be obtained by API request for the Room \"(.*?)\"$")
