@@ -5,7 +5,7 @@ package entities;
  * Date: 12/11/15
  */
 public class Meeting {
-
+    private String deleteSubject;
     private String subject;
     private String attendees;
     private String hourFrom;
@@ -13,28 +13,8 @@ public class Meeting {
     private String organizer;
     private String body;
 
-    public void setSubject(String subject){
-        this.subject = subject;
-    }
-
-    public void setAttendees(String attendees){
-        this.attendees = attendees;
-    }
-
-    public void setHourFrom(String hourFrom){
-        this.hourFrom = hourFrom;
-    }
-
-    public void setHourTo(String hourTo){
-        this.hourTo = hourTo;
-    }
-
-    public void setOrganizer(String organizer){
-        this.organizer = organizer;
-    }
-
-    public void setBody(String body){
-        this.body = body;
+    public void setDeleteSubject(String subject){
+        this.deleteSubject = subject;
     }
 
     public String getSubject(){
@@ -59,6 +39,10 @@ public class Meeting {
 
     public String getBody(){
         return  body;
+    }
+
+    public String getDeleteSubject(){
+        return deleteSubject;
     }
 
     public void setAllForm(String organizer, String subject, String hourFrom, String hourTo, String attendees, String body){
