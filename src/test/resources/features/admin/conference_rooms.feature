@@ -7,9 +7,9 @@ Feature: Conference Rooms
     Given I log in successfully as "test" with password "Client123"
 
   Scenario: Assign a room to a locations from the Conference Room
-    Given I open the Room "Room Name" from the Conference Room
-    When I assign the Room "Room Name" to the Location "Location Name"
-    Then the Room "Room Name" is associated to the Location "Location Name" in the Locations page
+    Given I open the Room "Floor1-Room10" from the Conference Room
+    When I assign the current Room to the Location "fundacion-jala"
+    Then the Room "Floor1-Room10" is associated to the Location "fundacion-jala" in the Locations page
       And the Location "Custom Name" should be obtained by API request for the Room "Room Name"
 
   Scenario Outline: edit room info

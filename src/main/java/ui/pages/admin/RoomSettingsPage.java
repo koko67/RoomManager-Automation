@@ -82,13 +82,19 @@ public class RoomSettingsPage extends BasePageObject {
         return locationComboBox.getText().contains(location.getName());
     }
 
+    public RoomSettingsPage expandDefaultLocation(){
+        WebElement defaultLocation = locationsDropDownButton.findElement(By.xpath("//ancestor::form//treeview//div[@class='treeview-toggle']/span"));
+        defaultLocation.click();
+        return this;
+    }
+
     public RoomSettingsPage expandLocations() {
         locationsDropDownButton.click();
         return this;
     }
 
     public RoomSettingsPage selectLocationByName(String locationName){
-        WebElement location = locationsDropDownButton.findElement(By.xpath("//ancestor::form//treeview//div[.//b[contains(.,'" + locationName + "')] and @class='treeview-selectable']/"));
+        WebElement location = locationsDropDownButton.findElement(By.xpath("//ancestor::form//treeview//div[.//b[contains(.,'" + locationName + "')] and @class='treeview-selectable']"));
         location.click();
         return this;
     }
