@@ -15,14 +15,14 @@ import ui.pages.tablet.*;
  * User: Ronald Butron
  * Date: 12/10/15
  */
-public class meetingSteps {
+public class MeetingSteps {
 
     LoginPageTablet loginTabletPage;
     HomePageTablet homePageTablet;
     StatusPageTablet statusPageTablet;
     SchedulePageTablet schedulePageTablet;
     Meeting meeting;
-    public meetingSteps(){
+    public MeetingSteps(){
          meeting = new Meeting();
     }
 
