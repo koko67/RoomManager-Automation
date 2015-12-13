@@ -74,12 +74,31 @@ public class ConferenceRoomsPage extends BasePageObject{
 
 
     public boolean isTheSameQuantityOfResources(Resource resource, ConferenceRoom conferenceRoom) {
-        By iconResourceLocator = By.xpath("//div[.//span[contains(.,'" + conferenceRoom.getCustomDisplayName() + "')] and @class='ng-scope ngRow odd']//div[contains(@class,'animate-if')]/span/following::span");
+        By quantityResourceLocator = By.xpath("//div[.//span[contains(.,'" + conferenceRoom.getCustomDisplayName() + "')] and @class='ng-scope ngRow odd']//div[contains(@class,'animate-if')]/span/following::span");
         try {
-            WebElement iconResources = driver.findElement(iconResourceLocator);
+            WebElement iconResources = driver.findElement(quantityResourceLocator);
             return iconResources.getText().contains(resource.getQuantity());
         }catch (NoSuchElementException e){
             System.out.println("Resource not found");
+            return false;
+        }
+    }
+
+    public boolean isRoomEnable(ConferenceRoom conferenceRoom) {
+        By roomEnableButtonLocator = By.xpath("//span[contains(.,'Floor1-Room11')]/../../../preceding-sibling::div[contains(@class,'centeredColumn')]//span[contains(@class,'gray')]");
+        String colorButton = null;
+        try {
+            WebElement roomEnableButton = driver.findElement(roomEnableButtonLocator);
+            if (conferenceRoom.isEnabled()){
+                colorButton = "green";
+                System.out.println(colorButton);
+            }else{
+                colorButton = "gray";
+                System.out.println(colorButton);
+            }
+            return roomEnableButton.getAttribute("class").contains(colorButton);
+        }catch (NoSuchElementException e){
+            System.out.println("Element not found");
             return false;
         }
     }

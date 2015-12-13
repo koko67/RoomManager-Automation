@@ -25,13 +25,11 @@ Feature: Conference Rooms
     Then an error message "To field must be greater than From field Cannot establish out of order as an past event" should be displayed in the form
     And the room reserve should not be stored
 
-  Scenario: Schedule icon is added in the conference room
-    Given I Open the Room "Room Name" from the Conference Room
-    And I select the "Out Of Order Planning" Tab
-    When I assign a date "20" seconds late from now in the "From" field
-    And I assign a date "40" seconds late from now in the "To" field
-    Then a schedule icon should be displayed for the conference room
-    And the info edited should be obtained by API request for the Room "Room Name"
+  Scenario: Disable the room at pressing the button enable/disable
+    Given I open the Room "Floor1-Room11" from the Conference Room
+    When I pressing the disable button
+    Then The current Room should be disable
+      And the request to information of room on API should be obtained the enable field equal to false
 
   Scenario: Associate a resource to a conference room
     Given I have created a resource with name "Computer", customName "Computer2"

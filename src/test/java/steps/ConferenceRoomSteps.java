@@ -11,6 +11,7 @@ import ui.pages.admin.ConferenceRoomsPage;
 import ui.pages.admin.ResourceAssociatePage;
 import ui.pages.admin.RoomSettingsPage;
 import ui.pages.admin.HomePage;
+import utils.LeftBarOptions;
 
 /**
  * Author: JorgeAvila
@@ -39,7 +40,7 @@ public class ConferenceRoomSteps {
         conferenceRoomsPage = homePage.getLeftMenuPanel()
                                       .clickOnConferenceRooms("Conference Rooms");
 
-        roomInfoPage = conferenceRoomsPage.openConferenceRoomSettings(roomName);
+        roomInfoPage = conferenceRoomsPage.openConferenceRoomSettings(conferenceRoom.getCustomDisplayName());
     }
 
     @When("^I assign the Room \"(.*?)\" to the Location \"(.*?)\"$")
@@ -66,7 +67,6 @@ public class ConferenceRoomSteps {
     }
     @Given("^I have created a resource with name \"(.*?)\", customName \"(.*?)\"$")
     public void createResource(String resourceName, String resourceDisplayName){
-        System.out.println("the element created was: should be create since API " + resourceName);
         resource.setName(resourceName);
         resource.setCustomName(resourceDisplayName);
         resource.setFontIcon("fa fa-desktop");
@@ -99,5 +99,19 @@ public class ConferenceRoomSteps {
         Assert.assertTrue("The resource icon is the same that it's assigned ",verificationIcon);
         Assert.assertTrue("The quantity is the same that was assigned", verificationQuantity);
     }
+    @When("^I pressing the disable button$")
+    public void disableRoom(){
+        conferenceRoom.setEnabled(false);
+        conferenceRoomsPage = roomInfoPage.clickOnPowerOffRoomButton(conferenceRoom);
+        homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.LOCATIONS.getToPage());
+        homePage.getLeftMenuPanel().clickOnConferenceRooms(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
+    }
+    @Then("^The current Room should be disable$")
+    public void verifyRoomDisable(){
+        Assert.assertTrue("The room was disable correctly", conferenceRoomsPage.isRoomEnable(conferenceRoom));
+    }
+    @And("^the request to information of room on API should be obtained the enable field equal to false$")
+    public void verifyRoomIsDisableByAPI(){
 
+    }
 }
