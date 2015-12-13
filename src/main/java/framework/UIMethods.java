@@ -42,12 +42,12 @@ public class UIMethods {
      * @return true or false
      */
     public static boolean waitElementIsNotPresent(int maxCount, By element){
-        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
         boolean result = true;
         int count = 1;
         try {
             while (result && count <= maxCount){
-                Thread.sleep(50);
+                Thread.sleep(200);
                 result = isElementPresent(element);
                 System.out.println("Element not present======="+ result);
                 count++;
