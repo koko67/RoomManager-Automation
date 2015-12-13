@@ -51,14 +51,23 @@ public class meetingSteps {
     @When("^I create successfully a meeting with the following information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
     public void createAMeeting(String organizer, String subject, String from, String to, String attendees, String body){
         meeting.setAllForm(organizer, subject, from, to, attendees, body);
+        meeting.setDeleteSubject(subject);
         schedulePageTablet.createSuccessfullyAMeeting(meeting);
-        schedulePageTablet.fillExchangeCredentialsForm();
+        schedulePageTablet.fillSuccessfullyExchangeCredentialsForm();
     }
 
     @When("^I create unsuccessfully a meeting with the following information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
     public void createUnsuccessfullyAMeeting(String organizer, String subject, String from, String to, String attendees, String body){
         meeting.setAllForm(organizer, subject, from, to, attendees, body);
         schedulePageTablet.createUnsuccessfullyAMeeting(meeting);
+    }
+
+    @When("^I create a meeting at the same time than other with the following information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
+    public void createMeetingAtTheSameTimeThanOther(String organizer, String subject, String from, String to, String attendees, String body){
+        meeting.setAllForm(organizer, subject, from, to, attendees, body);
+        schedulePageTablet.createSuccessfullyAMeeting(meeting);
+        schedulePageTablet.fillUnsuccessfullyExchangeCredentialsForm();
+        schedulePageTablet.cancelExchangeCredentials();
     }
 
     @Then("^an information message should be displayed \"(.*?)\"$")
@@ -83,8 +92,6 @@ public class meetingSteps {
             schedulePageTablet = homePageTablet.goToSchedulePage();
         }
         schedulePageTablet.removeMeeting(meeting);
-        schedulePageTablet.fillTheExchangePasswordMeeting();
-
     }
 
     @And("^the meeting should not be displayed in the Schedule bar$")
@@ -103,19 +110,12 @@ public class meetingSteps {
         Assert.assertTrue(schedulePageTablet.isDisplayedErrorMessage(errorMessage));
     }
 
-    @Then("^an information error message should be displayed in Credentials Page$")
-    public void isTheErrorMessageDisplayedIn(){
-        schedulePageTablet.cancelExchangeCredentials();
-        Assert.assertTrue(schedulePageTablet.isTheErrorMessageDisplayed());
-    }
-
     @When("^I update the meeting information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
     public void updateMeetingInformation(String subject, String from, String to, String body){
         schedulePageTablet.selectMeeting(meeting.getSubject());
         meeting.setUpdateForm(subject, from, to, body);
         schedulePageTablet.updateMeeting(meeting);
     }
-
 
     @After(value = "@RemoveMeeting")
     public void removeMT(){

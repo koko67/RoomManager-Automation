@@ -3,7 +3,6 @@ Feature: Meetings
   Background:
     Given I'm sign in with the user "test" in the login page selecting the Room "Floor1-Room11"
 
-
   @RemoveMeeting
   Scenario Outline: : Create a meeting
     Given I navigate to Available section
@@ -22,10 +21,9 @@ Feature: Meetings
       And I create successfully a meeting with the following information: "Ronald", "meeting", "08:00", "09:00", "jose.cardozo", "Close the door on time"
     When I remove the meeting
     Then an information message should be displayed "Meeting successfully removed"
-    And the meeting should not be displayed in the Schedule bar
-    And the meeting information should not be displayed in the Next section of Main page
-      And the meeting should be listed in the meetings of Room using the API
-
+      And the meeting should not be displayed in the Schedule bar
+      And the meeting information should not be displayed in the Next section of Main page
+     And the meeting should be listed in the meetings of Room using the API
 
   Scenario Outline: Try to create a meeting with missing information
     Given I navigate to Available section
@@ -44,20 +42,21 @@ Feature: Meetings
   @RemoveMeeting
   Scenario: Update a meeting
     Given I navigate to Available section
-    And I create successfully a meeting with the following information: "Ronald", "Planning", "08:00", "09:00", "ronald.salvatierra ", "Close the Door 08:05"
+      And I create successfully a meeting with the following information: "Ronald", "Planning", "08:00", "09:00", "ronald.salvatierra ", "Close the Door 08:05"
     When I update the meeting information: "Planning Change Hour", "11:00", "11:30", "Close the Door 11:05"
     Then an information message should be displayed "Meeting successfully updated"
-    And the meeting should be displayed in the Schedule bar
-    And the meeting information should be displayed in the Next section of Main page
-    And the meeting should be listed in the meetings of Room using the API
+      And the meeting should be displayed in the Schedule bar
+      And the meeting information should be displayed in the Next section of Main page
+      And the meeting should be listed in the meetings of Room using the API
 
+  @RemoveMeeting
   Scenario: Try to create a meeting at the same time than other meeting
     Given I navigate to Available section
-    And I create successfully a meeting with the following information: "Ronald", "Planning", "08:00", "09:00", "ronald.salvatierra ", "Close the Door 08:05"
-    When I create a meeting with the following information: "Jose", "Planning Meeting", "08:00", "09:00", "jose.cardozo", "Bring a pencil and paper"
-    Then an information error message should be displayed in Credentials Page
-    And the meeting should not be displayed in the Schedule bar
-    And the meeting information should not be displayed in the Next section of Main page
+      And I create successfully a meeting with the following information: "Ronald", "Planning", "08:00", "09:00", "ronald.salvatierra ", "Close the Door 08:05"
+    When I create a meeting at the same time than other with the following information: "Jose", "Demo", "08:00", "09:00", "jose.cardozo", "Bring a Paper and Pencil"
+    Then an information message should be displayed "There is a conflict with another meeting, please choose another time interval"
+      And the meeting should not be displayed in the Schedule bar
+      And the meeting information should not be displayed in the Next section of Main page
       And the meeting should not be listed in the meetings of Room using the API
 
 
