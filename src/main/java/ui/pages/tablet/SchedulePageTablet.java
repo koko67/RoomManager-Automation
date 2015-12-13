@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import ui.BasePageObject;
+import utils.CredentialManager;
 
 /**
  * User: RonaldButron
@@ -39,17 +40,27 @@ public class SchedulePageTablet extends BasePageObject {
     @FindBy(id = "txtBody")
     WebElement bodyInput;
 
-    @FindBy(xpath = "//div[contains(@class, 'select-row']")
-    WebElement selectAttendees;
-
-    @FindBy(id = "_dropdown")
-    WebElement attendeesDropDown;
-
     @FindBy(id = "go-home")
     WebElement goHomeButton;
 
     @FindBy(xpath = "//i[contains(@class, 'fa-trash-o')]")
     WebElement removeButton;
+
+    @FindBy(xpath = "//i[contains(@class,'fa-pencil')]")
+    WebElement updateButton;
+
+    @FindBy(xpath = "//input[@placeholder='username']")
+    WebElement userNameInput ;
+
+    @FindBy(xpath = "//input[@placeholder='password']")
+    WebElement userPasswordInput ;
+
+    @FindBy(xpath = "//button[@ng-click='dialog.ok()']")
+    WebElement okButton;
+
+    @FindBy(xpath = "//button[@ng-click='dialog.modalDismiss()']")
+    WebElement cancelButton;
+
 
     @Override
     public void waitUntilPageObjectIsLoaded() {
@@ -127,7 +138,7 @@ public class SchedulePageTablet extends BasePageObject {
      * @return
      */
     public Boolean isDisplayedTheConfigMessage(String configMessage){
-        return UIMethods.waitElementIsPresent(3, By.xpath("//div[contains(@class, 'ng-binding') and contains(text(), '" + configMessage + "')]"));
+        return UIMethods.waitElementIsPresent(5, By.xpath("//div[contains(@class, 'ng-binding') and contains(text(), '" + configMessage + "')]"));
     }
 
     /**
@@ -135,7 +146,7 @@ public class SchedulePageTablet extends BasePageObject {
      * @param meeting information
      * @return Exchange Credentials page
      */
-    public ExchangeCredentialsPage createSuccessfullyAMeeting(Meeting meeting) {
+    public SchedulePageTablet createSuccessfullyAMeeting(Meeting meeting) {
         setOrganizer(meeting.getOrganizer());
         setSubject(meeting.getSubject());
         setHourFrom(meeting.getHourFrom());
@@ -143,7 +154,23 @@ public class SchedulePageTablet extends BasePageObject {
         setAttendees(meeting.getAttendees());
         setBodyInput(meeting.getBody());
         createMetting();
-        return  new ExchangeCredentialsPage();
+        return  this;
+    }
+
+    /**
+     * This method try to create a meeting
+     * @param meeting object needed to obtain the information
+     * @return the same page
+     */
+    public SchedulePageTablet createUnsuccessfullyAMeeting(Meeting meeting) {
+        setOrganizer(meeting.getOrganizer());
+        setSubject(meeting.getSubject());
+        setHourFrom(meeting.getHourFrom());
+        setHourTo(meeting.getHourTo());
+        setAttendees(meeting.getAttendees());
+        setBodyInput(meeting.getBody());
+        createMetting();
+        return this;
     }
 
     /**
@@ -165,15 +192,14 @@ public class SchedulePageTablet extends BasePageObject {
     }
 
     /**
-     *
-     * @param meeting
-     * @return
+     * This method remove a meeting
+     * @param meeting entity need to obtain the subject to delete
      */
-    public ExchangeCredentialsPage removeMeeting(Meeting meeting) {
-        selectMeeting(meeting.getSubject());
+    public void removeMeeting(Meeting meeting) {
+        selectMeeting(meeting.getDeleteSubject());
         selectRemove();
-        return  new ExchangeCredentialsPage();
-
+        fillTheExchangePasswordMeeting();
+        UIMethods.waitElementIsNotPresent(8, By.xpath("//div[contains(@class, 'ng-binding') and contains(., '" + DomainAppConstants.MEETING_SUCCESFULLY_REMOVED + "')]"));
     }
 
     /**
@@ -187,7 +213,7 @@ public class SchedulePageTablet extends BasePageObject {
      * Select a specific meeting
      * @param subject name of the meeting
      */
-    private void selectMeeting(String subject) {
+    public void selectMeeting(String subject) {
          WebElement selectMeeting = driver.findElement(By.xpath(buildPathToFindAMeeting(subject)));
          selectMeeting.click();
     }
@@ -203,10 +229,103 @@ public class SchedulePageTablet extends BasePageObject {
 
     /**
      * Verify is the meeting is not displayed in the schedule bar
-     * @param meeting
+     * @param meeting the entity meeting
      * @return true or false
      */
     public boolean isNotTheMeetingDisplayedInTheScheduleBar(Meeting meeting) {
-        return UIMethods.waitElementIsNotPresent(3, By.xpath(buildPathToFindAMeeting(meeting.getSubject())));
+        return UIMethods.waitElementIsNotPresent(5, By.xpath(buildPathToFindAMeeting(meeting.getSubject())));
+    }
+
+    /**
+     * This method verify if the error message has been displayed
+     * @param errorMessage name of the error message
+     * @return true or false
+     */
+    public Boolean isDisplayedErrorMessage(String errorMessage) {
+        return UIMethods.waitElementIsPresent(5, By.xpath("//small[@class='text-warnings' and contains(., '" + errorMessage + "')]"));
+    }
+
+    /**
+     *  Insert the Exchange user name
+     */
+    public void setExchangeUserName(){
+        userNameInput.clear();
+        userNameInput.sendKeys(CredentialManager.getInstance().getUserExchange());
+    }
+
+    /**
+     *  Insert the Exchange Password
+     */
+    public void setExchangeUserPassword(){
+        userPasswordInput.clear();
+        userPasswordInput.sendKeys(CredentialManager.getInstance().getPasswordExchange());
+    }
+
+    /**
+     * Click over the button Ok
+    */
+    public void saveExchangeCredentials(){
+        okButton.click();
+    }
+
+    /**
+     * This method cancel the fill of the credentials form
+     * @return a new Schedule Page
+     */
+    public SchedulePageTablet cancelExchangeCredentials(){
+        cancelButton.click();
+        return this;
+    }
+
+    /**
+     * This method fill the Credentials Exchange form
+     * @return return a Schedule page
+     */
+    public SchedulePageTablet fillSuccessfullyExchangeCredentialsForm() {
+        driverWait.until(ExpectedConditions.visibilityOf(okButton));
+        setExchangeUserName();
+        setExchangeUserPassword();
+        saveExchangeCredentials();
+        UIMethods.waitElementIsNotPresent(8, By.xpath("//div[contains(@class, 'ng-binding') and contains(., '" + DomainAppConstants.MEETING_SUCCESSFULLY_CREATED + "')]"));
+        return this;
+    }
+
+    /**
+     * This method fill unsuccessfully the Credentials Exchange form
+     * @return return a Schedule page
+     */
+    public SchedulePageTablet fillUnsuccessfullyExchangeCredentialsForm() {
+        driverWait.until(ExpectedConditions.visibilityOf(okButton));
+        setExchangeUserName();
+        setExchangeUserPassword();
+        saveExchangeCredentials();
+        return this;
+    }
+
+    /**
+     * This method fill the Exchange password
+     * @return a new Exchange Credentials Page
+     */
+    public SchedulePageTablet fillTheExchangePasswordMeeting(){
+        setExchangeUserPassword();
+        saveExchangeCredentials();
+        return this;
+    }
+
+    /**
+     * This method update the update the information of a meeting
+     * @param meeting object;
+     */
+    public void updateMeeting(Meeting meeting) {
+        updateButton.click();
+        fillTheExchangePasswordMeeting();
+        setSubject(meeting.getSubject());
+        setHourFrom(meeting.getHourFrom());
+        setHourTo(meeting.getHourTo());
+        setBodyInput(meeting.getBody());
+        updateButton.click();
+        fillTheExchangePasswordMeeting();
+        UIMethods.waitElementIsNotPresent(8, By.xpath("//div[contains(@class, 'ng-binding') and contains(., '" + DomainAppConstants.MEETING_SUCCESSFULLY_UPDATED + "')]"));
+
     }
 }
