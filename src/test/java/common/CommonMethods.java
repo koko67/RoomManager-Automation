@@ -20,7 +20,7 @@ public class CommonMethods {
      * This method verify if is in the main page then Log out
      */
     public static void logOut(){
-        if (!isItInTheLoginPage()){
+        if (!isItInTheLoginPage() && !isItInTheHomePageTablet()){
             new HomePage().getHeader().logOut();
         }
     }
@@ -37,8 +37,8 @@ public class CommonMethods {
      * @return true if the current URL is in the Login Page
      */
     public static Boolean isItInTheLoginPage(){
-        String LoginURL = CredentialManager.getInstance().getAdminURL();
-        return driver.getCurrentUrl().equalsIgnoreCase(LoginURL);
+        String loginURL = CredentialManager.getInstance().getAdminURL();
+        return driver.getCurrentUrl().equalsIgnoreCase(loginURL);
     }
 
     /**
@@ -46,8 +46,8 @@ public class CommonMethods {
      * @return true if the current URL is in the Tablet login page
      */
     public static Boolean isItInTheLoginPageTablet(){
-        String LoginTabletURL = CredentialManager.getInstance().getTabletURL();
-        return driver.getCurrentUrl().equalsIgnoreCase(LoginTabletURL);
+        String loginTabletURL = CredentialManager.getInstance().getTabletURL();
+        return driver.getCurrentUrl().equalsIgnoreCase(loginTabletURL);
     }
 
     /**
@@ -55,8 +55,8 @@ public class CommonMethods {
      * @return true if the current URL is in the home page of the tablet version
      */
     public static Boolean isItInTheHomePageTablet(){
-        String HomeTabletURL = CredentialManager.getInstance().getHometabletURL();
-        return driver.getCurrentUrl().equalsIgnoreCase(HomeTabletURL);
+        String homeTabletURL = CredentialManager.getInstance().getHometabletURL();
+        return driver.getCurrentUrl().equalsIgnoreCase(homeTabletURL);
     }
 
     /**
