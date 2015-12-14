@@ -127,7 +127,7 @@ public class ConferenceRoomSteps {
         conferenceRoomsPage.makeSureResourcesIsSelect(resource);
         boolean verificationIcon = conferenceRoomsPage.isTheResourceCorrect(resource, conferenceRoom);
         boolean verificationQuantity = conferenceRoomsPage.isTheSameQuantityOfResources(resource, conferenceRoom);
-        Assert.assertTrue("The resource icon is the same that it's assigned ",verificationIcon);
+        Assert.assertTrue("The resource icon is the same that it's assigned ", verificationIcon);
         Assert.assertTrue("The quantity is the same that was assigned", verificationQuantity);
     }
     @When("^I pressing the disable button$")

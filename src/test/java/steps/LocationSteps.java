@@ -83,7 +83,9 @@ public class LocationSteps {
     public void isTheRoomDisplayInTheLocation(String roomName){
         conferenceRoomPage = homePage.getLeftMenuPanel().clickOnConferenceRooms(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
         roomInfoPage = conferenceRoomPage.openConferenceRoomSettings(roomName);
-        Assert.assertTrue("the room has assigned to the location", roomInfoPage.isLocationPresent(location));
+        boolean isLocationInRoomInfo = roomInfoPage.isLocationPresent(location);
+        roomInfoPage.clickOnSaveButton();
+        Assert.assertTrue("the room has assigned to the location", isLocationInRoomInfo);
     }
 
     @And("^the Location \"(.*?)\" should be obtained by API request for the Room \"(.*?)\"$")
@@ -109,13 +111,14 @@ public class LocationSteps {
     }
     @Then("^The Room \"(.*?)\" should be displayed in the column of \"(.*?)\"$")
     public void isRoomDisplayedAssocite(String roomName, String state){
-        boolean response = locationAssociationsPage.searchRoomInAvailableColumn(roomName, state);
+        boolean isLocationAvailable = locationAssociationsPage.searchRoomInAvailableColumn(roomName, state);
         locationAssociationsPage.saveLocation();
         conferenceRoomPage = homePage.getLeftMenuPanel().clickOnConferenceRooms(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
         roomInfoPage = conferenceRoomPage.openConferenceRoomSettings(roomName);
-        Assert.assertTrue("The location is displayed in the Available Column", response);
-        Assert.assertTrue("the room has assigned to the location", !roomInfoPage.isLocationPresent(location));
-
+        boolean isLocationInRoomInfo = !roomInfoPage.isLocationPresent(location);
+        roomInfoPage.clickOnSaveButton();
+        Assert.assertTrue("The location is displayed in the Available Column", isLocationAvailable);
+        Assert.assertTrue("the room has assigned to the location", isLocationInRoomInfo);
     }
     @And("^the Location \"(.*?)\" obtained by API request should not contains the Room \"(.*?)\"$")
     public void isContainsRoomInLocation(String customName, String roomName){}
