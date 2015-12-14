@@ -73,7 +73,7 @@ public class ConferenceRoomsPage extends BasePageObject{
      * @return
      */
     public boolean isTheResourceCorrect(Resource resource, ConferenceRoom conferenceRoom) {
-        By iconResourceLocator = By.xpath("//div[.//span[contains(.,'" + conferenceRoom.getCustomDisplayName() + "')] and @class='ng-scope ngRow odd']//div[contains(@class,'animate-if')]/span");
+        By iconResourceLocator = By.xpath("//span[contains(.,'" + conferenceRoom.getCustomDisplayName() + "')]/../../../following-sibling::div[contains(@class,'col3')]//span");
         try {
             WebElement iconResources = driver.findElement(iconResourceLocator);
             return iconResources.getAttribute("class").contains(resource.getFontIcon());
@@ -90,7 +90,7 @@ public class ConferenceRoomsPage extends BasePageObject{
      * @return
      */
     public boolean isTheSameQuantityOfResources(Resource resource, ConferenceRoom conferenceRoom) {
-        By quantityResourceLocator = By.xpath("//div[.//span[contains(.,'" + conferenceRoom.getCustomDisplayName() + "')] and @class='ng-scope ngRow odd']//div[contains(@class,'animate-if')]/span/following::span");
+        By quantityResourceLocator = By.xpath("//span[contains(.,'" + conferenceRoom.getCustomDisplayName() + "')]/../../../following-sibling::div[contains(@class,'col3')]//span/following::span");
         try {
             WebElement iconResources = driver.findElement(quantityResourceLocator);
             return iconResources.getText().contains(resource.getQuantity());
