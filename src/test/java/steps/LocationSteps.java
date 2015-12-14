@@ -6,6 +6,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import entities.ConferenceRoom;
 import entities.Location;
+import framework.UIMethods;
 import org.junit.Assert;
 import ui.pages.admin.ConferenceRoomsPage;
 import ui.pages.admin.LocationSettingsPage;
@@ -48,18 +49,7 @@ public class LocationSteps {
         location.setDisplayName(displayName);
         locationInfoPage = locationPage.clickAddLocation();
         locationInfoPage.fillFormSuccessfully(location);
-
-    }
-    /***
-     * the method is for workaround for the missing the update feature
-     * this step should be removed when the update feature were implement
-     */
-    @And("^I refresh the page and come back \"(.*?)\"$")
-    public void workAround(String namePage){
-
-        homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.EMAIL_SERVER.getToPage());
-        homePage.getLeftMenuPanel().clickOnLocationPage(namePage);
-
+        UIMethods.switchPages(LeftBarOptions.LOCATIONS.getToPage());
     }
     @Then("^the Location  should be displayed in the Location page$")
     public void isTheLocationDisplayedInTheLocationPage(){
@@ -79,8 +69,7 @@ public class LocationSteps {
         locationPage
                 .clickAddLocation()
                 .fillFormSuccessfully(location);
-        homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.EMAIL_SERVER.getToPage());
-        homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.LOCATIONS.getToPage());
+        UIMethods.switchPages(LeftBarOptions.LOCATIONS.getToPage());
         locationInfoPage = locationPage.clickEditLocation(location);
     }
 
@@ -106,16 +95,8 @@ public class LocationSteps {
         locationPage = homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.LOCATIONS.getToPage());
         location.setName(customName);
         location.setDisplayName(displayName);
-//        locationPage
-//                .clickAddLocation()
-//                .fillFormSuccessfully(location);
-//        homePage.getLeftMenuPanel().clickOnEmailServerPage("Email Servers");
-//        homePage.getLeftMenuPanel().clickOnLocationPage("Locations");
-//        locationInfoPage = locationPage.clickEditLocation(location);
         conferenceRoom.setDisplayName(roomName);
         conferenceRoom.setLocation(location);
-//        locationAssociationsPage = locationInfoPage.goLocationAssociationTab();
-//        locationPage = locationAssociationsPage.clickOnRoomAssociateToLocation(conferenceRoom.getDisplayName()).saveLocation();
     }
     @And("^I open the Location and I select the Locations Associations tab$")
     public void openLocation(){
