@@ -4,7 +4,9 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import ui.pages.admin.HomePage;
 import utils.ConfigFileReader;
+import utils.LeftBarOptions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,6 +19,8 @@ public class UIMethods {
 
     public static WebDriver driver =  DriverManager.getInstance().getWebDriver();
     private static Logger log = Logger.getLogger("UIMethods");
+
+
     public UIMethods(){
 
     }
@@ -74,5 +78,24 @@ public class UIMethods {
             count++;
         }
         return result;
+    }
+
+    /**
+     * This method for changes the pages, how workaround for missing update feature
+     * @param page receive the page when have to come back
+     */
+    public static void switchPages(String page) {
+        HomePage homePage = new HomePage();
+        if (page.equals("Email Servers")){
+            homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.IMPERSONATION.getToPage());
+            homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.EMAIL_SERVER.getToPage());
+        }else if (page.equals("Conference Rooms")){
+            homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.IMPERSONATION.getToPage());
+            homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
+        }else if (page.equals("Locations")){
+            homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.IMPERSONATION.getToPage());
+            homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.LOCATIONS.getToPage());
+        }
+
     }
 }

@@ -21,27 +21,25 @@ Feature: Conference Rooms
     | Floor1-Room10  | Floor1-Room001 | MyCode | 50       |
     | Floor1-Room001 | Floor1-Room10  | MyCode | 50       |
 
-  Scenario: Out of order wrong in a Conference Room
-    Given I open the Room "Room Name" from the Conference Room
-      And I select the "Out Of Order Planning" Tab
-    When I set a date "12/12/12" from today in the "From" field
-      And I set a date "12/12/12" from today in the "To" field
-    Then an error message "To field must be greater than From field Cannot establish out of order as an past event" should be displayed in the form
-      And the room reserve should not be stored
+#  Scenario: Out of order wrong in a Conference Room
+#    Given I open the Room "Room Name" from the Conference Room
+#      And I select the "Out Of Order Planning" Tab
+#    When I set a date "12/12/12" from today in the "From" field
+#      And I set a date "12/12/12" from today in the "To" field
+#    Then an error message "To field must be greater than From field Cannot establish out of order as an past event" should be displayed in the form
+#      And the room reserve should not be stored
 
-  Scenario: Schedule icon is added in the conference room
-    Given I Open the Room "Room Name" from the Conference Room
-      And I select the "Out Of Order Planning" Tab
-    When I assign a date "20" seconds late from now in the "From" field
-      And I assign a date "40" seconds late from now in the "To" field
-    Then a schedule icon should be displayed for the conference room
-      And the info edited should be obtained by API request for the Room "Room Name"
+  Scenario: Disable a room pressing the button enable/disable
+    Given I open the Room "Floor1-Room11" from the Conference Room
+    When I pressing the disable button
+    Then The current Room should be disable
+      And the information updated in the room should be obtained by API
 
   Scenario: Associate a resource to a conference room
-    Given I have created a resource with name "Computer"
-      And I go to the "Conference Room" page
-      And I select the resource "Computer" button in the header page
-    When I open the Room "Room Name" from the Conference Room
-      And I select the "Resource Association" Tab
-      And I add "1" Resource "Computer" to the Room
+    Given I have created a resource with name "Computer", customName "Computer2"
+      And I go to "Conference Room" page
+      And I select the resource button in the header page
+    When I open the Room "Floor1-Room1" from the Conference Room
+      And I select the Resource Association Tab
+      And I add "2" Resource to the Room
     Then the resource and quantity should be displayed for the room in the list

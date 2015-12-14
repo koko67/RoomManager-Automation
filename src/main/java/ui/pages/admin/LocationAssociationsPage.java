@@ -2,6 +2,8 @@ package ui.pages.admin;
 
 import commons.FrameworkUtils;
 import entities.ConferenceRoom;
+
+import framework.UIMethods;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -39,27 +41,42 @@ public class LocationAssociationsPage extends BasePageObject{
      *                 of location.
      * @return call of the method that realize click on button.
      */
-    public LocationPage clickOnRoomAssociateToLocation(String roomName) {
-        By addRoomLocator = By.xpath("//div[contains(text(),'"+ roomName +"')]/following-sibling::div/button");
+    public LocationAssociationsPage clickOnRoomAssociateToLocation(String roomName) {
+        By addRoomLocator = By.xpath("//h4[contains(text(),'Available')]/..//div[contains(text(),'" + roomName + "')]/following-sibling::div/button");
         return associateRoom(addRoomLocator);
     }
-    public void saveLocation() {
+
+    /**
+     * this method confirm the room associated to location
+     * @return the location page
+     */
+    public LocationPage saveLocation() {
         saveButton.click();
+        By messageLocationAddedLocator = By.xpath("//div[@class='ng-binding ng-scope' and contains(text(),'Location successfully added')]");
+        WebElement messageLocationAdded = driver.findElement(messageLocationAddedLocator);
+        driverWait.until(ExpectedConditions.visibilityOf(messageLocationAdded));
+        return new LocationPage();
     }
 
     /**
      * method that associate or di-associate a room
      * @param addRoomLocator receive a locator of room to associate or disassociate
-     * @return the location page.
+     * @return the location Associate page.
      */
-    public LocationPage associateRoom(By addRoomLocator) {
-        By messageLocationAddedLocator = By.xpath("//div[@class='ng-binding ng-scope' and contains(text(),'Location successfully added')]");
+    public LocationAssociationsPage associateRoom(By addRoomLocator) {
         WebElement iconAssociateRoom = driver.findElement(addRoomLocator);
         iconAssociateRoom.click();
-        saveLocation();
-        WebElement messageLocationAdded = driver.findElement(messageLocationAddedLocator);
-        driverWait.until(ExpectedConditions.visibilityOf(messageLocationAdded));
-        return new LocationPage();
+        return new LocationAssociationsPage();
+    }
+
+    public LocationAssociationsPage clickOnRoomDisassociateLocation(String roomName) {
+        By addRoomLocator = By.xpath("//h4[contains(text(),'Associated')]/..//div[contains(text(),'" + roomName + "')]/following-sibling::div/button");
+        return associateRoom(addRoomLocator);
+    }
+
+    public boolean searchRoomInAvailableColumn(String roomName, String state) {
+        By roomLocator = By.xpath("//h4[contains(text(),'" + state + "')]/..//div[contains(text(),'" + roomName + "')]/following-sibling::div/button");
+        return UIMethods.isElementPresent(roomLocator);
     }
 
     /**

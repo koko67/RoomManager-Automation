@@ -11,6 +11,7 @@ public class Resource {
     private String fontIcon;
     private String from;
     private String description;
+    private String quantity;
 
     public String getId() {
         return id;
@@ -58,5 +59,11 @@ public class Resource {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getQuantity(){
+        return quantity;
+    }
+    public void setQuantity(String quantity){
+        this.quantity = quantity;
     }
 }

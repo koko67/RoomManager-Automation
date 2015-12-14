@@ -32,6 +32,11 @@ public class RoomSettingsPage extends BasePageObject {
     @FindBy(xpath = "//form/div//span/button/i")
     WebElement locationsDropDownButton;
 
+    @FindBy(xpath = "//a[contains(text(),'Resource Associations')]")
+    WebElement resourceAssociateTab;
+
+    WebElement powerOffRoomButton;
+
     public RoomSettingsPage(){
         PageFactory.initElements(driver, this);
         waitUntilPageObjectIsLoaded();
@@ -93,9 +98,24 @@ public class RoomSettingsPage extends BasePageObject {
         return this;
     }
 
-    public RoomSettingsPage selectLocationByName(String locationName){
+    public RoomSettingsPage selectLocationByName(String locationName) {
         WebElement location = locationsDropDownButton.findElement(By.xpath("//ancestor::form//treeview//div[.//b[contains(.,'" + locationName + "')] and @class='treeview-selectable']"));
         location.click();
         return this;
+    }
+
+    public ResourceAssociatePage clickOnResourceAssociateTab() {
+        resourceAssociateTab.click();
+        return new ResourceAssociatePage();
+    }
+
+    public ConferenceRoomsPage clickOnPowerOffRoomButton(ConferenceRoom conferenceRoom) {
+        By powerOffLocator = By.xpath("//h2[contains(.,'" + conferenceRoom.getCustomDisplayName() + "')]/../following::div/button");
+        powerOffRoomButton = driver.findElement(powerOffLocator);
+        powerOffRoomButton.click();
+        clickOnSaveButton();
+        By confirmationMessageLocator =By.xpath("//div[contains(text(),'Room " +conferenceRoom.getCustomDisplayName()+ " was disabled')]");
+        driverWait.until(ExpectedConditions.visibilityOfElementLocated(confirmationMessageLocator));
+        return new ConferenceRoomsPage();
     }
 }

@@ -16,9 +16,11 @@ public class ConferenceRoom {
     private String customDisplayName;
     private String code;
     private String capacity;
+    private Location location;
 
     public ConferenceRoom() {
         resources = new ArrayList<Resource>();
+        location = new Location();
     }
 
     public String getId() {
@@ -99,5 +101,12 @@ public class ConferenceRoom {
 
     public void setCapacity(String capacity) {
         this.capacity = capacity;
+    }
+    public Location getLocation(){
+        return location;
+    }
+
+    public void setLocation(Location location){
+        this.location = location;
     }
 }
