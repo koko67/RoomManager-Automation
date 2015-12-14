@@ -15,12 +15,13 @@ public class LoginSteps {
     private LoginPage login;
 
     public LoginSteps(){
-        login = new LoginPage();
+//        login = new LoginPage();
     }
 
     @Given("^I log in successfully as \"(.*?)\" with password \"(.*?)\"$")
     public void loginSuccessfully(String userName, String userPassword){
-        if(!CommonMethods.isAccountAlreadyLogged()){
+        if(CommonMethods.isItInTheLoginPage() && !CommonMethods.isItInAdminHomePage()){
+            login = new LoginPage();
             login.loginPageSuccessfully(userName, userPassword);
         }
     }

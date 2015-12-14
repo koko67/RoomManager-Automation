@@ -20,7 +20,7 @@ public class CommonMethods {
      * This method verify if is in the main page then Log out
      */
     public static void logOut(){
-        if (!isAccountAlreadyLogged()){
+        if (!isItInTheLoginPage() && !isItInTheHomePageTablet()){
             new HomePage().getHeader().logOut();
         }
     }
@@ -29,24 +29,30 @@ public class CommonMethods {
      * navigate to the Login Page
      */
     public static void navigateLogIn(){
-       PageTransporter.getInstance().toLoginPage();
+        PageTransporter.getInstance().toLoginPage();
     }
 
     /**
-     * Verify if the user account is already logged in the Page
-     * @return tru if the current URL is the Home Page
+     * Verify if the current URL is in the Login Page
+     * @return true if the current URL is in the Login Page
      */
-    public static boolean isAccountAlreadyLogged(){
-        return driver.getCurrentUrl().contains("/admin/#/admin/");
+    public static boolean isItInTheLoginPage(){
+        String loginURL = CredentialManager.getInstance().getAdminURL();
+        return driver.getCurrentUrl().equalsIgnoreCase(loginURL);
     }
 
     /**
      * This method verify if the current URL is in the Login Page of the tablet version
      * @return true if the current URL is in the Tablet login page
      */
-    public static Boolean isItInTheLoginPageTablet(){
-        String LoginTabletURL = CredentialManager.getInstance().getTabletURL();
-        return driver.getCurrentUrl().equalsIgnoreCase(LoginTabletURL);
+    public static boolean isItInTheLoginPageTablet(){
+        String loginTabletURL = CredentialManager.getInstance().getTabletURL();
+        return driver.getCurrentUrl().equalsIgnoreCase(loginTabletURL);
+    }
+
+    public static boolean isItInAdminHomePage() {
+        String adminHomeURL = CredentialManager.getInstance().getAdminHomeURL();
+        return driver.getCurrentUrl().contains(adminHomeURL);
     }
 
     /**
@@ -54,8 +60,8 @@ public class CommonMethods {
      * @return true if the current URL is in the home page of the tablet version
      */
     public static Boolean isItInTheHomePageTablet(){
-        String HomeTabletURL = CredentialManager.getInstance().getHometabletURL();
-        return driver.getCurrentUrl().equalsIgnoreCase(HomeTabletURL);
+        String homeTabletURL = CredentialManager.getInstance().getHometabletURL();
+        return driver.getCurrentUrl().equalsIgnoreCase(homeTabletURL);
     }
 
     /**
@@ -73,6 +79,4 @@ public class CommonMethods {
                     element, "");
         }
     }
-
-
 }

@@ -23,9 +23,6 @@ public class StatusPageTablet extends BasePageObject {
     @FindBy(xpath = "//button[@class='btn btn-primary']")
     WebElement startNowButton;
 
-    @FindBy(xpath = "//div[contains(@class,'ng-binding') and contains(., 'Connection setting was updated')]")
-    WebElement connectionInfo;
-
     @Override
     public void waitUntilPageObjectIsLoaded() {
         UIMethods.waitElementIsNotPresent(10, By.xpath("//div[contains(@class, 'ng-binding') and contains(., 'Connection setting was updated')]"));
