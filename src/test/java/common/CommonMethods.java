@@ -29,14 +29,14 @@ public class CommonMethods {
      * navigate to the Login Page
      */
     public static void navigateLogIn(){
-       PageTransporter.getInstance().toLoginPage();
+        PageTransporter.getInstance().toLoginPage();
     }
 
     /**
      * Verify if the current URL is in the Login Page
      * @return true if the current URL is in the Login Page
      */
-    public static Boolean isItInTheLoginPage(){
+    public static boolean isItInTheLoginPage(){
         String loginURL = CredentialManager.getInstance().getAdminURL();
         return driver.getCurrentUrl().equalsIgnoreCase(loginURL);
     }
@@ -45,9 +45,14 @@ public class CommonMethods {
      * This method verify if the current URL is in the Login Page of the tablet version
      * @return true if the current URL is in the Tablet login page
      */
-    public static Boolean isItInTheLoginPageTablet(){
+    public static boolean isItInTheLoginPageTablet(){
         String loginTabletURL = CredentialManager.getInstance().getTabletURL();
         return driver.getCurrentUrl().equalsIgnoreCase(loginTabletURL);
+    }
+
+    public static boolean isItInAdminHomePage() {
+        String adminHomeURL = CredentialManager.getInstance().getAdminHomeURL();
+        return driver.getCurrentUrl().contains(adminHomeURL);
     }
 
     /**
@@ -74,6 +79,4 @@ public class CommonMethods {
                     element, "");
         }
     }
-
-
 }

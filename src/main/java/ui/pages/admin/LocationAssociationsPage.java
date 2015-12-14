@@ -1,13 +1,16 @@
 package ui.pages.admin;
 
+import commons.FrameworkUtils;
+import entities.ConferenceRoom;
+
 import framework.UIMethods;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import ui.BasePageObject;
-import ui.pages.admin.LocationPage;
 
 /**
  * Created with IntelliJ IDEA.
@@ -74,5 +77,21 @@ public class LocationAssociationsPage extends BasePageObject{
     public boolean searchRoomInAvailableColumn(String roomName, String state) {
         By roomLocator = By.xpath("//h4[contains(text(),'" + state + "')]/..//div[contains(text(),'" + roomName + "')]/following-sibling::div/button");
         return UIMethods.isElementPresent(roomLocator);
+    }
+
+    /**
+     * verify if a conference room is associated with the location
+     * @param conferenceRoom is the room to find in the associated rooms
+     * @return true if exist the conference room associated
+     */
+    public boolean existsRoomAssociated(ConferenceRoom conferenceRoom) {
+        By confRoom = By.xpath("//following-sibling::div[.//div[contains(.,'" + conferenceRoom.getDisplayName() + "')]]");
+        try {
+            FrameworkUtils.elementHighlight(associateLabel.findElement(confRoom));
+            return associateLabel.findElement(confRoom) != null;
+        } catch(NoSuchElementException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

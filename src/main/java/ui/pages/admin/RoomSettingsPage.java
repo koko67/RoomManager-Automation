@@ -29,6 +29,9 @@ public class RoomSettingsPage extends BasePageObject {
     @FindBy(xpath = "//label[contains(text(),'Location')]/..//div[@id='add-location']")
     WebElement locationComboBox;
 
+    @FindBy(xpath = "//form/div//span/button/i")
+    WebElement locationsDropDownButton;
+
     @FindBy(xpath = "//a[contains(text(),'Resource Associations')]")
     WebElement resourceAssociateTab;
 
@@ -74,8 +77,31 @@ public class RoomSettingsPage extends BasePageObject {
         driverWait.until(ExpectedConditions.visibilityOf(saveButton));
     }
 
+
+    /**
+     * verify if the location is present in the combo box
+     * @param location
+     * @return
+     */
     public boolean isLocationPresent(Location location) {
         return locationComboBox.getText().contains(location.getName());
+    }
+
+    public RoomSettingsPage expandDefaultLocation(){
+        WebElement defaultLocation = locationsDropDownButton.findElement(By.xpath("//ancestor::form//treeview//div[@class='treeview-toggle']/span"));
+        defaultLocation.click();
+        return this;
+    }
+
+    public RoomSettingsPage expandLocations() {
+        locationsDropDownButton.click();
+        return this;
+    }
+
+    public RoomSettingsPage selectLocationByName(String locationName) {
+        WebElement location = locationsDropDownButton.findElement(By.xpath("//ancestor::form//treeview//div[.//b[contains(.,'" + locationName + "')] and @class='treeview-selectable']"));
+        location.click();
+        return this;
     }
 
     public ResourceAssociatePage clickOnResourceAssociateTab() {
@@ -84,7 +110,7 @@ public class RoomSettingsPage extends BasePageObject {
     }
 
     public ConferenceRoomsPage clickOnPowerOffRoomButton(ConferenceRoom conferenceRoom) {
-        By powerOffLocator = By.xpath("//h2[contains(.,'" + conferenceRoom.getCustomDisplayName() +"')]/../following::div/button");
+        By powerOffLocator = By.xpath("//h2[contains(.,'" + conferenceRoom.getCustomDisplayName() + "')]/../following::div/button");
         powerOffRoomButton = driver.findElement(powerOffLocator);
         powerOffRoomButton.click();
         clickOnSaveButton();

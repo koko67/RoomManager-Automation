@@ -1,7 +1,7 @@
 .idea
-report
-test.iml
-test.ipr
-test.iws
+report/
+*.iml
+*.ipr
+*.iws
 target/
 log4j-application.log

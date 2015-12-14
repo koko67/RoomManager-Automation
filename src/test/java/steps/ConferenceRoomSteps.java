@@ -1,21 +1,32 @@
 package steps;
 
+import api.APILibrary;
+import api.EndPoints;
+import com.mongodb.DBObject;
 import cucumber.api.java.en.And;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import entities.ConferenceRoom;
+import entities.Location;
+import mongodb.DataBaseDriver;
+import org.json.JSONObject;
+import ui.pages.admin.ConferenceRoomsPage;
+import ui.pages.admin.LocationPage;
+
 import entities.Resource;
 import framework.UIMethods;
 import junit.framework.Assert;
 import ui.pages.admin.ConferenceRoomsPage;
 import ui.pages.admin.ResourceAssociatePage;
+
 import ui.pages.admin.RoomSettingsPage;
 import ui.pages.admin.HomePage;
 import utils.LeftBarOptions;
 
 /**
- * Author: JorgeAvila
+ * Author: Jorge Avila
  * Date: 12/3/15
  */
 public class ConferenceRoomSteps {
@@ -23,8 +34,11 @@ public class ConferenceRoomSteps {
     private HomePage homePage;
     private ConferenceRoomsPage conferenceRoomsPage;
     private RoomSettingsPage roomInfoPage;
-
+    private LocationPage locationPage;
+    private APILibrary apiLibrary;
+    private DataBaseDriver dataBaseDriver;
     private ConferenceRoom conferenceRoom;
+    private Location location;
     private Resource resource;
     private ResourceAssociatePage resoureAssociatePage;
 
@@ -32,25 +46,41 @@ public class ConferenceRoomSteps {
         homePage = new HomePage();
         resource = new Resource();
         this.conferenceRoom = conferenceRoom;
+        this.location = new Location();
+        this.apiLibrary = new APILibrary();
+        dataBaseDriver = new DataBaseDriver();
     }
 
     @Given("^I open the Room \"(.*?)\" from the Conference Room$")
     public void openRoomFromConferenceRoom(String roomName) {
-        conferenceRoom.setCustomDisplayName(roomName);
         conferenceRoom.setDisplayName(roomName);
+        conferenceRoom.setCustomDisplayName(roomName);
         conferenceRoomsPage = homePage.getLeftMenuPanel()
                                       .clickOnConferenceRooms("Conference Rooms");
 
         roomInfoPage = conferenceRoomsPage.openConferenceRoomSettings(conferenceRoom.getCustomDisplayName());
     }
 
-    @When("^I assign the Room \"(.*?)\" to the Location \"(.*?)\"$")
-    public void assignRoomToALocation(String roomName, String locationName){
+    @When("^I assign the current Room to the Location \"(.*?)\"$")
+    public void assignRoomToALocation(String locationName){
+        location.setName(locationName);
+        location.setDisplayName(locationName);
+        roomInfoPage.expandLocations()
+                .expandDefaultLocation()
+                .selectLocationByName(locationName)
+                .clickOnSaveButton();
 
     }
 
-    @Then("^the Room \"(.*?)\" is associated to the Location \"(.*?)\" in the Location page$")
+
+    @Then("^the Room \"(.*?)\" is associated to the Location \"(.*?)\" in the Locations page$")
     public void isAssociatedRoomToLocationRoomPage(String roomName, String locationName){
+        locationPage = homePage.getLeftMenuPanel()
+                .clickOnLocationPage("Locations");
+        boolean existAssociated = locationPage.clickEditLocation(location)
+                .goLocationAssociationTab()
+                .existsRoomAssociated(conferenceRoom);
+        Assert.assertTrue(existAssociated);
 
     }
 
