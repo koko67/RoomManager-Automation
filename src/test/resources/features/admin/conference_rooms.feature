@@ -25,11 +25,11 @@ Feature: Conference Rooms
     Then an error message "To field must be greater than From field Cannot establish out of order as an past event" should be displayed in the form
     And the room reserve should not be stored
 
-  Scenario: Disable the room at pressing the button enable/disable
+  Scenario: Disable a room pressing the button enable/disable
     Given I open the Room "Floor1-Room11" from the Conference Room
     When I pressing the disable button
     Then The current Room should be disable
-      And the request to information of room on API should be obtained the enable field equal to false
+      And the information updated in the room should be obtained by API
 
   Scenario: Associate a resource to a conference room
     Given I have created a resource with name "Computer", customName "Computer2"

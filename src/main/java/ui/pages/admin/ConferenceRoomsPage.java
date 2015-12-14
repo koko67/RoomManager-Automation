@@ -50,6 +50,11 @@ public class ConferenceRoomsPage extends BasePageObject{
         return new ConferenceRoomsPage();
     }
 
+    /**
+     * this method is for sure that the resource is displayed in the table
+     * @param resource receive the resource that should be displayed in the table
+     * @return
+     */
     public ConferenceRoomsPage makeSureResourcesIsSelect(Resource resource) {
         By resourceNameLocator = By.xpath("//div[@class='ngHeaderContainer']//div[contains(text(),'" + resource.getCustomName() + "')]");
         if (!UIMethods.isElementPresent(resourceNameLocator)){
@@ -61,6 +66,12 @@ public class ConferenceRoomsPage extends BasePageObject{
         return new ConferenceRoomsPage();
     }
 
+    /**
+     * this method verify that the resources assigned are same that the displayed
+     * @param resource receive the resource that was assigned
+     * @param conferenceRoom the room where is verified
+     * @return
+     */
     public boolean isTheResourceCorrect(Resource resource, ConferenceRoom conferenceRoom) {
         By iconResourceLocator = By.xpath("//div[.//span[contains(.,'" + conferenceRoom.getCustomDisplayName() + "')] and @class='ng-scope ngRow odd']//div[contains(@class,'animate-if')]/span");
         try {
@@ -72,7 +83,12 @@ public class ConferenceRoomsPage extends BasePageObject{
         }
     }
 
-
+    /**
+     * this method verify the quantity resources assigned are same that the displayed
+     * @param resource receive the resource that was assigned
+     * @param conferenceRoom the room where is verified
+     * @return
+     */
     public boolean isTheSameQuantityOfResources(Resource resource, ConferenceRoom conferenceRoom) {
         By quantityResourceLocator = By.xpath("//div[.//span[contains(.,'" + conferenceRoom.getCustomDisplayName() + "')] and @class='ng-scope ngRow odd']//div[contains(@class,'animate-if')]/span/following::span");
         try {
@@ -84,6 +100,11 @@ public class ConferenceRoomsPage extends BasePageObject{
         }
     }
 
+    /**
+     * this method verify that room is disable
+     * @param conferenceRoom receive the room that was disable
+     * @return
+     */
     public boolean isRoomEnable(ConferenceRoom conferenceRoom) {
         By roomEnableButtonLocator = By.xpath("//span[contains(.,'Floor1-Room11')]/../../../preceding-sibling::div[contains(@class,'centeredColumn')]//span[contains(@class,'gray')]");
         String colorButton = null;

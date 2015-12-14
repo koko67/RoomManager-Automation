@@ -6,6 +6,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import entities.ConferenceRoom;
 import entities.Resource;
+import framework.UIMethods;
 import junit.framework.Assert;
 import ui.pages.admin.ConferenceRoomsPage;
 import ui.pages.admin.ResourceAssociatePage;
@@ -103,14 +104,13 @@ public class ConferenceRoomSteps {
     public void disableRoom(){
         conferenceRoom.setEnabled(false);
         conferenceRoomsPage = roomInfoPage.clickOnPowerOffRoomButton(conferenceRoom);
-        homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.LOCATIONS.getToPage());
-        homePage.getLeftMenuPanel().clickOnConferenceRooms(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
+        UIMethods.switchPages(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
     }
     @Then("^The current Room should be disable$")
     public void verifyRoomDisable(){
         Assert.assertTrue("The room was disable correctly", conferenceRoomsPage.isRoomEnable(conferenceRoom));
     }
-    @And("^the request to information of room on API should be obtained the enable field equal to false$")
+    @And("^the information updated in the room should be obtained by API$")
     public void verifyRoomIsDisableByAPI(){
 
     }
