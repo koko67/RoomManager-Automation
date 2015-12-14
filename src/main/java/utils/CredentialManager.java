@@ -19,6 +19,7 @@ public class CredentialManager {
     private String passwordExchange;
     private String adminLoggedUrl;
     private String hometabletURL;
+    private String adminHomeURL;
     private JSONReader envReader;
 
     protected CredentialManager(){
@@ -44,7 +45,8 @@ public class CredentialManager {
         //Environment URLs
         adminURL = envReader.getKeyValue("Environment", "id", envId, "adminURL");
         tabletURL = envReader.getKeyValue("Environment", "id", envId, "tabletURL");
-        roomManagerService = envReader.getKeyValue("Environment", "id", envId, "room manager service");
+        roomManagerService = envReader.getKeyValue("Environment", "id", envId, "roomManagerService");
+        adminHomeURL = envReader.getKeyValue("Environment", "id", envId, "adminHomeURL");
 
         adminLoggedUrl = envReader.getKeyValue("Environment", "id", envId, "adminLoggedUrl");
         hometabletURL = envReader.getKeyValue("Environment", "id", envId, "homeTabletURL");
@@ -130,5 +132,9 @@ public class CredentialManager {
 
     public String getAdminLoggedUrl() {
         return adminLoggedUrl;
+    }
+
+    public String getAdminHomeURL() {
+        return adminHomeURL;
     }
 }
