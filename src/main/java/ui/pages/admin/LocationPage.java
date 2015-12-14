@@ -55,7 +55,7 @@ public class LocationPage extends BasePageObject{
      * @return the page with information of the location
      */
     public LocationSettingsPage clickEditLocation(Location location) {
-        By locationNameLocator = By.xpath("//div[contains(text(),'" + location.getName() + "')]");
+        By locationNameLocator = By.xpath("//div[contains(text(),'" + location.getDisplayName() + "')]");
         WebElement locationName = driver.findElement(locationNameLocator);
         Actions action =  new Actions(driver);
         action.moveToElement(locationName).doubleClick().perform();
