@@ -14,9 +14,7 @@ import static com.jayway.restassured.RestAssured.given;
 public class TokenAPI {
 
     private final static String URI_SERVICE = CredentialManager.getInstance().getRoomManagerService();
-    private final static String LOCAL_AUTHENTICATION = "local";
-    private final static String LOGIN_SERVICE = "login";
-    private final static String TOKEN = "token";
+
     public static TokenAPI instance = null;
 
     public TokenAPI(){
@@ -46,16 +44,16 @@ public class TokenAPI {
         JSONObject request = new JSONObject();
         request.put(DomainAppConstants.USERNAME, userName);
         request.put(DomainAppConstants.PASSWORD, password);
-        request.put(DomainAppConstants.AUTHENTICATION, LOCAL_AUTHENTICATION);
+        request.put(DomainAppConstants.AUTHENTICATION, DomainAppConstants.LOCAL_AUTHENTICATION);
 
         Response response = given()
                 .contentType(APILibrary.CONTENT_TYPE)
                 .body(request.toString())
                 .when()
-                .post(LOGIN_SERVICE);
+                .post(DomainAppConstants.LOGIN_SERVICE);
 
         JSONObject auth = new JSONObject(response.asString());
-        return auth.getString(TOKEN);
+        return auth.getString(DomainAppConstants.TOKEN);
     }
 
 }
