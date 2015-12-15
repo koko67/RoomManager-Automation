@@ -12,6 +12,7 @@ import static com.jayway.restassured.RestAssured.given;
  */
 public class TokenAPI {
 
+    private  static String URI_SERVICE = CredentialManager.getInstance().getRoomManagerService();
     private final static String LOGIN_SERVICE = "login";
 
     /**
@@ -22,7 +23,7 @@ public class TokenAPI {
      * @return the token for the user account
      */
     public static String getToken(String userName, String password, String authentication){
-        RestAssured.baseURI = CredentialManager.getInstance().getRoomManagerService() + LOGIN_SERVICE;
+        RestAssured.baseURI = URI_SERVICE;
         RestAssured.useRelaxedHTTPSValidation();
 
         JSONObject request = new JSONObject();
@@ -34,7 +35,7 @@ public class TokenAPI {
                 .contentType("application/json")
                 .body(request.toString())
                 .when()
-                .post();
+                .post(LOGIN_SERVICE);
 
         JSONObject auth = new JSONObject(response.asString());
         return auth.getString("token");
