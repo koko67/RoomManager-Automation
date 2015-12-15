@@ -22,4 +22,8 @@ public class DomainAppConstants {
     public static final String REPLACE_SERVICE_ID = "#serviceId#";
     public static final String REPLACE_ROOM_ID = "#roomId#";
     public static final String REPLACE_MEETING_ID = "#meetingId#";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String AUTHENTICATION = "authentication";
+
 }
