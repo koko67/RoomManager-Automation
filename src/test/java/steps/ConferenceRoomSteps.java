@@ -2,7 +2,9 @@ package steps;
 
 import api.APILibrary;
 import api.EndPoints;
+import api.TokenAPI;
 import com.mongodb.DBObject;
+import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 
 import cucumber.api.java.en.Given;
@@ -23,6 +25,7 @@ import ui.pages.admin.ResourceAssociatePage;
 
 import ui.pages.admin.RoomSettingsPage;
 import ui.pages.admin.HomePage;
+import utils.CredentialManager;
 import utils.LeftBarOptions;
 
 /**
@@ -41,6 +44,8 @@ public class ConferenceRoomSteps {
     private Location location;
     private Resource resource;
     private ResourceAssociatePage resoureAssociatePage;
+    private JSONObject response;
+    private String token;
 
     public ConferenceRoomSteps(ConferenceRoom conferenceRoom){
         homePage = new HomePage();
@@ -49,6 +54,7 @@ public class ConferenceRoomSteps {
         this.location = new Location();
         this.apiLibrary = new APILibrary();
         dataBaseDriver = new DataBaseDriver();
+        token = obtainToken();
     }
 
     @Given("^I open the Room \"(.*?)\" from the Conference Room$")
@@ -63,25 +69,31 @@ public class ConferenceRoomSteps {
 
     @When("^I assign the current Room to the Location \"(.*?)\"$")
     public void assignRoomToALocation(String locationName){
+//        //PRECONDITION CREATING THE LOCATION
+//        JSONObject newLocation = new JSONObject();
+//        newLocation.put("name", "fundacion-jala");
+//        newLocation.put("displayName", "fundacion-jala");
+//        String token = TokenAPI.getToken("test","Client123","basic");
+//        String endPoint = EndPoints.LOCATIONS;
+//        response = apiLibrary.post(newLocation, token, endPoint);
+//
+//        //STEPS
+        assignLocationToRoom(locationName);
+    }
+
+    private void assignLocationToRoom(String locationName) {
         location.setName(locationName);
         location.setDisplayName(locationName);
-        roomInfoPage.expandLocations()
-                .expandDefaultLocation()
-                .selectLocationByName(locationName)
-                .clickOnSaveButton();
-
+        roomInfoPage.assignLocation(locationName);
     }
 
 
-    @Then("^the Room \"(.*?)\" is associated to the Location \"(.*?)\" in the Locations page$")
-    public void isAssociatedRoomToLocationRoomPage(String roomName, String locationName){
+    @Then("^the current room is associated to the Location defined in the Locations page$")
+    public void isAssociatedRoomToLocationRoomPage(){
         locationPage = homePage.getLeftMenuPanel()
                 .clickOnLocationPage("Locations");
-        boolean existAssociated = locationPage.clickEditLocation(location)
-                .goLocationAssociationTab()
-                .existsRoomAssociated(conferenceRoom);
+        boolean existAssociated = locationPage.verifyIfExistLocationAssociation(location, conferenceRoom);
         Assert.assertTrue(existAssociated);
-
     }
 
     @When("^I edit the following info: Display Name \"(.*?)\", code \"(.*?)\" and capacity \"(.*?)\"$")
@@ -127,7 +139,7 @@ public class ConferenceRoomSteps {
         conferenceRoomsPage.makeSureResourcesIsSelect(resource);
         boolean verificationIcon = conferenceRoomsPage.isTheResourceCorrect(resource, conferenceRoom);
         boolean verificationQuantity = conferenceRoomsPage.isTheSameQuantityOfResources(resource, conferenceRoom);
-        Assert.assertTrue("The resource icon is the same that it's assigned ",verificationIcon);
+        Assert.assertTrue("The resource icon is the same that it's assigned ", verificationIcon);
         Assert.assertTrue("The quantity is the same that was assigned", verificationQuantity);
     }
     @When("^I pressing the disable button$")
@@ -143,5 +155,63 @@ public class ConferenceRoomSteps {
     @And("^the information updated in the room should be obtained by API$")
     public void verifyRoomIsDisableByAPI(){
 
+    }
+
+    @Given("^I have a Room with name \"([^\"]*)\" that is associated with the Location \"([^\"]*)\"$")
+    public void createResourceWithLocation(String roomName, String locationName) throws Throwable {
+        JSONObject location = new JSONObject();
+        location.put("name", locationName);
+        location.put("customName", locationName);
+
+        String endPoint = EndPoints.LOCATIONS;
+
+        response = apiLibrary.post(location, token, endPoint);
+        dataBaseDriver.createConnectionToDB("172.20.208.241");
+        conferenceRoom.setId(dataBaseDriver.getKeyValue("rooms", "displayName", roomName, "_id"));
+
+        JSONObject updateRoom = new JSONObject();
+        updateRoom.put("locationId", response.getString("_id"));
+
+        String roomsEndPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
+
+        response = apiLibrary.put(updateRoom, token, roomsEndPoint);
+    }
+
+    @And("^I have a Location with name \"([^\"]*)\"$")
+    public void createNewLocation(String name) throws Throwable {
+        JSONObject location = new JSONObject();
+        location.put("name", name);
+        location.put("customName", name);
+
+        String locationsEndPoint = EndPoints.LOCATIONS;
+
+        response = apiLibrary.post(location, token, locationsEndPoint);
+
+        Assert.assertEquals(location.getString("name"), response.getString("name"));
+        Assert.assertEquals(location.getString("customName"), response.getString("customName"));
+    }
+
+    @Then("^the current Room should be moved to the new Location$")
+    public void isRoomAssociatedToLocation() throws Throwable {
+        isAssociatedRoomToLocationRoomPage();
+    }
+
+    private String obtainToken(){
+        String username = CredentialManager.getInstance().getUserNameAdmin();
+        String password = CredentialManager.getInstance().getPasswordAdmin();
+        String token = TokenAPI.getToken(username, password, "local");
+        return token;
+    }
+
+    @And("^the current Room should be obtained by API request associated with the location$")
+    public void isTheRoomAObtainedByAPI() throws Throwable {
+        String endPoint = EndPoints.RESOURCE_BY_ID.replace("#id#", conferenceRoom.getId());
+        JSONObject response = apiLibrary.getById(endPoint);
+        Assert.assertEquals(conferenceRoom.getLocationId(), response.getString("locationId"));
+    }
+
+    @And("^I assign the current Room to the new Location \"([^\"]*)\"$")
+    public void I_assign_the_current_Room_to_the_new_Location(String locationName) throws Throwable {
+        assignRoomToALocation(locationName);
     }
 }

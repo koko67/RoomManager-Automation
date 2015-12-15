@@ -86,10 +86,6 @@ public class LocationSteps {
         Assert.assertTrue("the room has assigned to the location", roomInfoPage.isLocationPresent(location));
     }
 
-    @And("^the Location \"(.*?)\" should be obtained by API request for the Room \"(.*?)\"$")
-    public void isTheRoomAObtainedByAPI(String locationName, String roomName){
-
-    }
     @Given("^I have a Location \"(.*?)\" with display name \"(.*?)\" associate to Room with name \"(.*?)\"$")
     public void haveToLocation(String customName, String displayName, String roomName){
         locationPage = homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.LOCATIONS.getToPage());
