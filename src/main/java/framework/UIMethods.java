@@ -87,13 +87,13 @@ public class UIMethods {
     public static void switchPages(String page) {
         HomePage homePage = new HomePage();
         if (page.equals("Email Servers")){
-            homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.IMPERSONATION.getToPage());
-            homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.EMAIL_SERVER.getToPage());
+            homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.LOCATIONS.getToPage());
+            homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.EMAIL_SERVER.getToPage());
         }else if (page.equals("Conference Rooms")){
-            homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.IMPERSONATION.getToPage());
-            homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
+            homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.EMAIL_SERVER.getToPage());
+            homePage.getLeftMenuPanel().clickOnConferenceRooms(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
         }else if (page.equals("Locations")){
-            homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.IMPERSONATION.getToPage());
+            homePage.getLeftMenuPanel().clickOnEmailServerPage(LeftBarOptions.EMAIL_SERVER.getToPage());
             homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.LOCATIONS.getToPage());
         }
 

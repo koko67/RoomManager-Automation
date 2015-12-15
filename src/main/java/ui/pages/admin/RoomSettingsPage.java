@@ -102,7 +102,7 @@ public class RoomSettingsPage extends BasePageObject {
      * @return
      */
     public boolean isLocationPresent(Location location) {
-        return locationComboBox.getText().contains(location.getName());
+        return locationComboBox.getText().contains(location.getDisplayName());
     }
 
     public RoomSettingsPage expandDefaultLocation(){
