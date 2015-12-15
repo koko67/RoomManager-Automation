@@ -98,4 +98,8 @@ public class UIMethods {
         }
 
     }
+
+    public static void refreshPage() {
+        driver.navigate().refresh();
+    }
 }
