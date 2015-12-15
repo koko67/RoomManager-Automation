@@ -81,7 +81,7 @@ public class LocationSteps {
         newLocation.put("customName", locationName);
         newLocation.put("name", locationName);
 
-        String token = TokenAPI.getToken("test", "Client123", "local");
+        String token = TokenAPI.getInstance().getToken("test", "Client123", "local");
         String endPoint = EndPoints.LOCATIONS;
 
         JSONObject response = apiLibrary.post(newLocation, token, endPoint);
@@ -133,7 +133,7 @@ public class LocationSteps {
         newLocation.put("customName", location.getDisplayName());
         newLocation.put("name", location.getName());
 
-        String token = TokenAPI.getToken("test", "Client123", "local");
+        String token = TokenAPI.getInstance().getToken("test", "Client123", "local");
         String endPoint = EndPoints.LOCATIONS;
 
         JSONObject response = apiLibrary.post(newLocation, token, endPoint);

@@ -78,7 +78,7 @@ public class RoomSettingsPage extends BasePageObject {
     }
 
     public ConferenceRoomsPage assignLocation(String locationName){
-        By defaultLocation = By.xpath("/form//treeview//div[@class='treeview-toggle']/span");
+        By defaultLocation = By.xpath("//form//treeview//div[@class='treeview-toggle']/span");
         expandLocations();
         if(UIMethods.waitElementIsPresent(3, defaultLocation)) {
             expandDefaultLocation();
@@ -125,10 +125,6 @@ public class RoomSettingsPage extends BasePageObject {
     public ResourceAssociatePage clickOnResourceAssociateTab() {
         resourceAssociateTab.click();
         return new ResourceAssociatePage();
-    }
-
-    public OutOfOrderPlanningPage clickOnOutOfOrderPlanningPage(){
-        return new OutOfOrderPlanningPage();
     }
 
     public ConferenceRoomsPage clickOnPowerOffRoomButton(ConferenceRoom conferenceRoom) {

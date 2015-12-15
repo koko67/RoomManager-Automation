@@ -66,8 +66,7 @@ public class LocationPage extends BasePageObject{
     public boolean verifyIfExistLocationAssociation(Location location, ConferenceRoom conferenceRoom){
         By locationBy = By.xpath("//div[contains(text(),'" + location.getDisplayName() + "')]");
         if(UIMethods.waitElementIsPresent(3, locationBy)){
-            driver.findElement(locationBy).click();
-            return new LocationSettingsPage()
+            return clickEditLocation(location)
                     .goLocationAssociationTab()
                     .existsRoomAssociated(conferenceRoom);
         }
