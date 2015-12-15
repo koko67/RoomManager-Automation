@@ -82,7 +82,6 @@ public class LoginPageTablet extends BasePageObject {
      */
     public void clickSignIn(){
         submitButton.click();
-
     }
 
 

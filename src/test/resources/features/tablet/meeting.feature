@@ -23,7 +23,7 @@ Feature: Meetings
     Then an information message should be displayed "Meeting successfully removed"
       And the meeting should not be displayed in the Schedule bar
       And the meeting information should not be displayed in the Next section of Main page
-     And the meeting should be listed in the meetings of Room using the API
+     And the meeting should not be listed in the meetings of Room using the API
 
   Scenario Outline: Try to create a meeting with missing information
     Given I navigate to Available section
