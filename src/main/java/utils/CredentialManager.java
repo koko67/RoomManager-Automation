@@ -20,6 +20,7 @@ public class CredentialManager {
     private String adminLoggedUrl;
     private String hometabletURL;
     private String adminHomeURL;
+    private String ip;
     private JSONReader envReader;
 
     protected CredentialManager(){
@@ -47,8 +48,7 @@ public class CredentialManager {
         tabletURL = envReader.getKeyValue("Environment", "id", envId, "tabletURL");
         roomManagerService = envReader.getKeyValue("Environment", "id", envId, "roomManagerService");
         adminHomeURL = envReader.getKeyValue("Environment", "id", envId, "adminHomeURL");
-
-        adminLoggedUrl = envReader.getKeyValue("Environment", "id", envId, "adminLoggedUrl");
+        ip = envReader.getKeyValue("Environment", "id", envId, "ip");
         hometabletURL = envReader.getKeyValue("Environment", "id", envId, "homeTabletURL");
 
         //Environment users information
@@ -58,6 +58,10 @@ public class CredentialManager {
         passwordExchange = envReader.getKeyValue("Environment", "id", envId, "userExchange", "password");
     }
 
+
+    public String getIp(){
+        return ip;
+    }
     /**
      * This method obtain admin URL
      * @return admin URL
@@ -130,10 +134,11 @@ public class CredentialManager {
         return envId;
     }
 
-    public String getAdminLoggedUrl() {
-        return adminLoggedUrl;
-    }
 
+    /**
+     * This method obtains the Admin Home URL
+     * @return the admin URL
+     */
     public String getAdminHomeURL() {
         return adminHomeURL;
     }

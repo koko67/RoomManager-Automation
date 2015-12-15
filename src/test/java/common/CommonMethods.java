@@ -20,7 +20,7 @@ public class CommonMethods {
      * This method verify if is in the main page then Log out
      */
     public static void logOut(){
-        if (!isItInTheLoginPage() && !isItInTheHomePageTablet()){
+        if (isItInAdminHomePage()){
             new HomePage().getHeader().logOut();
         }
     }

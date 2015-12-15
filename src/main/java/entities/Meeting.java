@@ -12,6 +12,11 @@ public class Meeting {
     private String hourTo;
     private String organizer;
     private String body;
+    private String roomName;
+
+    public void setRoomName(String roomName){
+        this.roomName = roomName;
+    }
 
     public void setDeleteSubject(String subject){
         this.deleteSubject = subject;
@@ -43,6 +48,10 @@ public class Meeting {
 
     public String getDeleteSubject(){
         return deleteSubject;
+    }
+
+    public String getRoomName(){
+        return roomName;
     }
 
     public void setAllForm(String organizer, String subject, String hourFrom, String hourTo, String attendees, String body){
