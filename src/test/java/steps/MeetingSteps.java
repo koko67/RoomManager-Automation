@@ -1,7 +1,6 @@
 package steps;
 
 import common.CommonMethods;
-import conditions.MeetingAssert;
 import cucumber.api.java.After;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -12,8 +11,8 @@ import junit.framework.Assert;
 import ui.PageTransporter;
 import ui.pages.tablet.*;
 
-import static conditions.MeetingAssert.deleteMeeting;
-import static conditions.MeetingAssert.isTheMeetingCreated;
+import static conditions.MeetingConditions.deleteMeeting;
+import static conditions.MeetingConditions.isTheMeetingCreated;
 
 /**
  * User: Ronald Butron
