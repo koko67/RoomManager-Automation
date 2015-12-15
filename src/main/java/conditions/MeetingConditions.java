@@ -2,15 +2,10 @@ package conditions;
 
 import api.APILibrary;
 import api.EndPoints;
-import com.jayway.restassured.response.Response;
 import commons.DomainAppConstants;
-import mongodb.DataBaseDriver;
+import mongodb.DataBaseMethods;
 import org.json.JSONArray;
 import utils.CredentialManager;
-
-import java.net.UnknownHostException;
-
-import static com.jayway.restassured.RestAssured.given;
 
 /**
  * User: RonaldButron
@@ -18,7 +13,7 @@ import static com.jayway.restassured.RestAssured.given;
  */
 public class MeetingConditions {
 
-    public static String ip = CredentialManager.getInstance().getIp();
+
 
     /**
      * Verify if the Meeting was created
@@ -27,8 +22,8 @@ public class MeetingConditions {
      * @return true or false
      */
     public static boolean isTheMeetingCreated(String valueId, String value){
-        String servicesId = obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, valueId, DomainAppConstants.KEY_SERVICE_ID);
-        String roomId = obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, valueId, DomainAppConstants.KEY_ID);
+        String servicesId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, valueId, DomainAppConstants.KEY_SERVICE_ID);
+        String roomId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, valueId, DomainAppConstants.KEY_ID);
         String endpoint = EndPoints.ALL_MEETING.replace(DomainAppConstants.REPLACE_SERVICE_ID, servicesId)
                                                .replace(DomainAppConstants.REPLACE_ROOM_ID, roomId);
         boolean isItCreated = false;
@@ -43,29 +38,15 @@ public class MeetingConditions {
 
     }
 
-    /**
-     * This method connect to the database and return a value searched then close the database
-     * @param collection name of the collection
-     * @param keyId name of the key
-     * @param valueId value of the key
-     * @param value and value searched
-     * @return
-     */
-    public static String obtainKeyValue(String collection, String keyId, String valueId, String value){
-        DataBaseDriver.getInstance().createConnectionToDB(ip);
-        String valueToReturn = DataBaseDriver.getInstance().getKeyValue(collection, keyId, valueId, value);
-        DataBaseDriver.getInstance().closeConnectionToDB();
-        return valueToReturn;
-    }
 
     /**
      * This method delete a meeting
      * @param valueId the name of the meeting subject
      */
     public static void deleteMeeting(String valueId){
-        String servicesId = obtainKeyValue(DomainAppConstants.COLLECT_MEETING, DomainAppConstants.KEY_TITLE, valueId, DomainAppConstants.KEY_SERVICE_ID);
-        String roomId = obtainKeyValue(DomainAppConstants.COLLECT_MEETING, DomainAppConstants.KEY_TITLE, valueId, DomainAppConstants.KEY_ROOM_ID);
-        String meetingId = obtainKeyValue(DomainAppConstants.COLLECT_MEETING, DomainAppConstants.KEY_TITLE, valueId, DomainAppConstants.KEY_ID);
+        String servicesId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_MEETING, DomainAppConstants.KEY_TITLE, valueId, DomainAppConstants.KEY_SERVICE_ID);
+        String roomId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_MEETING, DomainAppConstants.KEY_TITLE, valueId, DomainAppConstants.KEY_ROOM_ID);
+        String meetingId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_MEETING, DomainAppConstants.KEY_TITLE, valueId, DomainAppConstants.KEY_ID);
         String endpoint = EndPoints.MEETING_BY_ID.replace(DomainAppConstants.REPLACE_SERVICE_ID, servicesId)
                                                  .replace(DomainAppConstants.REPLACE_ROOM_ID, roomId)
                                                  .replace(DomainAppConstants.REPLACE_MEETING_ID, meetingId);
