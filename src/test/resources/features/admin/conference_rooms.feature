@@ -43,3 +43,5 @@ Feature: Conference Rooms
       And I select the Resource Association Tab
       And I add "2" Resource to the Room
     Then the resource and quantity should be displayed for the room in the list
+#      And the Room obtain by api should be contain the resource id
+      And the room obtain by api should be contain the quantity assign

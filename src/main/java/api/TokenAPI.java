@@ -22,7 +22,7 @@ public class TokenAPI {
      * @return the token for the user account
      */
     public static String getToken(String userName, String password, String authentication){
-        RestAssured.baseURI = CredentialManager.getInstance().getRoomManagerService() + LOGIN_SERVICE;
+        RestAssured.baseURI = CredentialManager.getInstance().getRoomManagerService();
         RestAssured.useRelaxedHTTPSValidation();
 
         JSONObject request = new JSONObject();
@@ -34,9 +34,10 @@ public class TokenAPI {
                 .contentType("application/json")
                 .body(request.toString())
                 .when()
-                .post();
+                .post("login");
 
         JSONObject auth = new JSONObject(response.asString());
         return auth.getString("token");
     }
+
 }
