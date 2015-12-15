@@ -3,8 +3,7 @@ package steps;
 import api.APILibrary;
 import api.EndPoints;
 import api.TokenAPI;
-import com.mongodb.DBObject;
-import cucumber.api.PendingException;
+import org.json.JSONArray;
 import cucumber.api.java.en.And;
 
 import cucumber.api.java.en.Given;
@@ -20,7 +19,6 @@ import ui.pages.admin.LocationPage;
 import entities.Resource;
 import framework.UIMethods;
 import junit.framework.Assert;
-import ui.pages.admin.ConferenceRoomsPage;
 import ui.pages.admin.ResourceAssociatePage;
 
 import ui.pages.admin.RoomSettingsPage;
@@ -113,6 +111,22 @@ public class ConferenceRoomSteps {
         resource.setName(resourceName);
         resource.setCustomName(resourceDisplayName);
         resource.setFontIcon("fa fa-desktop");
+
+        JSONObject jsonResource = new JSONObject();
+        jsonResource.put("name", resourceName);
+        jsonResource.put("customName", resourceDisplayName);
+        jsonResource.put("fontIcon", "fa fa-desktop");
+        jsonResource.put("description", "");
+        jsonResource.put("from", "");
+        System.out.println(jsonResource);
+
+        String token = TokenAPI.getToken("test", "Client123", "local");
+
+        String endPoint = EndPoints.RESOURCE;
+        JSONObject response = apiLibrary.post(jsonResource,token,endPoint);
+        System.out.println(response);
+
+        conferenceRoom.addResource(resource);
     }
 
     @And("^I go to \"(.*?)\" page$")
@@ -154,7 +168,48 @@ public class ConferenceRoomSteps {
     }
     @And("^the information updated in the room should be obtained by API$")
     public void verifyRoomIsDisableByAPI(){
+        dataBaseDriver.createConnectionToDB("172.20.208.120");
+        String id = dataBaseDriver.getKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
+        conferenceRoom.setId(id);
+        dataBaseDriver.closeConnectionToDB();
 
+        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", id);
+        JSONObject response = apiLibrary.getById(endPoint);
+
+        Assert.assertFalse("the room is disabled", response.getBoolean("enabled"));
+    }
+    @And("^the Room obtain by api should be contain the resource id$")
+    public void verifyResourceInRoom(){
+        dataBaseDriver.createConnectionToDB("172.20.208.120");
+        String id = dataBaseDriver.getKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
+        conferenceRoom.setId(id);
+        dataBaseDriver.closeConnectionToDB();
+
+        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
+        JSONObject response = apiLibrary.getById(endPoint);
+        System.out.println("+++++++++++++++++++++++++++"+response);
+        System.out.println("==========================="+response.get("resources"));
+        JSONArray resources = (JSONArray) response.get("resources");
+        String resourceID = null;
+        for (int ind = 0; ind<resources.length(); ind++){
+             resourceID = resources.getJSONObject(ind).getString("resourceId");
+            System.out.println(resourceID);
+            System.out.println(resource.getId());
+        }
+        Assert.assertEquals("the resource id is the same that assigned", resourceID, resource.getId());
+    }
+    @And("^the room obtain by api should be contain the quantity assign$")
+    public void verifyQuantityResourcesInRoom(){
+        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
+        JSONObject response = apiLibrary.getById(endPoint);
+
+        JSONArray resources = (JSONArray) response.get("resources");
+        String resourceQuantity = null;
+        for (int ind = 0; ind<resources.length(); ind++){
+            resourceQuantity = resources.getJSONObject(ind).getString("quantity");
+        }
+
+        Assert.assertEquals("the quantity the resouces assigned in the room is the same that was assigned", resourceQuantity, resource.getQuantity());
     }
 
     @Given("^I have a Room with name \"([^\"]*)\" that is associated with the Location \"([^\"]*)\"$")

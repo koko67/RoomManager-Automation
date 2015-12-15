@@ -27,7 +27,7 @@ public class APILibrary {
     public static APILibrary instance = null;
 
     public APILibrary(){
-       init();
+        init();
     }
 
     public static APILibrary getInstance(){
@@ -71,11 +71,11 @@ public class APILibrary {
      */
     public JSONObject post(JSONObject jsonObject, String token, String endPoint){
         Response response = given()
-                            .contentType(CONTENT_TYPE)
-                            .header(AUTHORIZATION_HEADER, AUTHORIZATION_TYPE + token)
-                            .body(jsonObject.toString())
-                            .when()
-                            .post(endPoint);
+                .contentType(CONTENT_TYPE)
+                .header(AUTHORIZATION_HEADER, AUTHORIZATION_TYPE + token)
+                .body(jsonObject.toString())
+                .when()
+                .post(endPoint);
 
         return new JSONObject(response.asString());
     }
@@ -123,7 +123,7 @@ public class APILibrary {
         String toEncode = CredentialManager.getInstance().getUserExchange() + ":" + CredentialManager.getInstance().getPasswordExchange();
         String authEncode = null;
         try{
-           authEncode = Base64.getEncoder().encodeToString(toEncode.getBytes(ENCODE_TYPE));
+            authEncode = Base64.getEncoder().encodeToString(toEncode.getBytes(ENCODE_TYPE));
         } catch (UnsupportedEncodingException e){
             log.error("Unsupported Encoding Exception " + e);
         }
@@ -137,9 +137,9 @@ public class APILibrary {
      */
     public JSONObject delete(String endPoint){
         Response response = given()
-                            .header(AUTHORIZATION_HEADER, BASIC_AUTHENTICATION + encodeBase64Authentication())
-                            .when()
-                            .delete(endPoint);
+                .header(AUTHORIZATION_HEADER, BASIC_AUTHENTICATION + encodeBase64Authentication())
+                .when()
+                .delete(endPoint);
         return new JSONObject(response.asString());
     }
 

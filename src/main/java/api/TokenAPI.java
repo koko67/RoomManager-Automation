@@ -37,7 +37,9 @@ public class TokenAPI {
                 .when()
                 .post(LOGIN_SERVICE);
 
+
         JSONObject auth = new JSONObject(response.asString());
         return auth.getString("token");
     }
+
 }
