@@ -3,6 +3,7 @@ package steps;
 import api.APILibrary;
 import api.EndPoints;
 import api.TokenAPI;
+import cucumber.api.java.After;
 import org.json.JSONArray;
 import cucumber.api.java.en.And;
 
@@ -36,8 +37,6 @@ public class ConferenceRoomSteps {
     private ConferenceRoomsPage conferenceRoomsPage;
     private RoomSettingsPage roomInfoPage;
     private LocationPage locationPage;
-    private APILibrary apiLibrary;
-    private DataBaseDriver dataBaseDriver;
     private ConferenceRoom conferenceRoom;
     private Location location;
     private Resource resource;
@@ -50,8 +49,6 @@ public class ConferenceRoomSteps {
         resource = new Resource();
         this.conferenceRoom = conferenceRoom;
         this.location = new Location();
-        this.apiLibrary = new APILibrary();
-        dataBaseDriver = new DataBaseDriver();
         token = obtainToken();
     }
 
@@ -67,15 +64,6 @@ public class ConferenceRoomSteps {
 
     @When("^I assign the current Room to the Location \"(.*?)\"$")
     public void assignRoomToALocation(String locationName){
-//        //PRECONDITION CREATING THE LOCATION
-//        JSONObject newLocation = new JSONObject();
-//        newLocation.put("name", "fundacion-jala");
-//        newLocation.put("displayName", "fundacion-jala");
-//        String token = TokenAPI.getToken("test","Client123","basic");
-//        String endPoint = EndPoints.LOCATIONS;
-//        response = apiLibrary.post(newLocation, token, endPoint);
-//
-//        //STEPS
         assignLocationToRoom(locationName);
     }
 
@@ -106,6 +94,7 @@ public class ConferenceRoomSteps {
     public void isTheInfoEditedObtainedByAPI(String roomName){
 
     }
+
     @Given("^I have created a resource with name \"(.*?)\", customName \"(.*?)\"$")
     public void createResource(String resourceName, String resourceDisplayName){
         resource.setName(resourceName);
@@ -118,13 +107,9 @@ public class ConferenceRoomSteps {
         jsonResource.put("fontIcon", "fa fa-desktop");
         jsonResource.put("description", "");
         jsonResource.put("from", "");
-        System.out.println(jsonResource);
-
-        String token = TokenAPI.getToken("test", "Client123", "local");
 
         String endPoint = EndPoints.RESOURCE;
-        JSONObject response = apiLibrary.post(jsonResource,token,endPoint);
-        System.out.println(response);
+        JSONObject response = APILibrary.getInstance().post(jsonResource, token, endPoint);
 
         conferenceRoom.addResource(resource);
     }
@@ -168,27 +153,25 @@ public class ConferenceRoomSteps {
     }
     @And("^the information updated in the room should be obtained by API$")
     public void verifyRoomIsDisableByAPI(){
-        dataBaseDriver.createConnectionToDB("172.20.208.120");
-        String id = dataBaseDriver.getKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
+        DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
+        String id = DataBaseDriver.getInstance().getKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
         conferenceRoom.setId(id);
-        dataBaseDriver.closeConnectionToDB();
+        DataBaseDriver.getInstance().closeConnectionToDB();
 
         String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", id);
-        JSONObject response = apiLibrary.getById(endPoint);
+        JSONObject response = APILibrary.getInstance().getById(endPoint);
 
         Assert.assertFalse("the room is disabled", response.getBoolean("enabled"));
     }
     @And("^the Room obtain by api should be contain the resource id$")
     public void verifyResourceInRoom(){
-        dataBaseDriver.createConnectionToDB("172.20.208.120");
-        String id = dataBaseDriver.getKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
+        DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
+        String id = DataBaseDriver.getInstance().getKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
         conferenceRoom.setId(id);
-        dataBaseDriver.closeConnectionToDB();
+        DataBaseDriver.getInstance().closeConnectionToDB();
 
         String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
-        JSONObject response = apiLibrary.getById(endPoint);
-        System.out.println("+++++++++++++++++++++++++++"+response);
-        System.out.println("==========================="+response.get("resources"));
+        JSONObject response = APILibrary.getInstance().getById(endPoint);
         JSONArray resources = (JSONArray) response.get("resources");
         String resourceID = null;
         for (int ind = 0; ind<resources.length(); ind++){
@@ -201,7 +184,7 @@ public class ConferenceRoomSteps {
     @And("^the room obtain by api should be contain the quantity assign$")
     public void verifyQuantityResourcesInRoom(){
         String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
-        JSONObject response = apiLibrary.getById(endPoint);
+        JSONObject response = APILibrary.getInstance().getById(endPoint);
 
         JSONArray resources = (JSONArray) response.get("resources");
         String resourceQuantity = null;
@@ -219,31 +202,27 @@ public class ConferenceRoomSteps {
         location.put("customName", locationName);
 
         String endPoint = EndPoints.LOCATIONS;
+        response = APILibrary.getInstance().post(location, token, endPoint);
 
-        response = apiLibrary.post(location, token, endPoint);
-        dataBaseDriver.createConnectionToDB("172.20.208.241");
-        conferenceRoom.setId(dataBaseDriver.getKeyValue("rooms", "displayName", roomName, "_id"));
+        DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
+        conferenceRoom.setId(DataBaseDriver.getInstance().getKeyValue("rooms", "displayName", roomName, "_id"));
+        DataBaseDriver.getInstance().closeConnectionToDB();
 
         JSONObject updateRoom = new JSONObject();
         updateRoom.put("locationId", response.getString("_id"));
-
         String roomsEndPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
-
-        response = apiLibrary.put(updateRoom, token, roomsEndPoint);
+        response = APILibrary.getInstance().put(updateRoom, token, roomsEndPoint);
     }
 
     @And("^I have a Location with name \"([^\"]*)\"$")
     public void createNewLocation(String name) throws Throwable {
+        location.setName(name);
+        location.setDisplayName(name);
         JSONObject location = new JSONObject();
         location.put("name", name);
         location.put("customName", name);
-
         String locationsEndPoint = EndPoints.LOCATIONS;
-
-        response = apiLibrary.post(location, token, locationsEndPoint);
-
-        Assert.assertEquals(location.getString("name"), response.getString("name"));
-        Assert.assertEquals(location.getString("customName"), response.getString("customName"));
+        response = APILibrary.getInstance().post(location, token, locationsEndPoint);
     }
 
     @Then("^the current Room should be moved to the new Location$")
@@ -251,22 +230,32 @@ public class ConferenceRoomSteps {
         isAssociatedRoomToLocationRoomPage();
     }
 
-    private String obtainToken(){
-        String username = CredentialManager.getInstance().getUserNameAdmin();
-        String password = CredentialManager.getInstance().getPasswordAdmin();
-        String token = TokenAPI.getToken(username, password, "local");
-        return token;
-    }
-
     @And("^the current Room should be obtained by API request associated with the location$")
     public void isTheRoomAObtainedByAPI() throws Throwable {
         String endPoint = EndPoints.RESOURCE_BY_ID.replace("#id#", conferenceRoom.getId());
-        JSONObject response = apiLibrary.getById(endPoint);
+        JSONObject response = APILibrary.getInstance().getById(endPoint);
         Assert.assertEquals(conferenceRoom.getLocationId(), response.getString("locationId"));
     }
 
     @And("^I assign the current Room to the new Location \"([^\"]*)\"$")
     public void I_assign_the_current_Room_to_the_new_Location(String locationName) throws Throwable {
         assignRoomToALocation(locationName);
+    }
+
+//    @After(value = "locationRoom")
+    public void deleteTokenLocation(){
+        String endPoint = EndPoints.LOCATION_BY_ID.replace("#id#", location.getId());
+        APILibrary.getInstance().delete(endPoint);
+    }
+
+    /**
+     * Get the token to use in the API methods
+     * @return a string value that is the Toke
+     */
+    private String obtainToken(){
+        String username = CredentialManager.getInstance().getUserNameAdmin();
+        String password = CredentialManager.getInstance().getPasswordAdmin();
+        String token = TokenAPI.getInstance().getToken(username, password, "local");
+        return token;
     }
 }
