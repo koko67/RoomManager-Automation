@@ -7,6 +7,7 @@
             "tabletURL":"https://172.20.208.49:4040/tablet/#/register",
             "homeTabletURL":"https://172.20.208.49:4040/tablet/#/home",
             "roomManagerService":"https://172.20.208.49:4040/",
+            "ip":"172.20.208.49",
             "userAdmin":{
                 "userName":"test",
                 "password":"Client123"
@@ -24,6 +25,7 @@
             "tabletURL":"https://172.20.208.120:4040/tablet/#/register",
             "homeTabletURL":"https://172.20.208.120:4040/tablet/#/home",
             "roomManagerService":"https://172.20.208.120:4040/",
+            "ip":"172.20.208.120",
             "userAdmin":{
                 "userName":"test",
                 "password":"Client123"
@@ -41,6 +43,7 @@
             "tabletURL":"https://172.20.208.241:4040/tablet/#/register",
             "homeTabletURL":"https://172.20.208.241:4040/tablet/#/home",
             "roomManagerService":"https://172.20.208.241:4040/",
+            "ip":"172.20.208.241",
             "userAdmin":{
                 "userName":"test",
                 "password":"Client123"

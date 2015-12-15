@@ -11,6 +11,9 @@ import junit.framework.Assert;
 import ui.PageTransporter;
 import ui.pages.tablet.*;
 
+import static conditions.MeetingConditions.deleteMeeting;
+import static conditions.MeetingConditions.isTheMeetingCreated;
+
 /**
  * User: Ronald Butron
  * Date: 12/10/15
@@ -28,6 +31,7 @@ public class MeetingSteps {
 
     @Given("^I'm sign in with the user \"(.*?)\" in the login page selecting the Room \"(.*?)\"$")
     public void lonInToTabletVersion(String userName, String roomName){
+        meeting.setRoomName(roomName);
         if(!CommonMethods.isItInTheLoginPageTablet() && !CommonMethods.isItInTheHomePageTablet()){
             loginTabletPage = PageTransporter.getInstance().toTabletLoginPage();
             statusPageTablet = loginTabletPage.signInSuccessfully(userName);
@@ -113,13 +117,23 @@ public class MeetingSteps {
     @When("^I update the meeting information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
     public void updateMeetingInformation(String subject, String from, String to, String body){
         schedulePageTablet.selectMeeting(meeting.getSubject());
+        meeting.setDeleteSubject(subject);
         meeting.setUpdateForm(subject, from, to, body);
         schedulePageTablet.updateMeeting(meeting);
     }
 
+    @Then("^the meeting should be listed in the meetings of Room using the API$")
+    public void isTheMeetingObtainedByAPI(){
+        Assert.assertTrue(isTheMeetingCreated(meeting.getRoomName(), meeting.getSubject()));
+    }
+
+    @Then("^the meeting should not be listed in the meetings of Room using the API$")
+    public void isNotTheMeetingObtainedByAPI(){
+        Assert.assertFalse(isTheMeetingCreated(meeting.getRoomName(), meeting.getSubject()));
+    }
+
     @After(value = "@RemoveMeeting")
     public void removeMT(){
-        removeAMeeting();
-        schedulePageTablet.goHome();
+        deleteMeeting(meeting.getDeleteSubject());
     }
 }

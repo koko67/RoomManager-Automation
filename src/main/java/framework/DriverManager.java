@@ -36,13 +36,11 @@ public class DriverManager {
 
     private void init(){
         browserName = System.getProperty("browserName");
-        if(browserName == null || browserName == ""){
+        if(browserName == null || browserName.isEmpty()){
             driver = new FirefoxDriver();
         } else if(browserName.equals("chrome")){
             System.setProperty("webdriver.chrome.driver", chromedriverPath);
             driver = new ChromeDriver();
-        } else if(browserName.equals("firefox")){
-            driver = new FirefoxDriver();
         }
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Long.parseLong(timeOutImplicitWait), TimeUnit.SECONDS);
