@@ -22,4 +22,11 @@ public class DomainAppConstants {
     public static final String REPLACE_SERVICE_ID = "#serviceId#";
     public static final String REPLACE_ROOM_ID = "#roomId#";
     public static final String REPLACE_MEETING_ID = "#meetingId#";
+    public static final String LOCATIONS = "locations";
+    public static final String NAME = "name";
+    public static final String REPLACE_ID = "#id#";
+    public static final String CUSTOM_NAME = "customName";
+    public static final String LOCAL = "local";
+    public static final String DISPLAY_NAME = "displayName";
+    public static final String KEY_LOCATION_ID = "locationId";
 }
