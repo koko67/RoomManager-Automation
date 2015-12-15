@@ -4,6 +4,8 @@ import com.mongodb.*;
 import commons.DomainAppConstants;
 import org.apache.log4j.Logger;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: Ronald Butron
@@ -15,6 +17,22 @@ public class DataBaseDriver {
     private MongoClient mongoClient;
     private DB db;
     private DBCollection collection;
+    private static DataBaseDriver instance;
+
+    public DataBaseDriver(){
+        init();
+    }
+
+    public static DataBaseDriver getInstance(){
+        if(instance == null){
+            instance = new DataBaseDriver();
+        }
+        return  instance;
+    }
+
+    private void init(){
+
+    }
 
     /**
      * This method connect remote to a mongo data base
@@ -97,6 +115,32 @@ public class DataBaseDriver {
         log.info("Close data base connection");
         mongoClient.close();
     }
+
+    /**
+     * This method obtain a List of DBObject
+     * @param collect the name of the collection
+     * @param keyId the Id of the Key to search
+     * @param valueId the value of the key id
+     * @return return a list of DBObject that satisfy the search
+     */
+    public List<DBObject> getAListOfDBObject(String collect, String keyId, String valueId){
+        List<DBObject> documents = new ArrayList<DBObject>();
+        DBObject object = null;
+        BasicDBObject query = new BasicDBObject(keyId, valueId);
+        collection = db.getCollection(collect);
+        DBCursor cursor = collection.find(query);
+        try {
+            while(cursor.hasNext()) {
+                object = cursor.next();
+                documents.add(object);
+            }
+        } finally {
+            cursor.close();
+        }
+        System.out.println(documents);
+        return documents;
+    }
+
 
 
 
