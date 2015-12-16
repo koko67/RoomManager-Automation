@@ -142,17 +142,4 @@ public class DataBaseDriver {
         System.out.println(documents);
         return documents;
     }
-    public static void main(String args[]){
-        String ip = "172.20.208.120";
-        System.out.println("rescatando el ip"+ip);
-        DataBaseDriver.getInstance().createConnectionToDB(ip);
-        System.out.println("Abre la conexion");
-        String roomId =DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, "Floor1-Room1", DomainAppConstants.KEY_ID);
-        System.out.println(roomId);
-    }
-
-
-
-
-
 }

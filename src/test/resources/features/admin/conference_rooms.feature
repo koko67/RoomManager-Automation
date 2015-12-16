@@ -24,7 +24,7 @@ Feature: Conference Rooms
     | Floor1-Room001 | Floor1-Room10  |        |          |
 
   @locationRoom2
-  Scenario: Associate Location to a Room that already is associated with another Location
+  Scenario: Associate a Location to a Room that is already associated with another Location
     Given I have a Room with name "Floor1-Room16" that is associated with the Location "fundacion"
       And I have a Location with name "SACABA"
     When I open the Room "Floor1-Room16" from the Conference Room

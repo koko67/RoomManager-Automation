@@ -188,7 +188,6 @@ public class ConferenceRoomSteps {
         String resourceQuantity = null;
         for (int ind = 0; ind<resources.length(); ind++){
             resourceQuantity = resources.getJSONObject(ind).getString("quantity");
-            System.out.println("quantity: +++++ " + resourceQuantity);
         }
         Assert.assertEquals("the quantity the resouces assigned in the room is the same that was assigned", resourceQuantity, resource.getQuantity());
     }
