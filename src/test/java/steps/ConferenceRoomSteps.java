@@ -3,7 +3,6 @@ package steps;
 import api.APILibrary;
 import api.APIMethods;
 import api.EndPoints;
-import api.MethodsAPI;
 import commons.DomainAppConstants;
 import cucumber.api.java.After;
 import mongodb.DataBaseMethods;
