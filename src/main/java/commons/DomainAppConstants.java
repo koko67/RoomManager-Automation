@@ -45,4 +45,8 @@ public class DomainAppConstants {
     public static final String KEY_LOCATION_ID = "locationId";
     public static final String KEY_CODE = "code";
     public static final String KEY_CAPACITY = "capacity";
+    public static final String KEY_FONTICON = "fontIcon";
+    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_FROM = "from";
+    public static final String KEY_ENABLED = "enabled";
 }

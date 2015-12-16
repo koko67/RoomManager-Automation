@@ -2,7 +2,7 @@ package steps;
 
 import api.APILibrary;
 import api.EndPoints;
-import api.TokenAPI;
+import api.MethodsAPI;
 import commons.DomainAppConstants;
 import cucumber.api.java.After;
 import mongodb.DataBaseMethods;
@@ -119,14 +119,16 @@ public class ConferenceRoomSteps {
         resource.setFontIcon("fa fa-desktop");
 
         JSONObject jsonResource = new JSONObject();
-        jsonResource.put("name", resourceName);
-        jsonResource.put("customName", resourceDisplayName);
-        jsonResource.put("fontIcon", "fa fa-desktop");
-        jsonResource.put("from", "");
-        jsonResource.put("description", "");
+        jsonResource.put(DomainAppConstants.KEY_NAME, resourceName);
+        jsonResource.put(DomainAppConstants.KEY_CUSTOM_NAME, resourceDisplayName);
+        jsonResource.put(DomainAppConstants.KEY_FONTICON, resource.getFontIcon());
+        jsonResource.put(DomainAppConstants.KEY_DESCRIPTION, "");
+        jsonResource.put(DomainAppConstants.KEY_FROM, "");
+
 
         String endPoint = EndPoints.RESOURCE;
-        response = APILibrary.getInstance().post(jsonResource, endPoint);
+        JSONObject response = APILibrary.getInstance().post(jsonResource, endPoint);
+        resource.setId(response.getString(DomainAppConstants.KEY_ID));
 
         conferenceRoom.addResource(resource);
     }
@@ -182,34 +184,23 @@ public class ConferenceRoomSteps {
     }
     @And("^the Room obtain by api should be contain the resource id$")
     public void verifyResourceInRoom(){
-        DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
-        String id = DataBaseDriver.getInstance().getKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
-        conferenceRoom.setId(id);
-        DataBaseDriver.getInstance().closeConnectionToDB();
 
-        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
-        JSONObject response = APILibrary.getInstance().getById(endPoint);
+        String id = DataBaseMethods.obtainKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
+        conferenceRoom.setId(id);
+
+        String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
+
+        JSONObject response = MethodsAPI.get(endPoint);
         JSONArray resources = (JSONArray) response.get("resources");
+
         String resourceID = null;
+        String quantity = null;
         for (int ind = 0; ind<resources.length(); ind++){
-             resourceID = resources.getJSONObject(ind).getString("resourceId");
-            System.out.println(resourceID);
-            System.out.println(resource.getId());
+            resourceID = resources.getJSONObject(ind).getString("resourceId");
+
+            quantity = resources.getJSONObject(ind).getString("quantity");
         }
         Assert.assertEquals("the resource id is the same that assigned", resourceID, resource.getId());
-    }
-    @And("^the room obtain by api should be contain the quantity assign$")
-    public void verifyQuantityResourcesInRoom(){
-        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
-        JSONObject response = APILibrary.getInstance().getById(endPoint);
-
-        JSONArray resources = (JSONArray) response.get("resources");
-        String resourceQuantity = null;
-        for (int ind = 0; ind<resources.length(); ind++){
-            resourceQuantity = resources.getJSONObject(ind).getString("quantity");
-        }
-
-        Assert.assertEquals("the quantity the resouces assigned in the room is the same that was assigned", resourceQuantity, resource.getQuantity());
     }
 
     @Given("^I have a Room with name \"([^\"]*)\" that is associated with the Location \"([^\"]*)\"$")
@@ -284,5 +275,19 @@ public class ConferenceRoomSteps {
                 e.printStackTrace();
             }
         }
+    }
+
+    @After(value = "@disableRoom")
+    public void enableConferenceRoom(){
+        String roomId = DataBaseMethods
+                .obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
+                        DomainAppConstants.KEY_CUSTOM_DISPLAY_NAME,
+                        conferenceRoom.getCustomDisplayName(),
+                        DomainAppConstants.KEY_ID);
+        String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, roomId);
+
+        JSONObject request = new JSONObject();
+        request.put(DomainAppConstants.KEY_ENABLED, true);
+        APILibrary.getInstance().put(request, endPoint);
     }
 }

@@ -18,7 +18,7 @@ Feature: Location of the rooms
       And the current Room should be obtained by api contains the LocationId of this Location
 
   Scenario: User should be able to dis-associate room from a Location
-    Given I have a Location "Custom Name" with display name "display name" associate to Room with name "Floor1-Room1"
+    Given I have a Location "Custom Name" with display name "display name" associate to Room with name "ConfPrueba5"
       And I open the Location and I select the Locations Associations tab
     When I dis-associate the Room "ConfPrueba5" of the Location
     Then The Room "ConfPrueba5" should be displayed in the column of "Available"

@@ -20,9 +20,13 @@ public class MethodsAPI {
         return response;
     }
 
-    public static JSONObject post(JSONObject jsonLocation, String endPoint) {
+    public static JSONObject post(String name, String displayName, String endPoint) {
+        JSONObject jsonLocation = new JSONObject();
+        jsonLocation.put(DomainAppConstants.KEY_CUSTOM_NAME, displayName);
+        jsonLocation.put(DomainAppConstants.KEY_NAME, name);
+
         JSONObject response = APILibrary.getInstance()
-                                        .post(jsonLocation,endPoint);
+                                        .post(jsonLocation, endPoint);
         return  response;
     }
 }
