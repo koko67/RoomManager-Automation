@@ -4,6 +4,7 @@ import api.APILibrary;
 import api.APIMethods;
 import api.EndPoints;
 import commons.DomainAppConstants;
+import cucumber.api.java.After;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -164,5 +165,18 @@ public class LocationSteps {
 
         JSONObject room = APILibrary.getInstance().getById(EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getId()));
         Assert.assertEquals("The room has not location id ", room.get(DomainAppConstants.KEY_LOCATION_ID), null);
+    }
+    @After(value = "@LocationForUI")
+    public void deleteLocation(){
+        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.LOCATIONS, DomainAppConstants.KEY_NAME , location.getName(), DomainAppConstants.KEY_ID);
+        APILibrary.getInstance().delete(EndPoints.LOCATION_BY_ID.replace(DomainAppConstants.REPLACE_ID, id));
+    }
+    @After(value = "@AssociateLocation")
+    public void deleteLocationAssociate(){
+        APILibrary.getInstance().delete(EndPoints.LOCATION_BY_ID.replace(DomainAppConstants.REPLACE_ID, location.getId()));
+    }
+    @After(value = "@DisassociateLocation")
+    public void deleteLocationDisAssociate(){
+        APILibrary.getInstance().delete(EndPoints.LOCATION_BY_ID.replace(DomainAppConstants.REPLACE_ID, location.getId()));
     }
 }
