@@ -150,13 +150,12 @@ public class APILibrary {
      * @return a JSON object with the response
      */
     public JSONObject post(JSONObject jsonObject, String endPoint){
-        String userName = CredentialManager.getInstance().getUserExchange();
-        String password = CredentialManager.getInstance().getPasswordExchange();
         Response response = given()
-                .auth()
-                .basic(userName, password)
+                .contentType(CONTENT_TYPE)
+                .header(AUTHORIZATION_HEADER, BASIC_AUTHENTICATION + encodeBase64Authentication())
+                .body(jsonObject.toString())
                 .when()
-                .post(jsonObject.toString());
+                .post(endPoint);
         return new JSONObject(response.asString());
     }
 

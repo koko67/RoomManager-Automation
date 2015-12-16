@@ -53,7 +53,6 @@ public class UIMethods {
             while (result && count <= maxCount){
                 Thread.sleep(200);
                 result = isElementPresent(element);
-                System.out.println("Element not present======="+ result);
                 count++;
             }
 
