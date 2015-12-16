@@ -24,7 +24,7 @@ Feature: Conference Rooms
     | Floor1-Room001 | Floor1-Room10  |        |          |
 
   @locationRoom2
-  Scenario:
+  Scenario: Associate Location to a Room that already is associated with another Location
     Given I have a Room with name "Floor1-Room15" that is associated with the Location "fundacion"
       And I have a Location with name "SACABA"
     When I open the Room "Floor1-Room16" from the Conference Room
@@ -40,7 +40,7 @@ Feature: Conference Rooms
       And the information updated in the room should be obtained by API
 
   Scenario: Associate a resource to a conference room
-    Given I have created a resource with name "Computer", customName "Computer2"
+    Given I have created a resource with name "Computer", customName "Computer"
       And I go to Conference Room page
       And I select the resource button in the header page
     When I open the Room "Floor1-Room1" from the Conference Room
