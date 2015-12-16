@@ -27,7 +27,7 @@ Feature: Conference Rooms
   Scenario: Associate Location to a Room that already is associated with another Location
     Given I have a Room with name "Floor1-Room15" that is associated with the Location "fundacion"
       And I have a Location with name "SACABA"
-    When I open the Room "Floor1-Room16" from the Conference Room
+    When I open the Room "Floor1-Room15" from the Conference Room
       And I assign the current Room to the Location "SACABA"
     Then the current room is associated to the Location defined in the Locations page
       And the current Room should be obtained by API request associated with the location

@@ -1,7 +1,7 @@
 @Meetings
 Feature: Meetings
   Background:
-    Given I'm sign in with the user "test" in the login page selecting the Room "Floor1-Room11"
+    Given I'm sign in with the user "test" in the login page selecting the Room "Floor1-Room12"
 
   @RemoveMeeting
   Scenario Outline: : Create a meeting
