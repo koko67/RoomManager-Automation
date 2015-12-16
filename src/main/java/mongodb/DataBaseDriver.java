@@ -147,7 +147,7 @@ public class DataBaseDriver {
         System.out.println("rescatando el ip"+ip);
         DataBaseDriver.getInstance().createConnectionToDB(ip);
         System.out.println("Abre la conexion");
-        String roomId =DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.DISPLAY_NAME, "Floor1-Room1", DomainAppConstants.KEY_ID);
+        String roomId =DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, "Floor1-Room1", DomainAppConstants.KEY_ID);
         System.out.println(roomId);
     }
 
