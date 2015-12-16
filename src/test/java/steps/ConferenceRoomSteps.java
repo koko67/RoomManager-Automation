@@ -179,17 +179,17 @@ public class ConferenceRoomSteps {
 
         Assert.assertFalse("the room is disabled", response.getBoolean("enabled"));
     }
-    @And("^the Room obtain by api should be contain the resource and quantity$")
+    @And("^the Room obtained by API should contain the resource and quantity$")
     public void verifyResourceInRoom(){
+        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
+        JSONObject response = APILibrary.getInstance().getById(endPoint);
 
-        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
-        conferenceRoom.setId(id);
-
-        String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
-
-        JSONObject response = APIMethods.get(endPoint);
-        JSONArray resources = response.getJSONArray("resources");
-
+        JSONArray resources = (JSONArray) response.get("resources");
+        String resourceQuantity = null;
+        for (int ind = 0; ind<resources.length(); ind++){
+            resourceQuantity = resources.getJSONObject(ind).getString("quantity");
+        }
+        Assert.assertEquals("the quantity the resouces assigned in the room is the same that was assigned", resourceQuantity, resource.getQuantity());
     }
 
     @Given("^I have a Room with name \"([^\"]*)\" that is associated with the Location \"([^\"]*)\"$")
