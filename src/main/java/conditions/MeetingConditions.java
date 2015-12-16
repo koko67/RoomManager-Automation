@@ -5,7 +5,6 @@ import api.EndPoints;
 import commons.DomainAppConstants;
 import mongodb.DataBaseMethods;
 import org.json.JSONArray;
-import utils.CredentialManager;
 
 /**
  * User: RonaldButron
@@ -35,7 +34,6 @@ public class MeetingConditions {
             }
        }
         return isItCreated;
-
     }
 
 
@@ -50,7 +48,7 @@ public class MeetingConditions {
         String endpoint = EndPoints.MEETING_BY_ID.replace(DomainAppConstants.REPLACE_SERVICE_ID, servicesId)
                                                  .replace(DomainAppConstants.REPLACE_ROOM_ID, roomId)
                                                  .replace(DomainAppConstants.REPLACE_MEETING_ID, meetingId);
-        APILibrary.getInstance().delete(endpoint);
+        APILibrary.getInstance().deleteBasic(endpoint);
     }
 
 }

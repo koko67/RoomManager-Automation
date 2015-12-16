@@ -12,18 +12,18 @@ Feature: Meetings
       And the meeting information should be displayed in the Next section of Main page
       And the meeting should be listed in the meetings of Room using the API
   Examples:
-   |Organizer |Subject  |From |To   |Attendees         |Body       |
-   |ronald    |meeting  |14:00|14:30|ronald.salvatierra|Be on Time |
-   |jose      |organize |15:00|15:30|                  |Bring Paper|
+   |Organizer              |Subject  |From |To   |Attendees                        |Body       |
+   |ronald.salavatierra    |reunion  |14:00|14:30|                                 |Be on Time |
+   |jose.cardozo           |organize |15:00|15:30|ronald.salvatierra@grupob01.local|Bring Paper|
 
   Scenario: Remove a meeting
-    Given I navigate to Available section
-      And I create successfully a meeting with the following information: "Ronald", "meeting", "08:00", "09:00", "jose.cardozo", "Close the door on time"
+    Given I have a meeting with the following information: "ronald.salvatierra", "reunion", "10:40", "11:10", "jose.cardozo@grupob01.local"
+      And I navigate to Available section
     When I remove the meeting
     Then an information message should be displayed "Meeting successfully removed"
       And the meeting should not be displayed in the Schedule bar
       And the meeting information should not be displayed in the Next section of Main page
-     And the meeting should not be listed in the meetings of Room using the API
+      And the meeting should not be listed in the meetings of Room using the API
 
   Scenario Outline: Try to create a meeting with missing information
     Given I navigate to Available section
@@ -41,9 +41,9 @@ Feature: Meetings
 
   @RemoveMeeting
   Scenario: Update a meeting
-    Given I navigate to Available section
-      And I create successfully a meeting with the following information: "Ronald", "Planning", "08:00", "09:00", "ronald.salvatierra ", "Close the Door 08:05"
-    When I update the meeting information: "Planning Change Hour", "11:00", "11:30", "Close the Door 11:05"
+    Given I have a meeting with the following information: "ronald.salvatierra", "reunion", "10:40", "11:10", "jose.cardozo@grupob01.local"
+      And I navigate to Available section
+    When I update the meeting information: "Planning Change Hour", "11:10", "11:40", "Close the Door 11:10"
     Then an information message should be displayed "Meeting successfully updated"
       And the meeting should be displayed in the Schedule bar
       And the meeting information should be displayed in the Next section of Main page
@@ -51,9 +51,9 @@ Feature: Meetings
 
   @RemoveMeeting
   Scenario: Try to create a meeting at the same time than other meeting
-    Given I navigate to Available section
-      And I create successfully a meeting with the following information: "Ronald", "Planning", "08:00", "09:00", "ronald.salvatierra ", "Close the Door 08:05"
-    When I create a meeting at the same time than other with the following information: "Jose", "Demo", "08:00", "09:00", "jose.cardozo", "Bring a Paper and Pencil"
+    Given I have a meeting with the following information: "ronald.salvatierra", "reunion", "10:40", "11:10", "jose.cardozo@grupob01.local"
+      And I navigate to Available section
+    When I create a meeting at the same time than other with the following information: "jose.cardozo", "Demo", "10:40", "11:10", "ronald.salvatierra@grupob01.local", "Bring a Paper and Pencil"
     Then an information message should be displayed "There is a conflict with another meeting, please choose another time interval"
       And the meeting should not be displayed in the Schedule bar
       And the meeting information should not be displayed in the Next section of Main page

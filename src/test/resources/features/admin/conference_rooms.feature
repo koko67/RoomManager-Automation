@@ -34,7 +34,7 @@ Feature: Conference Rooms
 
   @disableRoom
   Scenario: Disable a room pressing the button enable/disable
-    Given I open the Room "Floor1-Room11" from the Conference Room
+    Given I open the Room "Floor1-Room13" from the Conference Room
     When I pressing the disable button
     Then The current Room should be disable
       And the information updated in the room should be obtained by API
