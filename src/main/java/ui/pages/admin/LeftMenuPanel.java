@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import ui.BasePageObject;
+import utils.LeftBarOptions;
 
 /**
  * User: JorgeAvila
@@ -28,20 +29,20 @@ public class LeftMenuPanel extends BasePageObject{
         waitUntilPageObjectIsLoaded();
     }
 
-    public ConferenceRoomsPage clickOnConferenceRooms(String  buttonName){
-        By xpathButton = constructXpathButton(buttonName);
+    public ConferenceRoomsPage clickOnConferenceRooms(){
+        By xpathButton = constructXpathButton(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
         clickLeftMenuButton(xpathButton);
         return new ConferenceRoomsPage();
     }
 
-    public LocationPage clickOnLocationPage(String buttonName){
-        By xpathButton = constructXpathButton(buttonName);
+    public LocationPage clickOnLocationPage(){
+        By xpathButton = constructXpathButton(LeftBarOptions.LOCATIONS.getToPage());
         clickLeftMenuButton(xpathButton);
         return new LocationPage();
     }
 
-    public EmailServerPage clickOnEmailServerPage(String buttonName){
-        By xpathButton = constructXpathButton(buttonName);
+    public EmailServerPage clickOnEmailServerPage(){
+        By xpathButton = constructXpathButton(LeftBarOptions.EMAIL_SERVER.getToPage());
         clickLeftMenuButton(xpathButton);
         return new EmailServerPage();
     }
