@@ -44,7 +44,7 @@ public class ConferenceRoomsPage extends BasePageObject{
      * @return return conference room page with new elements visible in the DOM
      */
     public ConferenceRoomsPage clickOnResourcesDisplayButton(Resource resource) {
-         By resourcesLocator = By.xpath("//span[contains(text(),'" + resource.getCustomName() + "')]/..");
+        By resourcesLocator = By.xpath("//span[contains(text(),'" + resource.getCustomName() + "')]");
         WebElement resourcesButton = driver.findElement(resourcesLocator);
         resourcesButton.click();
         return new ConferenceRoomsPage();

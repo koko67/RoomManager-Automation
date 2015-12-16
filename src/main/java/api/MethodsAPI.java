@@ -22,8 +22,8 @@ public class MethodsAPI {
 
     public static JSONObject post(String name, String displayName, String endPoint) {
         JSONObject jsonLocation = new JSONObject();
-        jsonLocation.put(DomainAppConstants.CUSTOM_NAME, displayName);
-        jsonLocation.put(DomainAppConstants.NAME, name);
+        jsonLocation.put(DomainAppConstants.KEY_CUSTOM_NAME, displayName);
+        jsonLocation.put(DomainAppConstants.KEY_NAME, name);
 
         JSONObject response = APILibrary.getInstance()
                                         .post(jsonLocation, endPoint);
