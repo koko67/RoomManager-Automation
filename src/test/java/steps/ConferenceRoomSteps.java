@@ -160,19 +160,19 @@ public class ConferenceRoomSteps {
     @And("^the information updated in the room should be obtained by API$")
     public void verifyRoomIsDisableByAPI(){
         DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
-        String id = DataBaseDriver.getInstance().getKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
+        String id = DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(id);
         DataBaseDriver.getInstance().closeConnectionToDB();
 
-        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", id);
+        String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
         JSONObject response = APILibrary.getInstance().getById(endPoint);
 
         Assert.assertFalse("the room is disabled", response.getBoolean("enabled"));
     }
-    @And("^the Room obtain by api should be contain the resource id$")
+    @And("^the Room obtain by api should be contain the resource id and quantity$")
     public void verifyResourceInRoom(){
 
-        String id = DataBaseMethods.obtainKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
+        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(id);
 
         String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
@@ -181,45 +181,32 @@ public class ConferenceRoomSteps {
         JSONArray resources = (JSONArray) response.get("resources");
 
         String resourceID = null;
-        String quantity = null;
+        String quantityR;
         for (int ind = 0; ind<resources.length(); ind++){
             resourceID = resources.getJSONObject(ind).getString("resourceId");
 
-            quantity = resources.getJSONObject(ind).getString("quantity");
+            quantityR = resources.getJSONObject(ind).getString("quantity");
+
         }
         Assert.assertEquals("the resource id is the same that assigned", resourceID, resource.getId());
     }
-//    @And("^the room obtain by api should be contain the quantity assign$")
-//    public void verifyQuantityResourcesInRoom(){
-//        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
-//        JSONObject response = APILibrary.getInstance().getById(endPoint);
-//
-//        JSONArray resources = (JSONArray) response.get("resources");
-//        String resourceQuantity = null;
-//        for (int ind = 0; ind<resources.length(); ind++){
-//            resourceQuantity = resources.getJSONObject(ind).getString("quantity");
-//            System.out.println("quantity: +++++ " + resourceQuantity);
-//        }
-//
-//        Assert.assertEquals("the quantity the resouces assigned in the room is the same that was assigned", resourceQuantity, resource.getQuantity());
-//    }
 
     @Given("^I have a Room with name \"([^\"]*)\" that is associated with the Location \"([^\"]*)\"$")
     public void createResourceWithLocation(String roomName, String locationName) throws Throwable {
         JSONObject location = new JSONObject();
-        location.put("name", locationName);
-        location.put("customName", locationName);
+        location.put(DomainAppConstants.NAME, locationName);
+        location.put(DomainAppConstants.CUSTOM_NAME, locationName);
 
         String endPoint = EndPoints.LOCATIONS;
         response = APILibrary.getInstance().post(location, endPoint);
 
         DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
-        conferenceRoom.setId(DataBaseDriver.getInstance().getKeyValue("rooms", "displayName", roomName, "_id"));
+        conferenceRoom.setId(DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.DISPLAY_NAME, roomName,  DomainAppConstants.KEY_ID));
         DataBaseDriver.getInstance().closeConnectionToDB();
 
         JSONObject updateRoom = new JSONObject();
-        updateRoom.put("locationId", response.getString("_id"));
-        String roomsEndPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
+        updateRoom.put(DomainAppConstants.KEY_LOCATION_ID, response.getString(DomainAppConstants.KEY_ID));
+        String roomsEndPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getId());
         response = APILibrary.getInstance().put(updateRoom, roomsEndPoint);
     }
 
@@ -228,11 +215,11 @@ public class ConferenceRoomSteps {
         location.setName(name);
         location.setDisplayName(name);
         JSONObject request = new JSONObject();
-        request.put("name", name);
-        request.put("customName", name);
+        request.put(DomainAppConstants.NAME, name);
+        request.put(DomainAppConstants.CUSTOM_NAME, name);
         String locationsEndPoint = EndPoints.LOCATIONS;
         response = APILibrary.getInstance().post(request, locationsEndPoint);
-        conferenceRoom.setLocationId(response.getString("_id"));
+        conferenceRoom.setLocationId(response.getString(DomainAppConstants.KEY_ID));
     }
 
     @Then("^the current Room should be moved to the new Location$")
@@ -244,12 +231,12 @@ public class ConferenceRoomSteps {
     public void roomAssociatedToLocation() throws Throwable {
         String id = DataBaseMethods.
                 obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
-                        "displayName",
+                        DomainAppConstants.DISPLAY_NAME,
                         conferenceRoom.getDisplayName(),
-                        "_id");
-        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", id);
+                        DomainAppConstants.KEY_ID);
+        String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
         response = APILibrary.getInstance().getById(endPoint);
-        Assert.assertEquals(conferenceRoom.getLocationId(), response.getString("locationId"));
+        Assert.assertEquals(conferenceRoom.getLocationId(), response.getString(DomainAppConstants.KEY_LOCATION_ID));
     }
 
     @And("^I assign the current Room to the new Location \"([^\"]*)\"$")
@@ -259,7 +246,7 @@ public class ConferenceRoomSteps {
 
     @After(value = "@locationRoom")
     public void deleteTokenLocation() throws Throwable {
-        String endPoint = EndPoints.LOCATION_BY_ID.replace("#id#", conferenceRoom.getLocationId());
+        String endPoint = EndPoints.LOCATION_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getLocationId());
         APILibrary.getInstance().delete(endPoint);
     }
 }
