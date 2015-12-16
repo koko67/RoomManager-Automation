@@ -10,15 +10,10 @@ public class DomainAppConstants {
     public static final String MEETING_SUCCESSFULLY_CREATED = "Meeting successfully created";
     public static final String MEETING_SUCCESSFULLY_UPDATED = "Meeting successfully updated";
     public static final String MEETING_SUCCESFULLY_REMOVED = "Meeting successfully removed";
-    public static final String DEFECT_ID = "RM01";
+    public static final String DEFECT_ID = "RM03";
     public static final String DB_SERVER_NAME = "roommanager";
     public static final String COLLECT_MEETING = "meetings";
     public static final String COLLECT_ROOMS = "rooms";
-    public static final String KEY_ID = "_id";
-    public static final String KEY_SERVICE_ID = "serviceId";
-    public static final String KEY_ROOM_ID = "roomId";
-    public static final String KEY_DISPLAY_NAME = "displayName";
-    public static final String KEY_TITLE = "title";
     public static final String REPLACE_SERVICE_ID = "#serviceId#";
     public static final String REPLACE_ROOM_ID = "#roomId#";
     public static final String REPLACE_MEETING_ID = "#meetingId#";
@@ -26,12 +21,28 @@ public class DomainAppConstants {
     public static final String PASSWORD = "password";
     public static final String AUTHENTICATION = "authentication";
     public static final String LOCATIONS = "locations";
-    public static final String NAME = "name";
     public static final String REPLACE_ID = "#id#";
-    public static final String CUSTOM_NAME = "customName";
-    public static final String DISPLAY_NAME = "displayName";
-    public static final String KEY_LOCATION_ID = "locationId";
-    public final static String LOCAL_AUTHENTICATION = "local";
     public final static String LOGIN_SERVICE = "login";
+
+
+    /**
+     * API key names
+     */
+    public final static String LOCAL_AUTHENTICATION = "local";
     public final static String TOKEN = "token";
+
+    /**
+     * Response key names
+     */
+    public static final String KEY_NAME = "name";
+    public static final String KEY_ID = "_id";
+    public static final String KEY_SERVICE_ID = "serviceId";
+    public static final String KEY_ROOM_ID = "roomId";
+    public static final String KEY_DISPLAY_NAME = "displayName";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_CUSTOM_NAME = "customName";
+    public static final String KEY_CUSTOM_DISPLAY_NAME = "customDisplayName";
+    public static final String KEY_LOCATION_ID = "locationId";
+    public static final String KEY_CODE = "code";
+    public static final String KEY_CAPACITY = "capacity";
 }
