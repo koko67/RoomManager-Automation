@@ -22,4 +22,16 @@ public class DomainAppConstants {
     public static final String REPLACE_SERVICE_ID = "#serviceId#";
     public static final String REPLACE_ROOM_ID = "#roomId#";
     public static final String REPLACE_MEETING_ID = "#meetingId#";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String AUTHENTICATION = "authentication";
+    public static final String LOCATIONS = "locations";
+    public static final String NAME = "name";
+    public static final String REPLACE_ID = "#id#";
+    public static final String CUSTOM_NAME = "customName";
+    public static final String DISPLAY_NAME = "displayName";
+    public static final String KEY_LOCATION_ID = "locationId";
+    public final static String LOCAL_AUTHENTICATION = "local";
+    public final static String LOGIN_SERVICE = "login";
+    public final static String TOKEN = "token";
 }

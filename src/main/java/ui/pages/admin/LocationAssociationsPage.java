@@ -1,8 +1,6 @@
 package ui.pages.admin;
 
-import commons.FrameworkUtils;
 import entities.ConferenceRoom;
-
 import framework.UIMethods;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -85,12 +83,14 @@ public class LocationAssociationsPage extends BasePageObject{
      * @return true if exist the conference room associated
      */
     public boolean existsRoomAssociated(ConferenceRoom conferenceRoom) {
-        By confRoom = By.xpath("//following-sibling::div[.//div[contains(.,'" + conferenceRoom.getDisplayName() + "')]]");
+        By roomLocator = By.xpath("//following-sibling::div[.//div[contains(.,'" + conferenceRoom.getDisplayName() + "')]]");
         try {
-            FrameworkUtils.elementHighlight(associateLabel.findElement(confRoom));
-            return associateLabel.findElement(confRoom) != null;
+            associateLabel.findElement(roomLocator);
+            saveLocation();
+            return true;
         } catch(NoSuchElementException e){
             e.printStackTrace();
+            saveLocation();
             return false;
         }
     }

@@ -36,7 +36,7 @@ public class DriverManager {
 
     private void init(){
         browserName = System.getProperty("browserName");
-        if(browserName == null || browserName.isEmpty()){
+        if(browserName == null || browserName.isEmpty() || browserName.equals("firefox")){
             driver = new FirefoxDriver();
         } else if(browserName.equals("chrome")){
             System.setProperty("webdriver.chrome.driver", chromedriverPath);

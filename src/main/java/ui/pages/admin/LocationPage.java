@@ -1,5 +1,6 @@
 package ui.pages.admin;
 
+import entities.ConferenceRoom;
 import entities.Location;
 import framework.UIMethods;
 import org.openqa.selenium.By;
@@ -60,5 +61,15 @@ public class LocationPage extends BasePageObject{
         Actions action =  new Actions(driver);
         action.moveToElement(locationName).doubleClick().perform();
         return new LocationSettingsPage();
+    }
+
+    public boolean verifyIfExistLocationAssociation(Location location, ConferenceRoom conferenceRoom){
+        By locationBy = By.xpath("//div[contains(text(),'" + location.getDisplayName() + "')]");
+        if(UIMethods.waitElementIsPresent(3, locationBy)){
+            return clickEditLocation(location)
+                    .goLocationAssociationTab()
+                    .existsRoomAssociated(conferenceRoom);
+        }
+        return false;
     }
 }

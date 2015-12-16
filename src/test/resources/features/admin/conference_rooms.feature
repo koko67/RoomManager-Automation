@@ -6,11 +6,13 @@ Feature: Conference Rooms
   Background:
     Given I log in successfully as "test" with password "Client123"
 
+  @locationRoom
   Scenario: Assign a room to a locations from the Conference Room
-    Given I open the Room "Floor1-Room10" from the Conference Room
+    Given I have a Location with name "fundacion-jala"
+      And I open the Room "Floor1-Room10" from the Conference Room
     When I assign the current Room to the Location "fundacion-jala"
-    Then the Room "Floor1-Room10" is associated to the Location "fundacion-jala" in the Locations page
-      And the Location "Custom Name" should be obtained by API request for the Room "Room Name"
+    Then the current room is associated to the Location defined in the Locations page
+      And the current Room should be obtained by API request associated with the location
 
   Scenario Outline: edit room info
     Given I open the Room "<RoomName>" from the Conference Room
@@ -19,15 +21,16 @@ Feature: Conference Rooms
   Examples:
     | RoomName       | NewRoomName    | Code   | Capacity |
     | Floor1-Room10  | Floor1-Room001 | MyCode | 50       |
-    | Floor1-Room001 | Floor1-Room10  | MyCode | 50       |
+    | Floor1-Room001 | Floor1-Room10  |        |          |
 
-#  Scenario: Out of order wrong in a Conference Room
-#    Given I open the Room "Room Name" from the Conference Room
-#      And I select the "Out Of Order Planning" Tab
-#    When I set a date "12/12/12" from today in the "From" field
-#      And I set a date "12/12/12" from today in the "To" field
-#    Then an error message "To field must be greater than From field Cannot establish out of order as an past event" should be displayed in the form
-#      And the room reserve should not be stored
+  @locationRoom2
+  Scenario:
+    Given I have a Room with name "Floor1-Room15" that is associated with the Location "fundacion"
+      And I have a Location with name "SACABA"
+    When I open the Room "Floor1-Room16" from the Conference Room
+      And I assign the current Room to the new Location "SACABA"
+    Then the current Room should be moved to the new Location
+      And the current Room should be obtained by API request associated with the location
 
   Scenario: Disable a room pressing the button enable/disable
     Given I open the Room "Floor1-Room11" from the Conference Room
