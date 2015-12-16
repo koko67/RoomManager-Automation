@@ -189,6 +189,7 @@ public class ConferenceRoomSteps {
 
         JSONObject response = MethodsAPI.get(endPoint);
         JSONArray resources = response.getJSONArray("resources");
+
     }
 
     @Given("^I have a Room with name \"([^\"]*)\" that is associated with the Location \"([^\"]*)\"$")
@@ -205,7 +206,6 @@ public class ConferenceRoomSteps {
                                     DomainAppConstants.KEY_DISPLAY_NAME,
                                     roomName,
                                     DomainAppConstants.KEY_ID));
-
         JSONObject updateRoom = new JSONObject();
         updateRoom.put(DomainAppConstants.KEY_LOCATION_ID, response.getString(DomainAppConstants.KEY_ID));
         String roomsEndPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getId());
