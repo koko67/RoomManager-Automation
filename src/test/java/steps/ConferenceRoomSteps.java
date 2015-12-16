@@ -130,6 +130,7 @@ public class ConferenceRoomSteps {
 
         conferenceRoom.addResource(resource);
         UIMethods.refreshPage();
+        UIMethods.switchPages(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
     }
 
     @And("^I go to Conference Room page$")
@@ -140,17 +141,23 @@ public class ConferenceRoomSteps {
     public void displayResourceInTableConferenceRoom(){
         conferenceRoomsPage.clickOnResourcesDisplayButton(resource);
     }
-    @And("^I select the Resource Association Tab$")
-    public void selectResourceAssociateTab(){
+
+    @When("^I assign a Resource with quantity \"(.*?)\" to room \"(.*?)\"$")
+    public void assignedResource(String quantity, String roomName){
+        conferenceRoom.setDisplayName(roomName);
+        conferenceRoom.setCustomDisplayName(roomName);
+        UIMethods.refreshPage();
+        UIMethods.switchPages(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
+        conferenceRoomsPage = homePage.getLeftMenuPanel().clickOnConferenceRooms();
+        roomInfoPage = conferenceRoomsPage.openConferenceRoomSettings(conferenceRoom.getCustomDisplayName());
         resourceAssociatePage = roomInfoPage.clickOnResourceAssociateTab();
-    }
-    @And("^I add \"(.*?)\" Resource to the Room$")
-    public void addResourcesToRoom(String quantity){
         resource.setQuantity(quantity);
         resourceAssociatePage.clickOnAddResources(resource)
-                            .typeQuantityResources(resource);
+                .typeQuantityResources(resource);
         conferenceRoomsPage = resourceAssociatePage.clickOnSaveButton();
+
     }
+
     @Then("^the resource and quantity should be displayed for the room in the list$")
     public void verifyResourceAndQuantity(){
         conferenceRoomsPage.makeSureResourcesIsSelect(resource);
@@ -179,17 +186,20 @@ public class ConferenceRoomSteps {
 
         Assert.assertFalse("the room is disabled", response.getBoolean("enabled"));
     }
-    @And("^the Room obtained by API should contain the resource and quantity$")
+    @And("^the Room obtain by api should be contain the resource and quantity$")
     public void verifyResourceInRoom(){
-        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
-        JSONObject response = APILibrary.getInstance().getById(endPoint);
+        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
+        conferenceRoom.setId(id);
 
-        JSONArray resources = (JSONArray) response.get("resources");
-        String resourceQuantity = null;
-        for (int ind = 0; ind<resources.length(); ind++){
-            resourceQuantity = resources.getJSONObject(ind).getString("quantity");
-        }
-        Assert.assertEquals("the quantity the resouces assigned in the room is the same that was assigned", resourceQuantity, resource.getQuantity());
+        String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
+        JSONObject response = APIMethods.get(endPoint);
+
+        JSONArray resources = response.getJSONArray(DomainAppConstants.KEY_RESOURCES);
+        String resId = resources.getJSONObject(0).getString(DomainAppConstants.KEY_RESOURCE_ID);
+        int quantity = resources.getJSONObject(0).getInt(DomainAppConstants.KEY_QUANTITY);
+
+        Assert.assertEquals("The resources is the same that was assigned",resource.getId() , resId);
+        Assert.assertEquals("The quantity was assigned successfully",Integer.parseInt(resource.getQuantity()), quantity);
     }
 
     @Given("^I have a Room with name \"([^\"]*)\" that is associated with the Location \"([^\"]*)\"$")
@@ -277,5 +287,9 @@ public class ConferenceRoomSteps {
         JSONObject request = new JSONObject();
         request.put(DomainAppConstants.KEY_ENABLED, true);
         APILibrary.getInstance().put(request, endPoint);
+    }
+    @After(value = "@AssociateResource")
+    public void removeResource(){
+        APILibrary.getInstance().delete(EndPoints.RESOURCE_BY_ID.replace(DomainAppConstants.REPLACE_ID, resource.getId()));
     }
 }

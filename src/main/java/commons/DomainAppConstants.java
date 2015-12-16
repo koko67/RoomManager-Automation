@@ -61,5 +61,4 @@ public class DomainAppConstants {
     public static final String KEY_ROOM_EMAIL = "roomEmail";
     public static final String KEY_RESOURCES = "resources";
     public static final String KEY_ATTENDEES = "attendees";
-
 }
