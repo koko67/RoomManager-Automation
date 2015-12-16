@@ -8,9 +8,9 @@ public class DomainAppConstants {
 
     public static final String MEETING_CONFLICT_ERROR = "There is a conflict with another meeting, please choose another time interval";
     public static final String MEETING_SUCCESSFULLY_CREATED = "Meeting successfully created";
-    public static final String MEETING_SUCCESSFULLY_UPDATED = "Meeting successfully updated"; //Meeting successfully updated
+    public static final String MEETING_SUCCESSFULLY_UPDATED = "Meeting successfully updated";
     public static final String MEETING_SUCCESFULLY_REMOVED = "Meeting successfully removed";
-    public static final String DEFECT_ID = "RM03";
+    public static final String DEFECT_ID = "RM02";
     public static final String DB_SERVER_NAME = "roommanager";
     public static final String COLLECT_MEETING = "meetings";
     public static final String COLLECT_ROOMS = "rooms";
@@ -23,6 +23,9 @@ public class DomainAppConstants {
     public static final String LOCATIONS = "locations";
     public static final String REPLACE_ID = "#id#";
     public final static String LOGIN_SERVICE = "login";
+    public final static String DOMAIN_EMAIL = "@grupob01.local";
+    public final static String DATE_FORMAT = "yyyy-MM-dd";
+    public final static String SECONDS = ":00.000Z";
 
 
     /**
@@ -51,4 +54,12 @@ public class DomainAppConstants {
     public static final String KEY_ENABLED = "enabled";
     public static final String KEY_QUANTITY = "quantity";
     public static final String KEY_RESOURCE_ID = "resourceId";
+    public static final String KEY_ORGANIZER = "organizer";
+    public static final String KEY_START = "start";
+    public static final String KEY_END = "end";
+    public static final String KEY_LOCATION = "location";
+    public static final String KEY_ROOM_EMAIL = "roomEmail";
+    public static final String KEY_RESOURCES = "resources";
+    public static final String KEY_ATTENDEES = "attendees";
+
 }
