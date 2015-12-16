@@ -38,13 +38,13 @@ Feature: Conference Rooms
     When I pressing the disable button
     Then The current Room should be disable
       And the information updated in the room should be obtained by API
-#
-#  Scenario: Associate a resource to a conference room
-#    Given I have created a resource with name "Computer", customName "Computer2"
-#      And I go to Conference Room page
-#      And I select the resource button in the header page
-#    When I open the Room "Floor1-Room1" from the Conference Room
-#      And I select the Resource Association Tab
-#      And I add "2" Resource to the Room
-#    Then the resource and quantity should be displayed for the room in the list
-#      And the Room obtain by api should be contain the resource id
+
+  Scenario: Associate a resource to a conference room
+    Given I have created a resource with name "Computer", customName "Computer2"
+      And I go to Conference Room page
+      And I select the resource button in the header page
+    When I open the Room "Floor1-Room1" from the Conference Room
+      And I select the Resource Association Tab
+      And I add "2" Resource to the Room
+    Then the resource and quantity should be displayed for the room in the list
+      And the Room obtain by api should be contain the resource id
