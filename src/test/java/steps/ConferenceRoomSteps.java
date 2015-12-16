@@ -1,6 +1,7 @@
 package steps;
 
 import api.APILibrary;
+import api.APIMethods;
 import api.EndPoints;
 import api.MethodsAPI;
 import commons.DomainAppConstants;
@@ -187,7 +188,7 @@ public class ConferenceRoomSteps {
 
         String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
 
-        JSONObject response = MethodsAPI.get(endPoint);
+        JSONObject response = APIMethods.get(endPoint);
         JSONArray resources = response.getJSONArray("resources");
     }
 

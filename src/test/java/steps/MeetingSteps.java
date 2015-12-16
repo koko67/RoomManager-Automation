@@ -1,5 +1,6 @@
 package steps;
 
+import api.APIMethods;
 import common.CommonMethods;
 import cucumber.api.java.After;
 import cucumber.api.java.en.And;
@@ -58,6 +59,14 @@ public class MeetingSteps {
         meeting.setDeleteSubject(subject);
         schedulePageTablet.createSuccessfullyAMeeting(meeting);
         schedulePageTablet.fillSuccessfullyExchangeCredentialsForm();
+    }
+
+    @Given("^I have a meeting with the following information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")
+    public void createdMeetingByAPI(String organizer, String subject, String from, String to, String attendees){
+        meeting.setAllForm(organizer, subject, from, to, attendees, null);
+        meeting.setDeleteSubject(subject);
+        APIMethods.createAMeetingByAPI(meeting);
+
     }
 
     @When("^I create unsuccessfully a meeting with the following information: \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\", \"(.*?)\"$")

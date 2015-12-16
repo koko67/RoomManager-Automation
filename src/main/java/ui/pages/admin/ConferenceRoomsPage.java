@@ -106,7 +106,7 @@ public class ConferenceRoomsPage extends BasePageObject{
      * @return
      */
     public boolean isRoomEnable(ConferenceRoom conferenceRoom) {
-        By roomEnableButtonLocator = By.xpath("//span[contains(.,'Floor1-Room11')]/../../../preceding-sibling::div[contains(@class,'centeredColumn')]//span[contains(@class,'gray')]");
+        By roomEnableButtonLocator = By.xpath("//span[contains(.,'" + conferenceRoom.getDisplayName() + "')]/../../../preceding-sibling::div[contains(@class,'centeredColumn')]//span[contains(@class,'gray')]");
         String colorButton = null;
         try {
             WebElement roomEnableButton = driver.findElement(roomEnableButtonLocator);

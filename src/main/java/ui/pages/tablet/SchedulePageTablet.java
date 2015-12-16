@@ -317,15 +317,13 @@ public class SchedulePageTablet extends BasePageObject {
      * @param meeting object;
      */
     public void updateMeeting(Meeting meeting) {
-        updateButton.click();
-        fillTheExchangePasswordMeeting();
         setSubject(meeting.getSubject());
         setHourFrom(meeting.getHourFrom());
         setHourTo(meeting.getHourTo());
         setBodyInput(meeting.getBody());
         updateButton.click();
         fillTheExchangePasswordMeeting();
-        UIMethods.waitElementIsNotPresent(8, By.xpath("//div[contains(@class, 'ng-binding') and contains(., '" + DomainAppConstants.MEETING_SUCCESSFULLY_UPDATED + "')]"));
+        UIMethods.waitElementIsNotPresent(10, By.xpath("//div[contains(@class, 'ng-binding') and contains(., '" + DomainAppConstants.MEETING_SUCCESSFULLY_UPDATED + "')]"));
 
     }
 }
