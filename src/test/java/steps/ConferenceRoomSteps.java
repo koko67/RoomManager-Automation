@@ -3,7 +3,6 @@ package steps;
 import api.APILibrary;
 import api.APIMethods;
 import api.EndPoints;
-import api.MethodsAPI;
 import commons.DomainAppConstants;
 import cucumber.api.java.After;
 import mongodb.DataBaseMethods;
@@ -180,16 +179,17 @@ public class ConferenceRoomSteps {
 
         Assert.assertFalse("the room is disabled", response.getBoolean("enabled"));
     }
-    @And("^the Room obtain by api should be contain the resource id$")
+    @And("^the Room obtain by api should be contain the resource and quantity$")
     public void verifyResourceInRoom(){
 
-        String id = DataBaseMethods.obtainKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
+        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(id);
 
         String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
 
         JSONObject response = APIMethods.get(endPoint);
         JSONArray resources = response.getJSONArray("resources");
+
     }
 
     @Given("^I have a Room with name \"([^\"]*)\" that is associated with the Location \"([^\"]*)\"$")
@@ -206,7 +206,6 @@ public class ConferenceRoomSteps {
                                     DomainAppConstants.KEY_DISPLAY_NAME,
                                     roomName,
                                     DomainAppConstants.KEY_ID));
-
         JSONObject updateRoom = new JSONObject();
         updateRoom.put(DomainAppConstants.KEY_LOCATION_ID, response.getString(DomainAppConstants.KEY_ID));
         String roomsEndPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getId());
