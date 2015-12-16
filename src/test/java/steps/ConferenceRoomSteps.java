@@ -29,6 +29,9 @@ import ui.pages.admin.HomePage;
 import utils.CredentialManager;
 import utils.LeftBarOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Author: Jorge Avila
  * Date: 12/3/15
@@ -44,12 +47,14 @@ public class ConferenceRoomSteps {
     private Resource resource;
     private ResourceAssociatePage resoureAssociatePage;
     private JSONObject response;
+    private List<String> locationIds;
 
     public ConferenceRoomSteps(ConferenceRoom conferenceRoom){
         homePage = new HomePage();
         resource = new Resource();
         this.conferenceRoom = conferenceRoom;
         this.location = new Location();
+        locationIds = new ArrayList<String>();
     }
 
     @Given("^I open the Room \"(.*?)\" from the Conference Room$")
@@ -59,7 +64,7 @@ public class ConferenceRoomSteps {
         UIMethods.refreshPage();
         UIMethods.switchPages(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
         conferenceRoomsPage = homePage.getLeftMenuPanel()
-                                      .clickOnConferenceRooms("Conference Rooms");
+                                      .clickOnConferenceRooms();
 
         roomInfoPage = conferenceRoomsPage.openConferenceRoomSettings(conferenceRoom.getCustomDisplayName());
     }
@@ -79,13 +84,14 @@ public class ConferenceRoomSteps {
     @Then("^the current room is associated to the Location defined in the Locations page$")
     public void isAssociatedRoomToLocationRoomPage(){
         locationPage = homePage.getLeftMenuPanel()
-                .clickOnLocationPage("Locations");
+                .clickOnLocationPage();
         boolean existAssociated = locationPage.verifyIfExistLocationAssociation(location, conferenceRoom);
         Assert.assertTrue(existAssociated);
     }
 
     @When("^I edit the following info: Display Name \"(.*?)\", code \"(.*?)\" and capacity \"(.*?)\"$")
     public void editInfoConferenceRoom(String displayName, String roomCode, String roomCapacity){
+        conferenceRoom.setDisplayName(displayName);
         conferenceRoom.setCustomDisplayName(displayName);
         conferenceRoom.setCode(roomCode);
         conferenceRoom.setCapacity(roomCapacity);
@@ -94,7 +100,16 @@ public class ConferenceRoomSteps {
 
     @Then("^the info edited should be obtained by API request for the Room \"(.*?)\"$")
     public void isTheInfoEditedObtainedByAPI(String roomName){
+        String roomId = DataBaseMethods
+                .obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
+                        DomainAppConstants.KEY_CUSTOM_DISPLAY_NAME,
+                        roomName,
+                        DomainAppConstants.KEY_ID);
+        String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, roomId);
+        JSONObject response = APILibrary.getInstance().getById(endPoint);
 
+        Assert.assertEquals(conferenceRoom.getCustomDisplayName(), response.getString(DomainAppConstants.KEY_CUSTOM_DISPLAY_NAME));
+        Assert.assertEquals(conferenceRoom.getCode(), response.getString(DomainAppConstants.KEY_CODE));
     }
 
     @Given("^I have created a resource with name \"(.*?)\", customName \"(.*?)\"$")
@@ -107,18 +122,18 @@ public class ConferenceRoomSteps {
         jsonResource.put("name", resourceName);
         jsonResource.put("customName", resourceDisplayName);
         jsonResource.put("fontIcon", "fa fa-desktop");
-        jsonResource.put("description", "");
         jsonResource.put("from", "");
+        jsonResource.put("description", "");
 
         String endPoint = EndPoints.RESOURCE;
-        JSONObject response = APILibrary.getInstance().post(jsonResource, endPoint);
+        response = APILibrary.getInstance().post(jsonResource, endPoint);
 
         conferenceRoom.addResource(resource);
     }
 
-    @And("^I go to \"(.*?)\" page$")
-    public void goToConferenceRoomPage(String namePage){
-        conferenceRoomsPage = homePage.getLeftMenuPanel().clickOnConferenceRooms(namePage);
+    @And("^I go to Conference Room page$")
+    public void goToConferenceRoomPage(){
+        conferenceRoomsPage = homePage.getLeftMenuPanel().clickOnConferenceRooms();
     }
     @And("^I select the resource button in the header page$")
     public void displayResourceInTableConferenceRoom(){
@@ -206,6 +221,8 @@ public class ConferenceRoomSteps {
         String endPoint = EndPoints.LOCATIONS;
         response = APILibrary.getInstance().post(location, endPoint);
 
+        locationIds.add(response.getString(DomainAppConstants.KEY_ID));
+
         DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
         conferenceRoom.setId(DataBaseDriver.getInstance().getKeyValue("rooms", "displayName", roomName, "_id"));
         DataBaseDriver.getInstance().closeConnectionToDB();
@@ -226,6 +243,7 @@ public class ConferenceRoomSteps {
         String locationsEndPoint = EndPoints.LOCATIONS;
         response = APILibrary.getInstance().post(request, locationsEndPoint);
         conferenceRoom.setLocationId(response.getString("_id"));
+        locationIds.add(response.getString(DomainAppConstants.KEY_ID));
     }
 
     @Then("^the current Room should be moved to the new Location$")
@@ -237,22 +255,34 @@ public class ConferenceRoomSteps {
     public void roomAssociatedToLocation() throws Throwable {
         String id = DataBaseMethods.
                 obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
-                        "displayName",
+                        DomainAppConstants.KEY_DISPLAY_NAME,
                         conferenceRoom.getDisplayName(),
-                        "_id");
-        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", id);
+                        DomainAppConstants.KEY_ID);
+        String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
         response = APILibrary.getInstance().getById(endPoint);
         Assert.assertEquals(conferenceRoom.getLocationId(), response.getString("locationId"));
     }
 
     @And("^I assign the current Room to the new Location \"([^\"]*)\"$")
     public void I_assign_the_current_Room_to_the_new_Location(String locationName) throws Throwable {
-        assignRoomToALocation(locationName);
+        assignLocationToRoom(locationName);
     }
 
     @After(value = "@locationRoom")
-    public void deleteTokenLocation() throws Throwable {
+    public void deleteLocation() throws Throwable {
         String endPoint = EndPoints.LOCATION_BY_ID.replace("#id#", conferenceRoom.getLocationId());
         APILibrary.getInstance().delete(endPoint);
+    }
+
+    @After(value = "@locationRoom2")
+    public void deleteLocations() throws Throwable {
+        for(String id : locationIds){
+            String endPoint = EndPoints.LOCATION_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
+            try {
+                APILibrary.getInstance().delete(endPoint);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

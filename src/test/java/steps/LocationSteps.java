@@ -3,7 +3,6 @@ package steps;
 import api.APILibrary;
 import api.EndPoints;
 import api.MethodsAPI;
-import api.TokenAPI;
 import commons.DomainAppConstants;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -49,7 +48,7 @@ public class LocationSteps {
     }
     @Given("^I go to the \"(.*?)\" page$")
     public void goToAPage(String namePage){
-        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage(namePage);
+        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage();
     }
 
     @When("^I create a Location with Name \"(.*?)\" and Display Name \"(.*?)\"$")
@@ -67,9 +66,9 @@ public class LocationSteps {
 
     @And("^the Location should be obtained by API request$")
     public void isTheLocationObtainedByAPI(){
-        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.LOCATIONS, DomainAppConstants.NAME, location.getName(), DomainAppConstants.KEY_ID);
+        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.LOCATIONS, DomainAppConstants.KEY_NAME, location.getName(), DomainAppConstants.KEY_ID);
         JSONObject response = MethodsAPI.get(EndPoints.LOCATION_BY_ID.replace(DomainAppConstants.REPLACE_ID, id));
-        Assert.assertEquals("the location name is the same that was assigned", response.getString(DomainAppConstants.NAME), location.getName());
+        Assert.assertEquals("the location name is the same that was assigned", response.getString(DomainAppConstants.KEY_NAME), location.getName());
         Assert.assertEquals("the location display name is the same that was assigned", response.getString(DomainAppConstants.KEY_DISPLAY_NAME), location.getDisplayName());
     }
 
@@ -79,14 +78,14 @@ public class LocationSteps {
         location.setDisplayName(locationName);
 
         JSONObject jsonLocation = new JSONObject();
-        jsonLocation.put(DomainAppConstants.CUSTOM_NAME, locationName);
-        jsonLocation.put(DomainAppConstants.NAME, locationName);
+        jsonLocation.put(DomainAppConstants.KEY_CUSTOM_NAME, locationName);
+        jsonLocation.put(DomainAppConstants.KEY_NAME, locationName);
 
         JSONObject response = MethodsAPI.post(jsonLocation,EndPoints.LOCATIONS);
 
         location.setId(response.getString(DomainAppConstants.KEY_ID));
 
-        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.LOCATIONS.getToPage());
+        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage();
         UIMethods.refreshPage();
 
 //        UIMethods.switchPages(LeftBarOptions.LOCATIONS.getToPage());
@@ -102,7 +101,7 @@ public class LocationSteps {
 
     @Then("^the Room \"(.*?)\" should be associated to the Location in the Conference Rooms page$")
     public void isTheRoomDisplayInTheLocation(String roomName){
-        conferenceRoomPage = homePage.getLeftMenuPanel().clickOnConferenceRooms(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
+        conferenceRoomPage = homePage.getLeftMenuPanel().clickOnConferenceRooms();
         conferenceRoom.setDisplayName(roomName);
         roomInfoPage = conferenceRoomPage.openConferenceRoomSettings(roomName);
         boolean isLocationInRoomInfo = roomInfoPage.isLocationPresent(location);
@@ -116,7 +115,7 @@ public class LocationSteps {
         System.out.println("rescatando el ip"+ip);
         DataBaseDriver.getInstance().createConnectionToDB(ip);
         System.out.println("Abre la conexion");
-        String roomId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,DomainAppConstants.DISPLAY_NAME,conferenceRoom.getDisplayName(),DomainAppConstants.KEY_ID);
+        String roomId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         System.out.println(roomId);
         conferenceRoom.setId(roomId);
 
@@ -133,8 +132,8 @@ public class LocationSteps {
         conferenceRoom.setLocation(location);
 
         JSONObject newLocation = new JSONObject();
-        newLocation.put(DomainAppConstants.CUSTOM_NAME, location.getDisplayName());
-        newLocation.put(DomainAppConstants.NAME, location.getName());
+        newLocation.put(DomainAppConstants.KEY_CUSTOM_NAME, location.getDisplayName());
+        newLocation.put(DomainAppConstants.KEY_NAME, location.getName());
 
         String endPoint = EndPoints.LOCATIONS;
 
@@ -143,14 +142,14 @@ public class LocationSteps {
         location.setId(response.getString(DomainAppConstants.KEY_ID));
 
         DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
-        String roomId = DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.DISPLAY_NAME, conferenceRoom.getCustomDisplayName(), DomainAppConstants.KEY_ID);
+        String roomId = DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getCustomDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(roomId);
         DataBaseDriver.getInstance().closeConnectionToDB();
 
         JSONObject updateRoom = new JSONObject();
         updateRoom.put(DomainAppConstants.KEY_LOCATION_ID, response.getString(DomainAppConstants.KEY_ID));
 
-        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage(LeftBarOptions.LOCATIONS.getToPage());
+        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage();
     }
     @And("^I open the Location and I select the Locations Associations tab$")
     public void openLocation(){
@@ -165,7 +164,7 @@ public class LocationSteps {
     public void isRoomDisplayedAssocite(String roomName, String state){
         boolean isLocationAvailable = locationAssociationsPage.searchRoomInAvailableColumn(roomName, state);
         locationAssociationsPage.saveLocation();
-        conferenceRoomPage = homePage.getLeftMenuPanel().clickOnConferenceRooms(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
+        conferenceRoomPage = homePage.getLeftMenuPanel().clickOnConferenceRooms();
         roomInfoPage = conferenceRoomPage.openConferenceRoomSettings(roomName);
         boolean isLocationInRoomInfo = !roomInfoPage.isLocationPresent(location);
         roomInfoPage.clickOnSaveButton();
@@ -175,7 +174,7 @@ public class LocationSteps {
     @And("^the current Room should not obtained by api contains the LocationId of this Location$")
     public void isContainsRoomInLocation(){
         DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
-        String roomId = DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
+        String roomId = DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(roomId);
         DataBaseDriver.getInstance().closeConnectionToDB();
 
