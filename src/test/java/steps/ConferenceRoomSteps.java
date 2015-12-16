@@ -14,7 +14,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import entities.ConferenceRoom;
 import entities.Location;
-import mongodb.DataBaseDriver;
 import org.json.JSONObject;
 import ui.pages.admin.ConferenceRoomsPage;
 import ui.pages.admin.LocationPage;
@@ -26,7 +25,6 @@ import ui.pages.admin.ResourceAssociatePage;
 
 import ui.pages.admin.RoomSettingsPage;
 import ui.pages.admin.HomePage;
-import utils.CredentialManager;
 import utils.LeftBarOptions;
 
 import java.util.ArrayList;
@@ -45,7 +43,7 @@ public class ConferenceRoomSteps {
     private ConferenceRoom conferenceRoom;
     private Location location;
     private Resource resource;
-    private ResourceAssociatePage resoureAssociatePage;
+    private ResourceAssociatePage resourceAssociatePage;
     private JSONObject response;
     private List<String> locationIds;
 
@@ -131,6 +129,7 @@ public class ConferenceRoomSteps {
         resource.setId(response.getString(DomainAppConstants.KEY_ID));
 
         conferenceRoom.addResource(resource);
+        UIMethods.refreshPage();
     }
 
     @And("^I go to Conference Room page$")
@@ -143,14 +142,14 @@ public class ConferenceRoomSteps {
     }
     @And("^I select the Resource Association Tab$")
     public void selectResourceAssociateTab(){
-        resoureAssociatePage = roomInfoPage.clickOnResourceAssociateTab();
+        resourceAssociatePage = roomInfoPage.clickOnResourceAssociateTab();
     }
     @And("^I add \"(.*?)\" Resource to the Room$")
     public void addResourcesToRoom(String quantity){
         resource.setQuantity(quantity);
-        resoureAssociatePage.clickOnAddResources(resource)
+        resourceAssociatePage.clickOnAddResources(resource)
                             .typeQuantityResources(resource);
-        conferenceRoomsPage = resoureAssociatePage.clickOnSaveButton();
+        conferenceRoomsPage = resourceAssociatePage.clickOnSaveButton();
     }
     @Then("^the resource and quantity should be displayed for the room in the list$")
     public void verifyResourceAndQuantity(){
@@ -172,12 +171,10 @@ public class ConferenceRoomSteps {
     }
     @And("^the information updated in the room should be obtained by API$")
     public void verifyRoomIsDisableByAPI(){
-        DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
-        String id = DataBaseDriver.getInstance().getKeyValue("rooms", "displayName", conferenceRoom.getDisplayName(), "_id");
+        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(id);
-        DataBaseDriver.getInstance().closeConnectionToDB();
 
-        String endPoint = EndPoints.ROOM_BY_ID.replace("#id#", id);
+        String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
         JSONObject response = APILibrary.getInstance().getById(endPoint);
 
         Assert.assertFalse("the room is disabled", response.getBoolean("enabled"));
@@ -191,36 +188,27 @@ public class ConferenceRoomSteps {
         String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
 
         JSONObject response = MethodsAPI.get(endPoint);
-        JSONArray resources = (JSONArray) response.get("resources");
-
-        String resourceID = null;
-        String quantity = null;
-        for (int ind = 0; ind<resources.length(); ind++){
-            resourceID = resources.getJSONObject(ind).getString("resourceId");
-
-            quantity = resources.getJSONObject(ind).getString("quantity");
-        }
-        Assert.assertEquals("the resource id is the same that assigned", resourceID, resource.getId());
+        JSONArray resources = response.getJSONArray("resources");
     }
 
     @Given("^I have a Room with name \"([^\"]*)\" that is associated with the Location \"([^\"]*)\"$")
     public void createResourceWithLocation(String roomName, String locationName) throws Throwable {
         JSONObject location = new JSONObject();
-        location.put("name", locationName);
-        location.put("customName", locationName);
+        location.put(DomainAppConstants.KEY_NAME, locationName);
+        location.put(DomainAppConstants.KEY_CUSTOM_NAME, locationName);
 
         String endPoint = EndPoints.LOCATIONS;
         response = APILibrary.getInstance().post(location, endPoint);
-
         locationIds.add(response.getString(DomainAppConstants.KEY_ID));
-
-        DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
-        conferenceRoom.setId(DataBaseDriver.getInstance().getKeyValue("rooms", "displayName", roomName, "_id"));
-        DataBaseDriver.getInstance().closeConnectionToDB();
+        conferenceRoom.setId(DataBaseMethods
+                            .obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
+                                    DomainAppConstants.KEY_DISPLAY_NAME,
+                                    roomName,
+                                    DomainAppConstants.KEY_ID));
 
         JSONObject updateRoom = new JSONObject();
-        updateRoom.put("locationId", response.getString("_id"));
-        String roomsEndPoint = EndPoints.ROOM_BY_ID.replace("#id#", conferenceRoom.getId());
+        updateRoom.put(DomainAppConstants.KEY_LOCATION_ID, response.getString(DomainAppConstants.KEY_ID));
+        String roomsEndPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getId());
         response = APILibrary.getInstance().put(updateRoom, roomsEndPoint);
     }
 
@@ -229,11 +217,11 @@ public class ConferenceRoomSteps {
         location.setName(name);
         location.setDisplayName(name);
         JSONObject request = new JSONObject();
-        request.put("name", name);
-        request.put("customName", name);
+        request.put(DomainAppConstants.KEY_NAME, name);
+        request.put(DomainAppConstants.KEY_CUSTOM_NAME, name);
         String locationsEndPoint = EndPoints.LOCATIONS;
         response = APILibrary.getInstance().post(request, locationsEndPoint);
-        conferenceRoom.setLocationId(response.getString("_id"));
+        conferenceRoom.setLocationId(response.getString(DomainAppConstants.KEY_ID));
         locationIds.add(response.getString(DomainAppConstants.KEY_ID));
     }
 
@@ -251,7 +239,7 @@ public class ConferenceRoomSteps {
                         DomainAppConstants.KEY_ID);
         String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
         response = APILibrary.getInstance().getById(endPoint);
-        Assert.assertEquals(conferenceRoom.getLocationId(), response.getString("locationId"));
+        Assert.assertEquals(conferenceRoom.getLocationId(), response.getString(DomainAppConstants.KEY_LOCATION_ID));
     }
 
     @And("^I assign the current Room to the new Location \"([^\"]*)\"$")
@@ -261,7 +249,7 @@ public class ConferenceRoomSteps {
 
     @After(value = "@locationRoom")
     public void deleteLocation() throws Throwable {
-        String endPoint = EndPoints.LOCATION_BY_ID.replace("#id#", conferenceRoom.getLocationId());
+        String endPoint = EndPoints.LOCATION_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getLocationId());
         APILibrary.getInstance().delete(endPoint);
     }
 

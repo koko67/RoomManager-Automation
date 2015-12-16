@@ -11,7 +11,6 @@ import cucumber.api.java.en.When;
 import entities.ConferenceRoom;
 import entities.Location;
 import framework.UIMethods;
-import mongodb.DataBaseDriver;
 import mongodb.DataBaseMethods;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -21,7 +20,6 @@ import ui.pages.admin.RoomSettingsPage;
 import ui.pages.admin.HomePage;
 import ui.pages.admin.LocationAssociationsPage;
 import ui.pages.admin.LocationPage;
-import utils.CredentialManager;
 import utils.LeftBarOptions;
 
 
@@ -46,8 +44,8 @@ public class LocationSteps {
         this.location = location;
         conferenceRoom = new ConferenceRoom();
     }
-    @Given("^I go to the \"(.*?)\" page$")
-    public void goToAPage(String namePage){
+    @Given("^I go to the Location page$")
+    public void goToAPage(){
         locationPage = homePage.getLeftMenuPanel().clickOnLocationPage();
     }
 
@@ -102,10 +100,8 @@ public class LocationSteps {
         Assert.assertTrue("the room has assigned to the location", isLocationInRoomInfo);
     }
 
-    @And("^the current Room should be obtained by api contains the LocationId of this Location$")
+    @And("^the current Room obtained by API should contains the reference of the Location$")
     public void isTheRoomAObtainedByAPI(){
-        String ip = CredentialManager.getInstance().getIp();
-        DataBaseDriver.getInstance().createConnectionToDB(ip);
         String roomId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(roomId);
 
@@ -124,7 +120,11 @@ public class LocationSteps {
         JSONObject response = MethodsAPI.post(customName, displayName, EndPoints.LOCATIONS);
         location.setId(response.getString(DomainAppConstants.KEY_ID));
 
-        String roomId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
+        String roomId = DataBaseMethods.
+                obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
+                        DomainAppConstants.KEY_DISPLAY_NAME,
+                        conferenceRoom.getDisplayName(),
+                        DomainAppConstants.KEY_ID);
         conferenceRoom.setId(roomId);
 
         JSONObject updateRoom = new JSONObject();
@@ -132,8 +132,8 @@ public class LocationSteps {
 
         APILibrary.getInstance().put(updateRoom,EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getId()));
 
-        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage();
         UIMethods.refreshPage();
+        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage();
     }
     @And("^I open the Location and I select the Locations Associations tab$")
     public void openLocation(){
@@ -157,12 +157,10 @@ public class LocationSteps {
         Assert.assertTrue("The location is displayed in the Available Column", isLocationAvailable);
         Assert.assertTrue("the room has assigned to the location", isLocationInRoomInfo);
     }
-    @And("^the current Room should not obtained by api contains the LocationId of this Location$")
+    @And("^the current Room obtained by API should not contains the reference of the Location$")
     public void isContainsRoomInLocation(){
-        DataBaseDriver.getInstance().createConnectionToDB(CredentialManager.getInstance().getIp());
-        String roomId = DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
+        String roomId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(roomId);
-        DataBaseDriver.getInstance().closeConnectionToDB();
 
         JSONObject room = APILibrary.getInstance().getById(EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getId()));
         Assert.assertEquals("The room has not location id ", room.get(DomainAppConstants.KEY_LOCATION_ID), null);

@@ -10,7 +10,7 @@ public class DomainAppConstants {
     public static final String MEETING_SUCCESSFULLY_CREATED = "Meeting successfully created";
     public static final String MEETING_SUCCESSFULLY_UPDATED = "Meeting successfully updated";
     public static final String MEETING_SUCCESFULLY_REMOVED = "Meeting successfully removed";
-    public static final String DEFECT_ID = "RM01";
+    public static final String DEFECT_ID = "RM03";
     public static final String DB_SERVER_NAME = "roommanager";
     public static final String COLLECT_MEETING = "meetings";
     public static final String COLLECT_ROOMS = "rooms";
@@ -49,4 +49,6 @@ public class DomainAppConstants {
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_FROM = "from";
     public static final String KEY_ENABLED = "enabled";
+    public static final String KEY_QUANTITY = "quantity";
+    public static final String KEY_RESOURCE_ID = "resourceId";
 }
