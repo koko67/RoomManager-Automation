@@ -39,12 +39,11 @@ Feature: Conference Rooms
     Then The current Room should be disable
       And the information updated in the room should be obtained by API
 
+  @AssociateResource
   Scenario: Associate a resource to a conference room
     Given I have created a resource with name "Computer", customName "Computer2"
       And I go to Conference Room page
       And I select the resource button in the header page
-    When I open the Room "Floor1-Room1" from the Conference Room
-      And I select the Resource Association Tab
-      And I add "2" Resource to the Room
+    When I assign a Resource with quantity "2" to room "Floor1-Room1"
     Then the resource and quantity should be displayed for the room in the list
-      And the Room obtained by API should contain the resource and quantity
+      And the Room obtain by api should be contain the resource and quantity
