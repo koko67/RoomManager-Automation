@@ -5,11 +5,20 @@ package entities;
  */
 public class Location {
 
+    private String id;
     private String name;
     private String displayName;
     private String parentLocation;
     private String description;
     private String parentId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

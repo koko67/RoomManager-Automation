@@ -10,18 +10,14 @@ public class ConferenceRoom {
     private String emailAddress;
     private String displayName;
     private String serviceId;
-    private ArrayList<Resource> resources;
+    private ArrayList<Resource> resources = new ArrayList<Resource>();
     private boolean enabled;
     private String locationId;
     private String customDisplayName;
     private String code;
     private String capacity;
-    private Location location;
+    private Location location = new Location();
 
-    public ConferenceRoom() {
-        resources = new ArrayList<Resource>();
-        location = new Location();
-    }
 
     public String getId() {
         return id;

@@ -10,8 +10,7 @@ package utils;
 public enum LeftBarOptions {
     EMAIL_SERVER ("Email Servers"),
     CONFERENCE_ROOMS("Conference Rooms"),
-    LOCATIONS("Locations"),
-    IMPERSONATION("Impersonation");
+    LOCATIONS("Locations");
 
     public final String namePage;
 

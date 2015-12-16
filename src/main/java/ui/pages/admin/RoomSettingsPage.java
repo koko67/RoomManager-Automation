@@ -2,7 +2,9 @@ package ui.pages.admin;
 
 import entities.ConferenceRoom;
 import entities.Location;
+import framework.UIMethods;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -25,6 +27,9 @@ public class RoomSettingsPage extends BasePageObject {
 
     @FindBy(xpath = "//button[.//span[contains(.,'Save')]]")
     WebElement saveButton;
+
+    @FindBy(xpath = "//button[.//span[contains(.,'Cancel')]]")
+    WebElement cancelButton;
 
     @FindBy(xpath = "//label[contains(text(),'Location')]/..//div[@id='add-location']")
     WebElement locationComboBox;
@@ -72,6 +77,19 @@ public class RoomSettingsPage extends BasePageObject {
         return clickOnSaveButton();
     }
 
+    public ConferenceRoomsPage assignLocation(String locationName){
+        By defaultLocation = By.xpath("//form//treeview//div[@class='treeview-toggle']/span");
+        expandLocations();
+        if(UIMethods.waitElementIsPresent(3, defaultLocation)) {
+            expandDefaultLocation();
+            selectLocationByName(locationName);
+            clickOnSaveButton();
+            return new ConferenceRoomsPage();
+        }
+        cancelButton.click();
+        return new ConferenceRoomsPage();
+    }
+
     @Override
     public void waitUntilPageObjectIsLoaded() {
         driverWait.until(ExpectedConditions.visibilityOf(saveButton));
@@ -84,7 +102,7 @@ public class RoomSettingsPage extends BasePageObject {
      * @return
      */
     public boolean isLocationPresent(Location location) {
-        return locationComboBox.getText().contains(location.getName());
+        return locationComboBox.getText().contains(location.getDisplayName());
     }
 
     public RoomSettingsPage expandDefaultLocation(){

@@ -25,9 +25,10 @@ public class APILibrary {
     public final static String ENCODE_TYPE = "UTF-8";
     public final static String BASIC_AUTHENTICATION = "Basic ";
     public static APILibrary instance = null;
+    private String token = null;
 
     public APILibrary(){
-       init();
+        init();
     }
 
     public static APILibrary getInstance(){
@@ -40,6 +41,7 @@ public class APILibrary {
     private void init(){
         RestAssured.baseURI = CredentialManager.getInstance().getRoomManagerService();
         RestAssured.useRelaxedHTTPSValidation();
+        token = TokenAPI.getInstance().getToken();
     }
 
     /**
@@ -65,17 +67,16 @@ public class APILibrary {
     /**
      * Create a new Object in the database
      * @param jsonObject is the request object to send
-     * @param token is the string Authorization
      * @param endPoint is the API Url endpoint to use for creating
      * @return
      */
-    public JSONObject post(JSONObject jsonObject, String token, String endPoint){
+    public JSONObject post(JSONObject jsonObject, String endPoint){
         Response response = given()
-                            .contentType(CONTENT_TYPE)
-                            .header(AUTHORIZATION_HEADER, AUTHORIZATION_TYPE + token)
-                            .body(jsonObject.toString())
-                            .when()
-                            .post(endPoint);
+                .contentType(CONTENT_TYPE)
+                .header(AUTHORIZATION_HEADER, AUTHORIZATION_TYPE + token)
+                .body(jsonObject.toString())
+                .when()
+                .post(endPoint);
 
         return new JSONObject(response.asString());
     }
@@ -83,11 +84,10 @@ public class APILibrary {
     /**
      * Update a Object in the database
      * @param jsonObject is the request object to send
-     * @param token is the string Authorization
      * @param endPoint is the API Url endpoint to use for updating
      * @return
      */
-    public JSONObject put(JSONObject jsonObject, String token, String endPoint){
+    public JSONObject put(JSONObject jsonObject, String endPoint){
         Response response = given()
                 .contentType(CONTENT_TYPE)
                 .header(AUTHORIZATION_HEADER, AUTHORIZATION_TYPE + token)
@@ -100,11 +100,10 @@ public class APILibrary {
 
     /**
      * delete a object from the database
-     * @param token is the string Authorization
      * @param endPoint is the API Url endpoint to use for deleting
      * @return
      */
-    public JSONObject delete(String token, String endPoint){
+    public JSONObject delete(String endPoint){
         Response response = given()
                 .contentType(CONTENT_TYPE)
                 .header(AUTHORIZATION_HEADER, AUTHORIZATION_TYPE + token)
@@ -123,7 +122,7 @@ public class APILibrary {
         String toEncode = CredentialManager.getInstance().getUserExchange() + ":" + CredentialManager.getInstance().getPasswordExchange();
         String authEncode = null;
         try{
-           authEncode = Base64.getEncoder().encodeToString(toEncode.getBytes(ENCODE_TYPE));
+            authEncode = Base64.getEncoder().encodeToString(toEncode.getBytes(ENCODE_TYPE));
         } catch (UnsupportedEncodingException e){
             log.error("Unsupported Encoding Exception " + e);
         }
@@ -135,11 +134,11 @@ public class APILibrary {
      * @param endPoint the URL
      * @return the body of the response
      */
-    public JSONObject delete(String endPoint){
+    public JSONObject deleteBasic(String endPoint){
         Response response = given()
-                            .header(AUTHORIZATION_HEADER, BASIC_AUTHENTICATION + encodeBase64Authentication())
-                            .when()
-                            .delete(endPoint);
+                .header(AUTHORIZATION_HEADER, BASIC_AUTHENTICATION + encodeBase64Authentication())
+                .when()
+                .delete(endPoint);
         return new JSONObject(response.asString());
     }
 
@@ -149,7 +148,7 @@ public class APILibrary {
      * @param endPoint the URL endPoint
      * @return a JSON object with the response
      */
-    public JSONObject post(JSONObject jsonObject, String endPoint){
+    public JSONObject postBasic(JSONObject jsonObject, String endPoint){
         Response response = given()
                 .contentType(CONTENT_TYPE)
                 .header(AUTHORIZATION_HEADER, BASIC_AUTHENTICATION + encodeBase64Authentication())
