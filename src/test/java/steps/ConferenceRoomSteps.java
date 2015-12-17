@@ -1,11 +1,11 @@
 package steps;
 
 import api.APILibrary;
-import api.APIMethods;
+import api.APIMeetingMethods;
 import api.EndPoints;
 import commons.DomainAppConstants;
 import cucumber.api.java.After;
-import mongodb.DataBaseMethods;
+import mongodb.DataBaseRoomMethods;
 import org.json.JSONArray;
 import cucumber.api.java.en.And;
 
@@ -98,7 +98,7 @@ public class ConferenceRoomSteps {
 
     @Then("^the info edited should be obtained by API request for the Room \"(.*?)\"$")
     public void isTheInfoEditedObtainedByAPI(String roomName){
-        String roomId = DataBaseMethods
+        String roomId = DataBaseRoomMethods
                 .obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
                         DomainAppConstants.KEY_CUSTOM_DISPLAY_NAME,
                         roomName,
@@ -178,7 +178,7 @@ public class ConferenceRoomSteps {
     }
     @And("^the information updated in the room should be obtained by API$")
     public void verifyRoomIsDisableByAPI(){
-        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
+        String id = DataBaseRoomMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(id);
 
         String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
@@ -188,18 +188,18 @@ public class ConferenceRoomSteps {
     }
     @And("^the Room obtain by api should be contain the resource and quantity$")
     public void verifyResourceInRoom(){
-        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
+        String id = DataBaseRoomMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(id);
 
         String endPoint = EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, id);
-        JSONObject response = APIMethods.get(endPoint);
+        JSONObject response = APIMeetingMethods.get(endPoint);
 
         JSONArray resources = response.getJSONArray(DomainAppConstants.KEY_RESOURCES);
         String resId = resources.getJSONObject(0).getString(DomainAppConstants.KEY_RESOURCE_ID);
         int quantity = resources.getJSONObject(0).getInt(DomainAppConstants.KEY_QUANTITY);
 
         Assert.assertEquals("The resources is the same that was assigned",resource.getId() , resId);
-        Assert.assertEquals("The quantity was assigned successfully",Integer.parseInt(resource.getQuantity()), quantity);
+        Assert.assertEquals("The quantity was assigned successfully", Integer.parseInt(resource.getQuantity()), quantity);
     }
 
     @Given("^I have a Room with name \"([^\"]*)\" that is associated with the Location \"([^\"]*)\"$")
@@ -211,7 +211,7 @@ public class ConferenceRoomSteps {
         String endPoint = EndPoints.LOCATIONS;
         response = APILibrary.getInstance().post(location, endPoint);
         locationIds.add(response.getString(DomainAppConstants.KEY_ID));
-        conferenceRoom.setId(DataBaseMethods
+        conferenceRoom.setId(DataBaseRoomMethods
                             .obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
                                     DomainAppConstants.KEY_DISPLAY_NAME,
                                     roomName,
@@ -242,7 +242,7 @@ public class ConferenceRoomSteps {
 
     @And("^the current Room should be obtained by API request associated with the location$")
     public void roomAssociatedToLocation() throws Throwable {
-        String id = DataBaseMethods.
+        String id = DataBaseRoomMethods.
                 obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
                         DomainAppConstants.KEY_DISPLAY_NAME,
                         conferenceRoom.getDisplayName(),
@@ -277,7 +277,7 @@ public class ConferenceRoomSteps {
 
     @After(value = "@disableRoom")
     public void enableConferenceRoom(){
-        String roomId = DataBaseMethods
+        String roomId = DataBaseRoomMethods
                 .obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
                         DomainAppConstants.KEY_CUSTOM_DISPLAY_NAME,
                         conferenceRoom.getCustomDisplayName(),

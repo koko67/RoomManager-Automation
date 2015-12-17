@@ -12,8 +12,6 @@ import ui.BasePageObject;
  */
 public class HomePage extends BasePageObject {
 
-    //Herencia Jorge
-
     @FindBy(xpath = "//a[@class='navbar-brand' and contains(text(), 'Room Manager')]")
     WebElement nameWebPage;
     private LeftMenuPanel leftMenuPanel;
