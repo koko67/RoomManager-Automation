@@ -8,6 +8,8 @@
             "homeTabletURL":"https://172.20.208.49:4040/tablet/#/home",
             "roomManagerService":"https://172.20.208.49:4040/",
             "ip":"172.20.208.49",
+            "dbPort":"27017",
+            "domainEmail":"@grupob01.local",
             "userAdmin":{
                 "userName":"test",
                 "password":"Client123"
@@ -26,6 +28,8 @@
             "homeTabletURL":"https://172.20.208.120:4040/tablet/#/home",
             "roomManagerService":"https://172.20.208.120:4040/",
             "ip":"172.20.208.120",
+            "dbPort":"27017",
+            "domainEmail":"@grupob01.local",
             "userAdmin":{
                 "userName":"test",
                 "password":"Client123"
@@ -44,6 +48,8 @@
             "homeTabletURL":"https://172.20.208.241:4040/tablet/#/home",
             "roomManagerService":"https://172.20.208.241:4040/",
             "ip":"172.20.208.241",
+            "dbPort":"27017",
+            "domainEmail":"@grupob01.local",
             "userAdmin":{
                 "userName":"test",
                 "password":"Client123"

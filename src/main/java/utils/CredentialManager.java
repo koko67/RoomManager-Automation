@@ -21,7 +21,9 @@ public class CredentialManager {
     private String hometabletURL;
     private String adminHomeURL;
     private String ip;
+    private String domainEmail;
     private JSONReader envReader;
+    private String dbPort;
 
     protected CredentialManager(){
         init();
@@ -50,12 +52,15 @@ public class CredentialManager {
         adminHomeURL = envReader.getKeyValue("Environment", "id", envId, "adminHomeURL");
         ip = envReader.getKeyValue("Environment", "id", envId, "ip");
         hometabletURL = envReader.getKeyValue("Environment", "id", envId, "homeTabletURL");
+        domainEmail = envReader.getKeyValue("Environment", "id", envId, "domainEmail");
+        dbPort = envReader.getKeyValue("Environment", "id", envId, "dbPort");
 
         //Environment users information
         userNameAdmin = envReader.getKeyValue("Environment", "id", envId, "userAdmin", "userName");
         passwordAdmin = envReader.getKeyValue("Environment", "id", envId, "userAdmin", "password");
         userExchange = envReader.getKeyValue("Environment", "id", envId, "userExchange", "userName");
         passwordExchange = envReader.getKeyValue("Environment", "id", envId, "userExchange", "password");
+
     }
 
 
@@ -141,5 +146,21 @@ public class CredentialManager {
      */
     public String getAdminHomeURL() {
         return adminHomeURL;
+    }
+
+    /**
+     * This method obtains the domain Email
+     * @return a String of the domain Email
+     */
+    public String getDomainEmail(){
+        return domainEmail;
+    }
+
+    /**
+     * This method return the mongo data base port
+     * @return String with the number of the port
+     */
+    public String getdbPort() {
+        return dbPort;
     }
 }

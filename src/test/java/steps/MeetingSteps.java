@@ -1,6 +1,6 @@
 package steps;
 
-import api.APIMethods;
+import api.APIMeetingMethods;
 import common.CommonMethods;
 import cucumber.api.java.After;
 import cucumber.api.java.en.And;
@@ -12,8 +12,10 @@ import junit.framework.Assert;
 import ui.PageTransporter;
 import ui.pages.tablet.*;
 
-import static conditions.MeetingConditions.deleteMeeting;
-import static conditions.MeetingConditions.isTheMeetingCreated;
+import static api.APIMeetingMethods.deleteMeeting;
+import static api.APIMeetingMethods.isTheMeetingCreated;
+
+
 
 /**
  * User: Ronald Butron
@@ -65,7 +67,7 @@ public class MeetingSteps {
     public void createdMeetingByAPI(String organizer, String subject, String from, String to, String attendees){
         meeting.setAllForm(organizer, subject, from, to, attendees, null);
         meeting.setDeleteSubject(subject);
-        APIMethods.createAMeetingByAPI(meeting);
+        APIMeetingMethods.createAMeetingByAPI(meeting);
 
     }
 
@@ -133,16 +135,16 @@ public class MeetingSteps {
 
     @Then("^the meeting should be listed in the meetings of Room using the API$")
     public void isTheMeetingObtainedByAPI(){
-        Assert.assertTrue(isTheMeetingCreated(meeting.getRoomName(), meeting.getSubject()));
+        Assert.assertTrue(isTheMeetingCreated(meeting));
     }
 
     @Then("^the meeting should not be listed in the meetings of Room using the API$")
     public void isNotTheMeetingObtainedByAPI(){
-        Assert.assertFalse(isTheMeetingCreated(meeting.getRoomName(), meeting.getSubject()));
+        Assert.assertFalse(isTheMeetingCreated(meeting));
     }
 
     @After(value = "@RemoveMeeting")
     public void removeMT(){
-        deleteMeeting(meeting.getDeleteSubject());
+        deleteMeeting(meeting);
     }
 }

@@ -15,7 +15,6 @@ import utils.CredentialManager;
 public class FrameworkUtils {
 
     private static WebDriver driver = DriverManager.getInstance().getWebDriver();
-
     /**
      * High light elements
      * @param element element to high light

@@ -2,9 +2,12 @@ package api;
 
 import commons.DomainAppConstants;
 import entities.Meeting;
-import mongodb.DataBaseMethods;
+import mongodb.DataBaseMeetingMethods;
+import mongodb.DataBaseRoomMethods;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import utils.CredentialManager;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,24 +16,24 @@ import java.util.Date;
  * User: RonaldButron
  * Date: 12/15/15
  */
-public class APIMethods {
+public class APIMeetingMethods {
 
     /**
      * This method build a JSON Object to create a Meeting
      * @param meeting entity with the information
      * @return a JSON object
      */
-    public static JSONObject buildJSONObjectMeeting(Meeting meeting){
+    private static JSONObject buildJSONObjectMeeting(Meeting meeting){
         String roomEmail = meeting.getRoomName().replace("-", ".");
-        System.out.println(roomEmail);
+        String domainEmail = CredentialManager.getInstance().getDomainEmail();
         JSONObject jsonObject =  new JSONObject();
          jsonObject.put(DomainAppConstants.KEY_ORGANIZER, meeting.getOrganizer())
                    .put(DomainAppConstants.KEY_TITLE, meeting.getSubject())
                    .put(DomainAppConstants.KEY_START, createISOHour(meeting.getHourFrom()))
                    .put(DomainAppConstants.KEY_END, createISOHour(meeting.getHourTo()))
                    .put(DomainAppConstants.KEY_LOCATION, meeting.getRoomName())
-                   .put(DomainAppConstants.KEY_ROOM_EMAIL, roomEmail + DomainAppConstants.DOMAIN_EMAIL)
-                   .put(DomainAppConstants.KEY_RESOURCES, new JSONArray().put(roomEmail + DomainAppConstants.DOMAIN_EMAIL))
+                   .put(DomainAppConstants.KEY_ROOM_EMAIL, (roomEmail + domainEmail))
+                   .put(DomainAppConstants.KEY_RESOURCES, new JSONArray().put(roomEmail + domainEmail))
                    .put(DomainAppConstants.KEY_ATTENDEES, new JSONArray().put(meeting.getAttendees()));
         return jsonObject;
     }
@@ -40,7 +43,7 @@ public class APIMethods {
      * @param currentHour the current hour
      * @return a String with the hour in the format "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"
      */
-    public static String createISOHour(String currentHour){
+    private static String createISOHour(String currentHour){
         int hour = Integer.parseInt(currentHour.split(":")[0])+4;
         String minute = currentHour.split(":")[1];
         SimpleDateFormat dateFormat= new SimpleDateFormat(DomainAppConstants.DATE_FORMAT);
@@ -59,9 +62,9 @@ public class APIMethods {
      * @param roomName the name of the room needed
      * @return a string with the endPoint built
      */
-    public static String buildEndPoint(String roomName){
-        String servicesId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, roomName, DomainAppConstants.KEY_SERVICE_ID);
-        String roomId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, roomName, DomainAppConstants.KEY_ID);
+    private static String buildEndPointAllMeeting(String roomName){
+        String servicesId = DataBaseRoomMethods.obtainServicesId(roomName);
+        String roomId = DataBaseRoomMethods.obtainRoomId(roomName);
 
         return EndPoints.ALL_MEETING.replace(DomainAppConstants.REPLACE_SERVICE_ID, servicesId)
                                     .replace(DomainAppConstants.REPLACE_ROOM_ID, roomId);
@@ -73,8 +76,39 @@ public class APIMethods {
      * @param meeting the with the information needed
      */
     public static void createAMeetingByAPI(Meeting meeting){
-        APILibrary.getInstance().postBasic(buildJSONObjectMeeting(meeting), buildEndPoint(meeting.getRoomName()));
+        APILibrary.getInstance().postBasic(buildJSONObjectMeeting(meeting), buildEndPointAllMeeting(meeting.getRoomName()));
     }
+
+    /**
+     * This method verify if a meeting was created
+     * @param meeting the meeting information
+     * @return  true or false
+     */
+    public static boolean isTheMeetingCreated(Meeting meeting){
+        String endpoint = buildEndPointAllMeeting(meeting.getRoomName());
+        boolean isItCreated = false;
+        JSONArray meetingsArray = APILibrary.getInstance().getAll(endpoint);
+        for (int indice = 0; indice < meetingsArray.length(); indice++) {
+            if(meetingsArray.getJSONObject(indice).getString(DomainAppConstants.KEY_TITLE).equals(meeting.getSubject())){
+                isItCreated = true;
+                break;
+            }
+        }
+        return isItCreated;
+    }
+
+
+    /**
+     * This method delete a meeting
+     * @param meeting the meeting information
+     */
+    public static void deleteMeeting(Meeting meeting){
+        String endpoint = buildEndPointAllMeeting(meeting.getRoomName());
+        endpoint = endpoint + "/" + DataBaseMeetingMethods.obtainMeetingId(meeting.getDeleteSubject());
+        APILibrary.getInstance().deleteBasic(endpoint);
+    }
+
+////////////////////////////
 
     /**
      *
@@ -82,6 +116,8 @@ public class APIMethods {
      * @return
      */
     public static JSONObject get(String endPoint){
+       //Mas especificos los nombres y una clase con sus metodos, recibir la entidad para construir tus JSON y endPOints
+
         JSONObject response = APILibrary
                 .getInstance()
                 .getById(endPoint);
@@ -104,4 +140,6 @@ public class APIMethods {
                 .post(jsonLocation, endPoint);
         return  response;
     }
+
+
 }
