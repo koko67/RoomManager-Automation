@@ -7,7 +7,7 @@ import utils.CredentialManager;
  * Date: 12/15/15
  */
 public class DataBaseMethods {
-
+     // Lo mismo que api ej. DataBaseMeetingMethods
     /**
      * This method connect to the database and return a value searched then close the database
      * @param collection name of the collection

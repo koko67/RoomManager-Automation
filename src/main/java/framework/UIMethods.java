@@ -84,6 +84,8 @@ public class UIMethods {
      * @param page receive the page when have to come back
      */
     public static void switchPages(String page) {
+
+        //NO usar if
         HomePage homePage = new HomePage();
         if (page.equals("Email Servers")){
             homePage.getLeftMenuPanel().clickOnLocationPage();

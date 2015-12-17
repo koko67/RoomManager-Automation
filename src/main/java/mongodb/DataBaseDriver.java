@@ -34,6 +34,8 @@ public class DataBaseDriver {
 
     private void init(){
 
+        //IPNumber y el puerto
+
     }
 
     /**

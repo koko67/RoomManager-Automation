@@ -44,6 +44,7 @@ public class LeftMenuPanel extends BasePageObject{
     public EmailServerPage clickOnEmailServerPage(){
         By xpathButton = constructXpathButton(LeftBarOptions.EMAIL_SERVER.getToPage());
         clickLeftMenuButton(xpathButton);
+        //Wait element is present volver (void)
         return new EmailServerPage();
     }
 
