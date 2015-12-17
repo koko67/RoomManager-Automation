@@ -82,6 +82,8 @@ public class APIMethods {
      * @return
      */
     public static JSONObject get(String endPoint){
+       //Mas especificos los nombres y una clase con sus metodos, recibir la entidad para construir tus JSON y endPOints
+
         JSONObject response = APILibrary
                 .getInstance()
                 .getById(endPoint);

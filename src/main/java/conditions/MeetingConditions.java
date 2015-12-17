@@ -13,7 +13,7 @@ import org.json.JSONArray;
 public class MeetingConditions {
 
 
-
+     //MOve to API meetings method
     /**
      * Verify if the Meeting was created
      * @param valueId the name of the room
