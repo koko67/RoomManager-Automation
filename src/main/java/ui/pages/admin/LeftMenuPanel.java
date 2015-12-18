@@ -17,6 +17,12 @@ public class LeftMenuPanel extends BasePageObject{
     @FindBy(xpath = "//div[@class='panel panel-default']")
     WebElement buttonsPanel;
 
+    @FindBy(id = "roomsGrid")
+    WebElement roomsTable;
+
+    @FindBy(xpath = "//h1[contains(text(),'Locations')]")
+    WebElement locationLabel;
+
     WebElement menuButton;
 
     @Override
@@ -32,20 +38,20 @@ public class LeftMenuPanel extends BasePageObject{
     public ConferenceRoomsPage clickOnConferenceRooms(){
         By xpathButton = constructXpathButton(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
         clickLeftMenuButton(xpathButton);
+        driverWait.until(ExpectedConditions.visibilityOf(roomsTable));
         return new ConferenceRoomsPage();
     }
 
     public LocationPage clickOnLocationPage(){
         By xpathButton = constructXpathButton(LeftBarOptions.LOCATIONS.getToPage());
         clickLeftMenuButton(xpathButton);
+        driverWait.until(ExpectedConditions.visibilityOf(locationLabel));
         return new LocationPage();
     }
 
-    public EmailServerPage clickOnEmailServerPage(){
+    public void clickOnEmailServerPage(){
         By xpathButton = constructXpathButton(LeftBarOptions.EMAIL_SERVER.getToPage());
         clickLeftMenuButton(xpathButton);
-        //Wait element is present volver (void)
-        return new EmailServerPage();
     }
 
     /**
