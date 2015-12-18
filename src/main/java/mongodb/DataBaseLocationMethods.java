@@ -13,7 +13,10 @@ import entities.Location;
 public class DataBaseLocationMethods {
 
     public static String obtainId(Location location) {
-        return DataBaseMethods.obtainKeyValue(DomainAppConstants.LOCATIONS, DomainAppConstants.KEY_NAME, location.getName(), DomainAppConstants.KEY_ID);
+        DataBaseDriver.getInstance().createConnectionToDB();
+        String locationId = DataBaseDriver.getInstance().getKeyValue(DomainAppConstants.LOCATIONS, DomainAppConstants.KEY_NAME, location.getName(), DomainAppConstants.KEY_ID);
+        DataBaseDriver.getInstance().closeConnectionToDB();
+        return locationId;
     }
 
 }
