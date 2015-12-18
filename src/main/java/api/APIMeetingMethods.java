@@ -107,39 +107,4 @@ public class APIMeetingMethods {
         endpoint = endpoint + "/" + DataBaseMeetingMethods.obtainMeetingId(meeting.getDeleteSubject());
         APILibrary.getInstance().deleteBasic(endpoint);
     }
-
-////////////////////////////
-
-    /**
-     *
-     * @param endPoint
-     * @return
-     */
-    public static JSONObject get(String endPoint){
-       //Mas especificos los nombres y una clase con sus metodos, recibir la entidad para construir tus JSON y endPOints
-
-        JSONObject response = APILibrary
-                .getInstance()
-                .getById(endPoint);
-        return response;
-    }
-
-    /**
-     *
-     * @param name
-     * @param displayName
-     * @param endPoint
-     * @return
-     */
-    public static JSONObject post(String name, String displayName, String endPoint) {
-        JSONObject jsonLocation = new JSONObject();
-        jsonLocation.put(DomainAppConstants.KEY_CUSTOM_NAME, displayName);
-        jsonLocation.put(DomainAppConstants.KEY_NAME, name);
-
-        JSONObject response = APILibrary.getInstance()
-                .post(jsonLocation, endPoint);
-        return  response;
-    }
-
-
 }
