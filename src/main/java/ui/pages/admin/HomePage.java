@@ -12,30 +12,29 @@ import ui.BasePageObject;
  */
 public class HomePage extends BasePageObject {
 
-    //Herencia Jorge
-
     @FindBy(xpath = "//a[@class='navbar-brand' and contains(text(), 'Room Manager')]")
     WebElement nameWebPage;
+
     private LeftMenuPanel leftMenuPanel;
+    private Header header;
 
     @Override
     public void waitUntilPageObjectIsLoaded() {
-
         driverWait.until(ExpectedConditions.visibilityOf(nameWebPage));
     }
 
     public HomePage(){
+        leftMenuPanel = new LeftMenuPanel();
+        header = new Header();
         PageFactory.initElements(driver, this);
         waitUntilPageObjectIsLoaded();
     }
 
     public Header getHeader(){
-
-        return new Header();
+        return header;
     }
 
     public LeftMenuPanel getLeftMenuPanel(){
-
-        return new LeftMenuPanel();
+        return leftMenuPanel;
     }
 }

@@ -16,18 +16,15 @@ import ui.BasePageObject;
  * User: Jorge Avila
  * Date: 12/4/15
  */
-public class ConferenceRoomsPage extends BasePageObject{
-
-    @FindBy(id = "roomsGrid")
-    WebElement roomsTable;
+public class ConferenceRoomsPage extends HomePage {
 
     public ConferenceRoomsPage(){
+        super();
         PageFactory.initElements(driver, this);
-        waitUntilPageObjectIsLoaded();
     }
 
     public RoomSettingsPage openConferenceRoomSettings(String roomName) {
-        WebElement room = roomsTable.findElement(By.xpath("//span[contains(., '" + roomName + "') ]/following-sibling::span"));
+        WebElement room = driver.findElement(By.xpath("//span[contains(., '" + roomName + "') ]/following-sibling::span"));
         Actions action = new Actions(driver);
         action.moveToElement(room).doubleClick().perform();
         return new RoomSettingsPage();
@@ -35,7 +32,6 @@ public class ConferenceRoomsPage extends BasePageObject{
 
     @Override
     public void waitUntilPageObjectIsLoaded() {
-        driverWait.until(ExpectedConditions.visibilityOf(roomsTable));
     }
 
     /**

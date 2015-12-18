@@ -8,26 +8,23 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import ui.BasePageObject;
 
 /**
  * User: RonaldButron
  * Date: 12/4/15
  */
-public class LocationPage extends BasePageObject{
-    @FindBy(xpath = "//h1[contains(text(),'Locations')]")
-    WebElement locationLabel;
+public class LocationPage extends HomePage {
+
     @FindBy(xpath = "//span[contains(text(),'Add')]/..")
     WebElement addLocationButton;
 
     public LocationPage(){
+        super();
         PageFactory.initElements(driver,this);
-        waitUntilPageObjectIsLoaded();
     }
     @Override
     public void waitUntilPageObjectIsLoaded() {
-        driverWait.until(ExpectedConditions.visibilityOf(locationLabel));
+
     }
 
     /**
