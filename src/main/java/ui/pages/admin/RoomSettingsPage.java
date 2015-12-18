@@ -67,6 +67,9 @@ public class RoomSettingsPage extends BasePageObject {
 
     public ConferenceRoomsPage clickOnSaveButton(){
         saveButton.click();
+        By messageLocationAddedLocator = By.xpath("//div[@class='ng-binding ng-scope' and contains(text(),'Room successfully Modified')]");
+        WebElement messageLocationAdded = driver.findElement(messageLocationAddedLocator);
+        driverWait.until(ExpectedConditions.visibilityOf(messageLocationAdded));
         return new ConferenceRoomsPage();
     }
 
