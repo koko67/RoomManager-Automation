@@ -1,7 +1,7 @@
 package steps;
 
 import api.APILibrary;
-import api.APIMethods;
+import api.APIMeetingMethods;
 import api.EndPoints;
 import commons.DomainAppConstants;
 import cucumber.api.java.After;
@@ -12,7 +12,7 @@ import cucumber.api.java.en.When;
 import entities.ConferenceRoom;
 import entities.Location;
 import framework.UIMethods;
-import mongodb.DataBaseMethods;
+import mongodb.DataBaseRoomMethods;
 import org.json.JSONObject;
 import org.junit.Assert;
 import ui.pages.admin.ConferenceRoomsPage;
@@ -64,8 +64,8 @@ public class LocationSteps {
 
     @And("^the Location should be obtained by API request$")
     public void isTheLocationObtainedByAPI(){
-        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.LOCATIONS, DomainAppConstants.KEY_NAME, location.getName(), DomainAppConstants.KEY_ID);
-        JSONObject response = APIMethods.get(EndPoints.LOCATION_BY_ID.replace(DomainAppConstants.REPLACE_ID, id));
+        String id = DataBaseRoomMethods.obtainKeyValue(DomainAppConstants.LOCATIONS, DomainAppConstants.KEY_NAME, location.getName(), DomainAppConstants.KEY_ID);
+        JSONObject response = APIMeetingMethods.get(EndPoints.LOCATION_BY_ID.replace(DomainAppConstants.REPLACE_ID, id));
         Assert.assertEquals("the location name is the same that was assigned", response.getString(DomainAppConstants.KEY_NAME), location.getName());
         Assert.assertEquals("the location display name is the same that was assigned", response.getString(DomainAppConstants.KEY_CUSTOM_NAME), location.getDisplayName());
     }
@@ -75,7 +75,7 @@ public class LocationSteps {
         location.setName(locationName);
         location.setDisplayName(locationName);
 
-        JSONObject response = APIMethods.post(locationName, locationName, EndPoints.LOCATIONS);
+        JSONObject response = APIMeetingMethods.post(locationName, locationName, EndPoints.LOCATIONS);
 
         location.setId(response.getString(DomainAppConstants.KEY_ID));
         locationPage.getLeftMenuPanel().clickOnLocationPage();
@@ -103,10 +103,10 @@ public class LocationSteps {
 
     @And("^the current Room obtained by API should contains the reference of the Location$")
     public void isTheRoomAObtainedByAPI(){
-        String roomId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
+        String roomId = DataBaseRoomMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(roomId);
 
-        JSONObject room = APIMethods.get(EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getId()));
+        JSONObject room = APIMeetingMethods.get(EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getId()));
         Assert.assertEquals("the location id is the same",room.get(DomainAppConstants.KEY_LOCATION_ID), location.getId());
     }
 
@@ -118,10 +118,10 @@ public class LocationSteps {
         conferenceRoom.setCustomDisplayName(roomName);
         conferenceRoom.setLocation(location);
 
-        JSONObject response = APIMethods.post(customName, displayName, EndPoints.LOCATIONS);
+        JSONObject response = APIMeetingMethods.post(customName, displayName, EndPoints.LOCATIONS);
         location.setId(response.getString(DomainAppConstants.KEY_ID));
 
-        String roomId = DataBaseMethods.
+        String roomId = DataBaseRoomMethods.
                 obtainKeyValue(DomainAppConstants.COLLECT_ROOMS,
                         DomainAppConstants.KEY_DISPLAY_NAME,
                         conferenceRoom.getDisplayName(),
@@ -160,7 +160,7 @@ public class LocationSteps {
     }
     @And("^the current Room obtained by API should not contains the reference of the Location$")
     public void isContainsRoomInLocation(){
-        String roomId = DataBaseMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
+        String roomId = DataBaseRoomMethods.obtainKeyValue(DomainAppConstants.COLLECT_ROOMS, DomainAppConstants.KEY_DISPLAY_NAME, conferenceRoom.getDisplayName(), DomainAppConstants.KEY_ID);
         conferenceRoom.setId(roomId);
 
         JSONObject room = APILibrary.getInstance().getById(EndPoints.ROOM_BY_ID.replace(DomainAppConstants.REPLACE_ID, conferenceRoom.getId()));
@@ -168,7 +168,7 @@ public class LocationSteps {
     }
     @After(value = "@LocationForUI")
     public void deleteLocation(){
-        String id = DataBaseMethods.obtainKeyValue(DomainAppConstants.LOCATIONS, DomainAppConstants.KEY_NAME , location.getName(), DomainAppConstants.KEY_ID);
+        String id = DataBaseRoomMethods.obtainKeyValue(DomainAppConstants.LOCATIONS, DomainAppConstants.KEY_NAME, location.getName(), DomainAppConstants.KEY_ID);
         APILibrary.getInstance().delete(EndPoints.LOCATION_BY_ID.replace(DomainAppConstants.REPLACE_ID, id));
     }
     @After(value = "@AssociateLocation")

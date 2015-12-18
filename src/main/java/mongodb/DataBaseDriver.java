@@ -19,6 +19,8 @@ public class DataBaseDriver {
     private MongoClient mongoClient;
     private DB db;
     private DBCollection collection;
+    private String ipNumber;
+    private int dbPort;
     private static DataBaseDriver instance;
 
     public DataBaseDriver(){
@@ -33,19 +35,17 @@ public class DataBaseDriver {
     }
 
     private void init(){
-
-        //IPNumber y el puerto
-
+        ipNumber = CredentialManager.getInstance().getIp();
+        dbPort = Integer.parseInt(CredentialManager.getInstance().getdbPort());
     }
 
     /**
      * This method connect remote to a mongo data base
-     * @param IPNumber number of the Ip where is the database
     */
-    public void createConnectionToDB(String IPNumber){
+    public void createConnectionToDB(){
        try{
           log.info("Connecting to the mongo DB");
-          mongoClient = new MongoClient(IPNumber, 27017);
+          mongoClient = new MongoClient(ipNumber, dbPort);
           db = mongoClient.getDB(DomainAppConstants.DB_SERVER_NAME);
        } catch (UnknownHostException e){
           log.error("Unknown Host Exception" + e);

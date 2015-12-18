@@ -23,7 +23,6 @@ public class DomainAppConstants {
     public static final String LOCATIONS = "locations";
     public static final String REPLACE_ID = "#id#";
     public final static String LOGIN_SERVICE = "login";
-    public final static String DOMAIN_EMAIL = "@grupob01.local";
     public final static String DATE_FORMAT = "yyyy-MM-dd";
     public final static String SECONDS = ":00.000Z";
 
