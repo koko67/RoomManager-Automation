@@ -197,7 +197,7 @@ public class ConferenceRoomSteps {
         associatedLocation.setDisplayName(locationName);
         conferenceRoom.setDisplayName(roomName);
 
-        JSONObject newLocation = APILocationMethods.postLocation(associatedLocation);
+        JSONObject newLocation = APILocationMethods.createLocation(associatedLocation);
 
         locationIds.add(newLocation.getString(DomainAppConstants.KEY_ID));
         associatedLocation.setId(newLocation.getString(DomainAppConstants.KEY_ID));
@@ -212,7 +212,7 @@ public class ConferenceRoomSteps {
     public void createNewLocation(String name) throws Throwable {
         location.setName(name);
         location.setDisplayName(name);
-        JSONObject request = APILocationMethods.postLocation(location);
+        JSONObject request = APILocationMethods.createLocation(location);
         conferenceRoom.setLocationId(request.getString(DomainAppConstants.KEY_ID));
         locationIds.add(request.getString(DomainAppConstants.KEY_ID));
     }

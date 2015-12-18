@@ -1,9 +1,7 @@
 package steps;
 
-import api.APILibrary;
 import api.APILocationMethods;
 import api.APIRoomMethods;
-import api.EndPoints;
 import commons.DomainAppConstants;
 import cucumber.api.java.After;
 import cucumber.api.java.en.And;
@@ -67,7 +65,7 @@ public class LocationSteps {
 
     @And("^the Location should be obtained by API request$")
     public void isTheLocationObtainedByAPI(){
-        String id = DataBaseLocationMethods.obtainId(location);
+        String id = DataBaseLocationMethods.obtainIdOfLocation(location);
         location.setId(id);
         JSONObject response = APILocationMethods.getLocationByID(location);
 
@@ -80,7 +78,7 @@ public class LocationSteps {
         location.setName(locationName);
         location.setDisplayName(locationName);
 
-        JSONObject response = APILocationMethods.postLocation(location);
+        JSONObject response = APILocationMethods.createLocation(location);
 
         location.setId(response.getString(DomainAppConstants.KEY_ID));
         locationPage = homePage.getLeftMenuPanel().clickOnLocationPage();
@@ -125,7 +123,7 @@ public class LocationSteps {
         conferenceRoom.setCustomDisplayName(roomName);
         conferenceRoom.setLocation(location);
 
-        JSONObject responseLocation = APILocationMethods.postLocation(location);
+        JSONObject responseLocation = APILocationMethods.createLocation(location);
         location.setId(responseLocation.getString(DomainAppConstants.KEY_ID));
 
         String roomId = DataBaseRoomMethods.obtainRoomId(conferenceRoom.getDisplayName());
@@ -168,7 +166,7 @@ public class LocationSteps {
     }
     @After(value = "@LocationForUI")
     public void deleteLocation(){
-        String locationId = DataBaseLocationMethods.obtainId(location);
+        String locationId = DataBaseLocationMethods.obtainIdOfLocation(location);
         APILocationMethods.deleteLocation(locationId);
     }
     @After(value = "@AssociateLocation")

@@ -40,7 +40,10 @@ public class APIResourceMethods {
         return jsonResource;
     }
 
-
+    /**
+     * this method remove a resource by id
+     * @param resource the entity receives will be eliminated.
+     */
     public static void deleteResources(Resource resource) {
         String endPoint = buildEndPoint(resource.getId());
         APILibrary.getInstance().delete(endPoint);

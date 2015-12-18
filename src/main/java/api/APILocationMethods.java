@@ -33,7 +33,7 @@ public class APILocationMethods {
      * @param location is a entity that contains data about the location
      * @return
      */
-    public static JSONObject postLocation(Location location) {
+    public static JSONObject createLocation(Location location) {
         JSONObject jsonLocation = buildLocation(location);
         String endPoint = EndPoints.LOCATIONS;
 
