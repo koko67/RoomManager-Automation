@@ -41,7 +41,7 @@ public class JSONReader {
     }
 
     /**
-     * This method get the value of a Key from a Json file
+     * This method getLocationByID the value of a Key from a Json file
      * @param objectName name of the environment
      * @param idKey id key of the environment
      * @param idValue id value of the environment
