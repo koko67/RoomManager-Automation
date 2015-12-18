@@ -32,7 +32,6 @@ public class LocationSteps {
 
     private LocationPage locationPage;
     private LocationSettingsPage locationInfoPage;
-    private HomePage homePage;
     private LocationAssociationsPage locationAssociationsPage;
     private ConferenceRoomsPage conferenceRoomPage;
     private RoomSettingsPage roomInfoPage;
@@ -41,13 +40,13 @@ public class LocationSteps {
     private ConferenceRoom conferenceRoom;
 
     public LocationSteps(Location location){
-        homePage = new HomePage();
-        this.location = location;
         conferenceRoom = new ConferenceRoom();
+        locationPage = new LocationPage();
+        this.location = location;
     }
     @Given("^I go to the Location page$")
     public void goToAPage(){
-        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage();
+        locationPage.getLeftMenuPanel().clickOnLocationPage();
     }
 
     @When("^I create a Location with Name \"(.*?)\" and Display Name \"(.*?)\"$")
@@ -81,9 +80,10 @@ public class LocationSteps {
         JSONObject response = APILocationMethods.createLocation(location);
 
         location.setId(response.getString(DomainAppConstants.KEY_ID));
-        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage();
+        locationPage.getLeftMenuPanel().clickOnLocationPage();
 
         UIMethods.refreshPage();
+        UIMethods.switchPages(LeftBarOptions.LOCATIONS.getToPage());
         locationInfoPage = locationPage.clickEditLocation(location);
     }
 
@@ -95,7 +95,7 @@ public class LocationSteps {
 
     @Then("^the Room \"(.*?)\" should be associated to the Location in the Conference Rooms page$")
     public void isTheRoomDisplayInTheLocation(String roomName){
-        conferenceRoomPage = homePage.getLeftMenuPanel().clickOnConferenceRooms();
+        conferenceRoomPage = locationPage.getLeftMenuPanel().clickOnConferenceRooms();
         conferenceRoom.setDisplayName(roomName);
         roomInfoPage = conferenceRoomPage.openConferenceRoomSettings(conferenceRoom.getDisplayName());
 
@@ -132,7 +132,7 @@ public class LocationSteps {
         APIRoomMethods.associateLocationToRoom(location, conferenceRoom);
 
         UIMethods.refreshPage();
-        locationPage = homePage.getLeftMenuPanel().clickOnLocationPage();
+        locationPage.getLeftMenuPanel().clickOnLocationPage();
     }
     @And("^I open the Location and I select the Locations Associations tab$")
     public void openLocation(){
@@ -148,7 +148,7 @@ public class LocationSteps {
         boolean isLocationAvailable = locationAssociationsPage.searchRoomInAvailableColumn(roomName, state);
         locationAssociationsPage.saveLocation();
 
-        conferenceRoomPage = homePage.getLeftMenuPanel().clickOnConferenceRooms();
+        conferenceRoomPage = locationPage.getLeftMenuPanel().clickOnConferenceRooms();
         roomInfoPage = conferenceRoomPage.openConferenceRoomSettings(roomName);
         boolean isLocationInRoomInfo = !roomInfoPage.isLocationPresent(location);
         roomInfoPage.clickOnSaveButton();

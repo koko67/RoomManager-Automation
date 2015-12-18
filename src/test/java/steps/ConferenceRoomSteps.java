@@ -34,7 +34,6 @@ import java.util.List;
  */
 public class ConferenceRoomSteps {
 
-    private HomePage homePage;
     private ConferenceRoomsPage conferenceRoomsPage;
     private RoomSettingsPage roomInfoPage;
     private LocationPage locationPage;
@@ -45,7 +44,8 @@ public class ConferenceRoomSteps {
     private List<String> locationIds;
 
     public ConferenceRoomSteps(ConferenceRoom conferenceRoom){
-        homePage = new HomePage();
+        conferenceRoomsPage = new ConferenceRoomsPage();
+        locationPage = new LocationPage();
         resource = new Resource();
         this.conferenceRoom = conferenceRoom;
         this.location = new Location();
@@ -58,8 +58,7 @@ public class ConferenceRoomSteps {
         conferenceRoom.setCustomDisplayName(roomName);
         UIMethods.refreshPage();
         UIMethods.switchPages(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
-        conferenceRoomsPage = homePage.getLeftMenuPanel()
-                                      .clickOnConferenceRooms();
+        conferenceRoomsPage.getLeftMenuPanel().clickOnConferenceRooms();
 
         roomInfoPage = conferenceRoomsPage.openConferenceRoomSettings(conferenceRoom.getCustomDisplayName());
     }
@@ -78,8 +77,7 @@ public class ConferenceRoomSteps {
 
     @Then("^the current room is associated to the Location defined in the Locations page$")
     public void isAssociatedRoomToLocationRoomPage(){
-        locationPage = homePage.getLeftMenuPanel()
-                .clickOnLocationPage();
+        locationPage.getLeftMenuPanel().clickOnLocationPage();
         boolean existAssociated = locationPage.verifyIfExistLocationAssociation(location, conferenceRoom);
         Assert.assertTrue("The room is displayed in the association table", existAssociated);
     }
@@ -120,7 +118,7 @@ public class ConferenceRoomSteps {
 
     @And("^I go to Conference Room page$")
     public void goToConferenceRoomPage(){
-        conferenceRoomsPage = homePage.getLeftMenuPanel().clickOnConferenceRooms();
+        conferenceRoomsPage.getLeftMenuPanel().clickOnConferenceRooms();
     }
     @And("^I select the resource button in the header page$")
     public void displayResourceInTableConferenceRoom(){
@@ -134,8 +132,8 @@ public class ConferenceRoomSteps {
 
         UIMethods.refreshPage();
         UIMethods.switchPages(LeftBarOptions.CONFERENCE_ROOMS.getToPage());
+        conferenceRoomsPage.getLeftMenuPanel().clickOnConferenceRooms();
 
-        conferenceRoomsPage = homePage.getLeftMenuPanel().clickOnConferenceRooms();
         roomInfoPage = conferenceRoomsPage.openConferenceRoomSettings(conferenceRoom.getCustomDisplayName());
 
         resourceAssociatePage = roomInfoPage.clickOnResourceAssociateTab();
